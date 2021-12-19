@@ -1,0 +1,45 @@
+# Docker-compose configuration for development
+
+version: '3.7'
+
+services:
+    booking_django:
+        image: django
+        build:
+            context: .
+            dockerfile: Dockerfile-django
+        # In case of troubleshoots with database, start use:
+        #        entrypoint: /usr/bin/start.sh
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+        volumes:
+            - "./backend:/app"
+        environment:
+            - PYTHONUNBUFFERED=1
+        env_file: .env
+        depends_on:
+            - booking_postgres
+        container_name: booking_django
+        networks:
+            - booking_local_services
+
+    booking_postgres:
+        image: postgres:13
+        volumes:
+            - ".data/postgres:/var/lib/postgresql/data"
+        environment:
+            POSTGRES_DB: booking
+            POSTGRES_USER: booking
+            POSTGRES_PASSWORD: booking
+        container_name: booking_postgres
+        ports:
+            - "5432:5432"
+        networks:
+            - booking_local_services
+
+
+networks:
+    booking_local_services:
+        name: booking_local_services
+        driver: bridge
