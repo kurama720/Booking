@@ -1,30 +1,27 @@
 import React, {useState} from 'react';
 import * as yup from 'yup';
 import {Formik, FormikHelpers} from "formik";
-import {MdErrorOutline} from "react-icons/md";
 import {BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
 import {BsExclamationCircleFill} from "react-icons/bs";
+import {IUserSignUp} from "./IUserSignUp";
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {Paths} from "../../paths/paths";
 
 
-interface IFormData {
-    firstName: string
-    lastName: string
-    email: string
-    password: string
-    confirmPassword: string
-    rememberMe: boolean
-}
+
 
 
 const UserSignUpForm = () => {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
     const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState<boolean>(false)
+    let history = useNavigate()
 
     const validationSchema = yup.object().shape({
-        firstName: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
+        first_name: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
             .min(2, 'The minimum number of letters must be 2!')
             .max(32, 'The maximum number of letters must be 2!').required('The \'First Name\' field is required!'),
-        lastName: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
+        last_name: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
             .min(2, 'The minimum number of letters must be 2')
             .max(32, 'The maximum number of letters must be 32').required('The \'Last Name\' field is required!'),
 
@@ -34,31 +31,50 @@ const UserSignUpForm = () => {
             "Password must be at least 8 characters, one uppercase letter, one lowercase letter!"
         ).required('The \'Password\' field is required'),
 
-        confirmPassword: yup.string().oneOf([yup.ref('password')], "Password didn't match").required('The \'Confirm Password\' field is required!')
+        confirm_password: yup.string().oneOf([yup.ref('password')], "Password didn't match").required('The \'Confirm Password\' field is required!')
     })
 
-    const showPassword = (e: any) => {
+    const showPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
          e.stopPropagation()
         setIsShowPassword(!isShowPassword)
     }
 
-    const showPasswordConfirm = (e: any) => {
+    const showPasswordConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
         setIsShowPasswordConfirm(!isShowPasswordConfirm)
     }
 
-    const initialValues: IFormData = {
-        firstName: '',
-        lastName: '',
-        email: 'name@example.com',
-        password: 'Test1234',
-        confirmPassword: 'Test1234',
-        rememberMe: false
+    const handleCancel = () => {
+        history('/')
     }
 
-    const postReq = (values: IFormData, actions: FormikHelpers<IFormData>) => {
-        console.log(values)
-        actions.resetForm()
+    const onSubmitDataSignUp = async (values: IUserSignUp, actions: FormikHelpers<IUserSignUp>) => {
+        const dataForSignUp: IUserSignUp = {
+            first_name: values.email,
+            last_name: values.last_name,
+            email: values.email,
+            password: values.password,
+            confirm_password: values.confirm_password
+        }
+        try {
+            // const response = axios.post(`http://localhost:5000${Paths.SIGN_UP}`, dataForSignUp)
+            console.log(dataForSignUp)
+        }catch (e: any){
+            console.error(e.message)
+        }finally {
+            actions.resetForm()
+        }
+
+
+    }
+
+    const initialValues: IUserSignUp = {
+        first_name: '',
+        last_name: '',
+        email: 'name@example.com',
+        password: 'Test1234',
+        confirm_password: 'Test1234',
+        rememberMe: false
     }
 
 
@@ -66,7 +82,7 @@ const UserSignUpForm = () => {
         <Formik
             initialValues={initialValues}
             validateOnBlur
-            onSubmit={postReq}
+            onSubmit={onSubmitDataSignUp}
             validationSchema={validationSchema}
         >
             {({
@@ -84,50 +100,50 @@ const UserSignUpForm = () => {
                                 <div className="rounded-md ">
                                     {/*First Name*/}
                                     <div className=''>
-                                        <label htmlFor="firstName" className="ml-2 block text-sm text-gray-900">
+                                        <label htmlFor="first_name" className="ml-2 block text-sm text-gray-900">
                                             First Name
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.first_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
-                                                id="firstName"
-                                                name="firstName"
+                                                id="first_name"
+                                                name="first_name"
                                                 type="text"
                                                 className={`appearance-none relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                                                 placeholder="Enter First Name"
-                                                value={values.firstName}
+                                                value={values.first_name}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                            <span className='pr-1'>{errors.firstName && touched.firstName &&
+                                            <span className='pr-1'>{errors.first_name && touched.first_name &&
                                             <BsExclamationCircleFill className='text-red-600'/>}</span>
                                         </div>
-                                        {touched.firstName && errors.firstName && <span
-                                            className='flex justify-start items-center text-red-600 text-sm'>{errors.firstName}</span>}
+                                        {touched.first_name && errors.first_name && <span
+                                            className='flex justify-start items-center text-red-600 text-sm'>{errors.first_name}</span>}
                                     </div>
 
-                                    {/*LastName*/}
+                                    {/*last_name*/}
                                     <div className='mt-3'>
-                                        <label htmlFor="lastName" className="ml-2 block text-sm text-gray-900">
+                                        <label htmlFor="last_name" className="ml-2 block text-sm text-gray-900">
                                             Last Name
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.last_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
-                                                id="lastName"
-                                                name="lastName"
+                                                id="last_name"
+                                                name="last_name"
                                                 type="text"
                                                 className={`appearance-none relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                                                 placeholder="Enter Last Name"
-                                                value={values.lastName}
+                                                value={values.last_name}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                            <span className='pr-1'>{errors.lastName && touched.lastName &&
+                                            <span className='pr-1'>{errors.last_name && touched.last_name &&
                                             <BsExclamationCircleFill className='text-red-600'/>}</span>
                                         </div>
-                                        {touched.lastName && errors.lastName && <span
-                                            className='flex justify-start items-center text-red-600 text-sm'>{errors.lastName}</span>}
+                                        {touched.last_name && errors.last_name && <span
+                                            className='flex justify-start items-center text-red-600 text-sm'>{errors.last_name}</span>}
                                     </div>
                                     {/*email*/}
                                     <div className='mt-3'>
@@ -191,23 +207,23 @@ const UserSignUpForm = () => {
 
                                     {/*Confirm Password*/}
                                     <div className='mt-3 '>
-                                        <label htmlFor="confirmPassword" className="ml-2 block text-sm text-gray-900">
+                                        <label htmlFor="confirm_password" className="ml-2 block text-sm text-gray-900">
                                             Re-enter password
                                         </label>
                                         <div
-                                            className={`flex rounded-md  border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex rounded-md  border ${errors.confirm_password ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
-                                                id="confirmPassword"
-                                                name="confirmPassword"
+                                                id="confirm_password"
+                                                name="confirm_password"
                                                 type={isShowPasswordConfirm ? 'text' : 'password'}
                                                 className={`appearance-none relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                                                 placeholder="Repeat Password"
                                                 autoComplete='on'
-                                                value={values.confirmPassword}
+                                                value={values.confirm_password}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                            {errors.confirmPassword && touched.confirmPassword ? <span className='pr-1'>
+                                            {errors.confirm_password && touched.confirm_password ? <span className='pr-1'>
                                             <BsExclamationCircleFill className='text-red-600'/>
                                             </span> : <button
                                                 type='button'
@@ -222,8 +238,8 @@ const UserSignUpForm = () => {
                                             }
                                         </div>
 
-                                        {touched.confirmPassword && errors.confirmPassword && <span
-                                            className='flex justify-start items-center text-red-600 text-sm'> {errors.confirmPassword}</span>}
+                                        {touched.confirm_password && errors.confirm_password && <span
+                                            className='flex justify-start items-center text-red-600 text-sm'> {errors.confirm_password}</span>}
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
@@ -244,6 +260,7 @@ const UserSignUpForm = () => {
                                 <div className='flex items-center justify-between'>
                                     <button
                                         type="button"
+                                        onClick={handleCancel}
                                         className={`group relative  flex justify-center py-2 px-16 border  text-sm font-medium rounded-md text-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
                                     >
                                         Cancel
