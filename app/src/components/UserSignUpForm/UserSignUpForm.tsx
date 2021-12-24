@@ -104,7 +104,7 @@ const UserSignUpForm = () => {
                                             First Name
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.first_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.first_name && touched.first_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
                                                 id="first_name"
                                                 name="first_name"
@@ -128,7 +128,7 @@ const UserSignUpForm = () => {
                                             Last Name
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.last_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.last_name && touched.last_name ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
                                                 id="last_name"
                                                 name="last_name"
@@ -151,7 +151,7 @@ const UserSignUpForm = () => {
                                             E-mail
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.email ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.email && touched.email ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
                                                 id="email"
                                                 name="email"
@@ -175,7 +175,7 @@ const UserSignUpForm = () => {
                                             Password
                                         </label>
                                         <div
-                                            className={`flex  rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex  rounded-md border ${errors.password && touched.password ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
                                                 id="password"
                                                 name="password"
@@ -211,7 +211,7 @@ const UserSignUpForm = () => {
                                             Re-enter password
                                         </label>
                                         <div
-                                            className={`flex rounded-md  border ${errors.confirm_password ? 'border-red-500' : 'border-gray-300'} items-center`}>
+                                            className={`flex rounded-md  border ${errors.confirm_password && touched.confirm_password ? 'border-red-500' : 'border-gray-300'} items-center`}>
                                             <input
                                                 id="confirm_password"
                                                 name="confirm_password"
