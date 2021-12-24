@@ -20,6 +20,7 @@ from drf_spectacular.views import SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
     path('openapi/',
          get_schema_view(title='Booking Service',
                          description="API schema to use our service"),
