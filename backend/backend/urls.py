@@ -15,15 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.schemas import get_schema_view
-from drf_spectacular.views import SpectacularSwaggerView
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('openapi/',
-         get_schema_view(title='Booking Service',
-                         description="API schema to use our service"),
+         SpectacularAPIView.as_view(),
          name='openapi-schema'),
     path('swagger/',
          SpectacularSwaggerView.as_view(
