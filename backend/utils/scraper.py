@@ -7,14 +7,12 @@ import sys
 import csv
 import uuid
 import logging
-
-import bs4
-import requests
 import random
 import threading
-
-from bs4 import BeautifulSoup
 from typing import List
+
+import requests
+from bs4 import BeautifulSoup
 
 logging.basicConfig(handlers=[logging.FileHandler(filename='app.log',
                                                   mode='w', encoding='utf-8')],
@@ -25,17 +23,16 @@ user_agent = ("Mozilla/5.0 (Windows NT 6.3; Win64; x64)"
               "AppleWebKit/537.36 (KHTML, like Gecko)"
               "Chrome/92.0.4515.159 Safari/537.36")
 
-count_hotels = 1000
 hotels_data = []
-list_unique_id = set()
+hotels_unique_id = set()
 img_num = 1
 
 
-def create_directory(name_dir: str):
+def create_directory(name_dir: str) -> None:
     """Create directory"""
     try:
         os.mkdir(name_dir)
-    except Exception as ex:
+    except FileExistsError as ex:
         logging.error(ex)
 
 
@@ -53,10 +50,10 @@ def get_data_from_hotel_page(url: str) -> None:
     unique_id = uuid.uuid1().hex
 
     # check for duplicate unique_id
-    while unique_id in list_unique_id:
+    while unique_id in hotels_unique_id:
         unique_id = uuid.uuid1().hex
 
-    list_unique_id.add(unique_id)
+    hotels_unique_id.add(unique_id)
     soup = make_request_beautifulsoup(url)
     try:
         name = soup.find("a", id="hp_hotel_name_reviews").text.strip()
@@ -82,7 +79,7 @@ def get_data_from_hotel_page(url: str) -> None:
         logging.error(ex)
 
 
-def make_request_beautifulsoup(url: str) -> bs4.BeautifulSoup:
+def make_request_beautifulsoup(url: str) -> BeautifulSoup:
     """
     Make GET request by link using 'BeautifulSoup' and return processed HTML
 
@@ -99,14 +96,13 @@ def make_request_beautifulsoup(url: str) -> bs4.BeautifulSoup:
         logging.error(ex)
 
 
-def search_hotel_links_in_page_html(soup: bs4.BeautifulSoup) -> List[str]:
+def search_hotel_links_in_page_html(soup: BeautifulSoup) -> List[str]:
     """
     Find hotels links and return list of them
 
     Find all elements with hotel link.
     Add hotel url in str format to the 'urls' list
-    Script stops if 'urls' list is empty or if there are no such elements
-    on the page
+    Script stops if there are no such elements on the page
     :param soup: page HTML processed with BeautifulSoup
     :return: list of hotels urls in str format
     """
@@ -116,16 +112,13 @@ def search_hotel_links_in_page_html(soup: bs4.BeautifulSoup) -> List[str]:
         for elem in all_hotel_href:
             url = elem.get("href")
             urls.append(url)
-        if urls:
-            return urls
-        else:
-            raise Exception
+        return urls
     except Exception as ex:
         logging.error(ex)
         sys.exit()
 
 
-def search_total_number_of_hotel_pages(soup: bs4.BeautifulSoup) -> int:
+def search_total_number_of_hotel_pages(soup: BeautifulSoup) -> int:
     """
     Find total number of hotel pages
 
@@ -152,6 +145,7 @@ if __name__ == '__main__':
                 "srpvid=47b059f530680012&offset=")
 
     create_directory("images")
+    count_hotels = 1000
     count_file_records = 0
     page_records_offset = 0
     hotel_pages_num = 1
