@@ -20,7 +20,7 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
 
     return (
         <div>
-            <label htmlFor={name} className="ml-2 block text-sm text-gray-900 flex items-center">
+            <label htmlFor={name} className="block text-xs text-gray-700 font-body flex items-center">
                 {labelName} <InformationCircleIcon className='w-3 h-3 ml-1.5 text-gray-400 '/>
             </label>
             <div
@@ -30,7 +30,7 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
                     name={name}
                     autoComplete='off'
                     type={isShowPassword ? 'text' : 'password'}
-                    className={`appearance-none relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                    className={`appearance-none font-body text-gray-900 text-sm relative block w-full px-3 py-2 placeholder-gray-500  rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                     placeholder="Enter Password"
                     value={value}
                     onChange={handleChange}
@@ -48,10 +48,10 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
                 </button>
             </div>
             {touched && error && <span
-                className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{error}</span>}
+                className='flex justify-start items-start text-red-600 text-xs font-body'><span className='pt-0.5 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{error}</span>}
             {
                 serverError && <span
-                    className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{serverError} Try again!</span>
+                    className='flex justify-start items-start text-red-600 text-xs font-body'><span className='pt-0.5 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{serverError} Try again!</span>
             }
 
         </div>

@@ -2,11 +2,11 @@ import * as yup from "yup";
 
 export const validationSchema = yup.object().shape({
     first_name: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
-        .min(2, 'The minimum number of letters must be 2!')
-        .max(32, 'The maximum number of letters must be 2!').required('First Name is required!'),
+        .min(2, 'The minimum letters be 2!')
+        .max(32, 'The maximum letters be 2!').required('First Name is required!'),
     last_name: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
-        .min(2, 'The minimum number of letters must be 2')
-        .max(32, 'The maximum number of letters must be 32').required('Last Name is required!'),
+        .min(2, 'The minimum letters be 2!')
+        .max(32, 'The maximum letters be 32!').required('Last Name is required!'),
 
     email: yup.string().email('You’ve entered invalid e-mail!').required('E-mail is required!'),
 

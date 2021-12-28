@@ -67,7 +67,7 @@ const UserSignUpForm = () => {
                     <div className="min-h-full flex items-center justify-center mt-3 ">
                         <div className="max-w-md w-full space-y-8 shadow p-8">
                             <div className='flex items-center justify-between'>
-                                <h2 className="text-3xl font-extrabold text-gray-700">Sign up</h2>
+                                <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">Sign up</h2>
                             </div>
                             <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
                                 <div className="rounded-md ">
@@ -142,15 +142,15 @@ const UserSignUpForm = () => {
                                     <button
                                         type="submit"
                                         disabled={!(isValid && dirty)}
-                                        className={`group relative w-full flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${!(isValid && dirty) ? 'bg-gray-200 text-gray-700' : 'bg-indigo-600 text-white'}   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                                        className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${!(isValid && dirty) ? 'bg-gray-200 text-gray-700' : 'bg-blue-600 text-white'}   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
                                     >
                                        Create account
                                     </button>
                                 </div>
                             </form>
                             <div className="flex items-center justify-center">
-                                <span>Already have an account?</span>
-                                <button className="cursor-pointer text-indigo-600 ml-2 hover:border-indigo-600" onClick={redirectToLogIn}>
+                                <span className='text-gray-600 font-body text-xs'>Already have an account?</span>
+                                <button className="cursor-pointer text-blue-600 ml-2 hover:border-blue-600" onClick={redirectToLogIn}>
                                     Login in!
                                 </button>
                             </div>
