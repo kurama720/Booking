@@ -27,7 +27,7 @@ services:
     booking_postgres:
         image: postgres:13
         volumes:
-            - ".data/postgres:/var/lib/postgresql/data"
+                - ".data/postgres:/var/lib/postgresql/data"
         environment:
             POSTGRES_DB: booking
             POSTGRES_USER: booking
