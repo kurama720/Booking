@@ -3,6 +3,7 @@ import { Formik, FormikHelpers, Form, Field } from "formik";
 import { UserLogin } from "../UserLogInForm/utils/interfaces/interfaces";
 import * as yup from "yup";
 import { Paths } from "../../paths/path";
+import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import {
   XIcon,
@@ -19,8 +20,13 @@ const UserLogInForm = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
   const [token, setToken] = useState(null);
-
   const refContain = useRef<HTMLInputElement>(null);
+  const [userLogInData, setUserLogInData] = useState<any>({
+    email: "",
+    password: "",
+  });
+
+  let history = useNavigate();
 
   const submitUserInformation = async (values: UserLogin) => {
     try {
@@ -31,7 +37,9 @@ const UserLogInForm = () => {
 
       console.log(data);
       // if (data) {
+      //   history(Paths.HOME)
       //   setToken(data.token)
+
       //   localStorage.setItem(
       //     "userInfo",
       //     JSON.stringify({
@@ -44,17 +52,15 @@ const UserLogInForm = () => {
     }
   };
 
-  let history = useNavigate();
-
   const validationSchema = yup.object().shape({
     email: yup
       .string()
       .matches(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/,
-        "Email is invalid"
+        "Enter a valid email."
       )
-      .required("Email is required"),
-    password: yup.string().required("Password is required"),
+      .required("Email is required."),
+    password: yup.string().required("Password is required."),
   });
 
   const handlePopUp = () => {
@@ -92,6 +98,10 @@ const UserLogInForm = () => {
         ) => {
           setTimeout(() => {
             submitUserInformation(values);
+            setUserLogInData({
+              email: values.email,
+              password: values.password,
+            });
             setSubmitting(false);
           }, 500);
         }}
@@ -107,32 +117,31 @@ const UserLogInForm = () => {
             <div className="w-full">
               {!popUpStatus ? (
                 <div>
-                  <button
-                    className="px-3.5 py-2.5 text-sm font-medium leading-4 font-body text-blue-700 bg-sky-100 rounded-md  shadow-sm hover:bg-sky-300  duration-500"
+                  <Button
+                    context="Log In"
+                    classNames="px-3.5 py-2.5 text-sm font-medium leading-4 font-body text-blue-700 bg-sky-100 rounded-md  shadow-sm hover:bg-sky-300  duration-500"
                     onClick={handlePopUp}
                     type="button"
-                  >
-                    Log In
-                  </button>
+                  />
                 </div>
               ) : (
                 <div className="flex justify-between w-full items-center">
                   <h2 className=" text-3xl font-extrabold text-gray-500 font-body">
                     Log In
                   </h2>
-                  <button
+                  <Button
                     className="rounded-3xl flex items-start h-9"
                     type="button"
+                    context={
+                      <XIcon className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500" />
+                    }
                     onClick={handlePopUp}
-                  >
-                    <XIcon className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500" />
-                  </button>
+                  />
                 </div>
               )}
               {popUpStatus ? (
                 <div>
                   <Form className="mt-8 space-y-6" action="#">
-                    <input type="hidden" name="remember" defaultValue="true" />
                     <div className="rounded-md">
                       {(!dirty && !touched.email) ||
                       (!dirty && touched.email && errors.email) ||
@@ -183,18 +192,19 @@ const UserLogInForm = () => {
                               fill="#D1D5DB"
                             />
                           </div>
-                          <button
+                          <Button
                             type="button"
                             onClick={() =>
                               console.log("Manage a profile of accounts")
                             }
-                            className="absolute left-icon z-10 top-5 flex items-center pointer-event-none"
-                          >
-                            <ChevronDownIcon
-                              className="h-6 w-6"
-                              fill="#9CA3AF"
-                            />
-                          </button>
+                            context={
+                              <ChevronDownIcon
+                                className="h-6 w-6"
+                                fill="#9CA3AF"
+                              />
+                            }
+                            classNames="absolute left-icon z-10 top-5 flex items-center pointer-event-none"
+                          />
                           <div className="absolute left-14 z-10 top-5 flex items-center pointer-event-none">
                             <MailIcon className="h-6 w-5" fill="#9CA3AF" />
                           </div>
@@ -219,17 +229,21 @@ const UserLogInForm = () => {
                           >
                             Password
                           </label>
-                          <button
+                          <Button
                             type="button"
                             onClick={handleVisiblePasswordStatus}
-                            className="absolute left-icon  z-10 top-8 flex items-center pointer-event-none"
-                          >
-                            {visiblePassword ? (
-                              <EyeOffIcon className="h-6 w-5" fill="#9CA3AF" />
-                            ) : (
-                              <EyeIcon className="h-6 w-5" fill="#9CA3AF" />
-                            )}
-                          </button>
+                            context={
+                              visiblePassword ? (
+                                <EyeOffIcon
+                                  className="h-6 w-5"
+                                  fill="#9CA3AF"
+                                />
+                              ) : (
+                                <EyeIcon className="h-6 w-5" fill="#9CA3AF" />
+                              )
+                            }
+                            classNames="absolute left-icon  z-10 top-8 flex items-center pointer-event-none"
+                          />
                           <Field
                             id="password"
                             name="password"
@@ -251,61 +265,66 @@ const UserLogInForm = () => {
                               {errors.password}
                             </p>
                           )}
+                          {!!token &&
+                            !!userLogInData.password &&
+                            !!userLogInData.password && (
+                              <p className="text-red-500 text-xs font-body">
+                                Incorrect password. Try again or click the
+                                "Forgot your password?" link to reset it.
+                              </p>
+                            )}
                         </div>
                       )}
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <input
-                          id="remember-me"
-                          name="remember-me"
+                        <Field
+                          id="checked"
+                          name="checked"
                           type="checkbox"
-                          defaultChecked={checked}
+                          checked={checked}
                           onChange={handleChacked}
                           className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                         />
                         <label
-                          htmlFor="remember-me"
+                          htmlFor="checked"
                           className="ml-2 block text-sm text-gray-900 font-body"
                         >
                           Remember me
                         </label>
                       </div>
                       <div className="text-sm">
-                        <button
+                        <Button
                           type="button"
                           onClick={() => history(Paths.RESET_PASSWORD)}
-                          className="font-medium text-blue-600 hover:text-blue-700 font-body"
-                        >
-                          Forgot your password?
-                        </button>
+                          classNames="font-medium text-blue-600 hover:text-blue-700 font-body"
+                          context="Forgot your password?"
+                        />
                       </div>
                     </div>
                     <div>
-                      <button
+                      <Button
                         type="submit"
                         disabled={!isValid && !dirty}
-                        className={
+                        context="Log in"
+                        classNames={
                           isValid && dirty
                             ? "group relative w-full flex justify-center text-white py-2.5 px-4  font-body border border-transparent text-sm font-medium rounded-md  bg-blue-600 leading-5"
                             : "group relative w-full flex justify-center py-2.5 px-4 font-body border border-transparent text-sm font-medium rounded-md text-gray-500 bg-gray-200 leading-5"
                         }
-                      >
-                        Log in
-                      </button>
+                      />
                     </div>
                   </Form>
                   <div className="flex mt-8 justify-center items-center">
                     <span className="font-body text-xs">
                       Don't have an account yet?
                     </span>
-                    <button
+                    <Button
                       type="button"
                       onClick={() => history(Paths.SIGN_UP)}
-                      className="cursor-pointer text-blue-600 ml-2 text-sm leading-5 font-medium font-body hover:text-blue-700"
-                    >
-                      Sign Up
-                    </button>
+                      context="Sign Up"
+                      classNames="cursor-pointer text-blue-600 ml-2 text-sm leading-5 font-medium font-body hover:text-blue-700"
+                    />
                   </div>
                 </div>
               ) : (
