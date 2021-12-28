@@ -35,17 +35,17 @@ const UserLogInForm = () => {
         values
       );
 
-      console.log(data);
-      // if (data) {
+      // if (data && checked) {
       //   history(Paths.HOME)
       //   setToken(data.token)
-
       //   localStorage.setItem(
       //     "userInfo",
       //     JSON.stringify({
       //       token: data.token
       //     })
       //   );
+      // } else if (data && !checked) {
+      //   history(Paths.HOME)
       // }
     } catch (err) {
       console.error(err);
