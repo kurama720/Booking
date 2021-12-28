@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Formik, FormikHelpers, Form, Field } from "formik";
 import { UserLogin } from "../UserLogInForm/utils/interfaces/interfaces";
 import * as yup from "yup";
@@ -18,7 +18,6 @@ const UserLogInForm = () => {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
-  const [inputActive, isInputActive] = useState<boolean>(false);
   const [token, setToken] = useState(null);
 
   const refContain = useRef<HTMLInputElement>(null);
@@ -50,7 +49,10 @@ const UserLogInForm = () => {
   const validationSchema = yup.object().shape({
     email: yup
       .string()
-      .email("Enter a valid email")
+      .matches(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/,
+        "Email is invalid"
+      )
       .required("Email is required"),
     password: yup.string().required("Password is required"),
   });
@@ -106,7 +108,7 @@ const UserLogInForm = () => {
               {!popUpStatus ? (
                 <div>
                   <button
-                    className="px-3.5 py-2.5 text-sm font-medium leading-4 font-body text-blue-700 bg-sky-100 rounded-md  shadow-sm hover:bg-gray-200  duration-500"
+                    className="px-3.5 py-2.5 text-sm font-medium leading-4 font-body text-blue-700 bg-sky-100 rounded-md  shadow-sm hover:bg-sky-300  duration-500"
                     onClick={handlePopUp}
                     type="button"
                   >
@@ -133,9 +135,9 @@ const UserLogInForm = () => {
                     <input type="hidden" name="remember" defaultValue="true" />
                     <div className="rounded-md">
                       {(!dirty && !touched.email) ||
-                      (dirty && !touched.email) ||
-                      (dirty && errors.email) ||
-                      (!dirty && errors.email) ? (
+                      (!dirty && touched.email && errors.email) ||
+                      (dirty && touched.email && errors.email) ||
+                      (dirty && !touched.email) ? (
                         <div className="mb-5 relative">
                           <label
                             htmlFor="email-address"
@@ -173,7 +175,7 @@ const UserLogInForm = () => {
                             </p>
                           )}
                         </div>
-                      ) : !errors.email && touched.email ? (
+                      ) : !errors.email && touched.email && dirty ? (
                         <div className="mb-5 relative">
                           <div className="absolute left-4  z-10 top-5 flex items-center pointer-event-none">
                             <UserCircleIcon
