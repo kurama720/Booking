@@ -1,5 +1,8 @@
 # Booking
 
+[![pipeline status](https://gitlab.com/alexey.bogushevich/booking/badges/develop/pipeline.svg)](https://gitlab.com/alexey.bogushevich/booking/-/commits/develop)
+
+
 ##### Table of Contents
 
 1. [Documentation](#documentation) 

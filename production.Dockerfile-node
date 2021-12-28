@@ -1,0 +1,10 @@
+FROM node:16.13.1
+
+# Set the default directory where CMD will execute
+WORKDIR /app
+
+# Expose our application ports
+EXPOSE 8000
+
+# Set the default command to execute when creating a new container
+CMD /bin/bash -c "yarn && yarn start"

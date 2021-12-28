@@ -1,0 +1,60 @@
+# Docker-compose configuration for development environment on server
+
+version: '3.7'
+
+services:
+  booking_django:
+    image: django
+    build:
+      context: .
+      dockerfile: production.Dockerfile-django
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./backend:/usr/src/app"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file: .env
+    depends_on:
+      - booking_postgres
+    container_name: booking_django
+    networks:
+      - booking_local_services
+
+  booking_node:
+    build:
+      context: .
+      dockerfile: production.Dockerfile-node
+    ports:
+      - "80:8000"
+    volumes:
+      - "./app:/app"
+      - "./app/node_modules:/app/node_modules"
+    environment:
+      - PORT=8000
+    env_file: .env
+    depends_on:
+      - booking_django
+    container_name: booking_node
+    networks:
+      - booking_local_services
+
+  booking_postgres:
+    image: postgres:13
+    volumes:
+      - ".data/postgres:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_DB: booking
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: booking
+    container_name: booking_postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - booking_local_services
+
+
+networks:
+  booking_local_services:
+    name: booking_local_services
+    driver: bridge
