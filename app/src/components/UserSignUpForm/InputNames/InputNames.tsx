@@ -1,18 +1,9 @@
 import React, {FC} from 'react';
 import {BsExclamationCircleFill} from "react-icons/bs";
+import {IPropsInput} from "../IPropsInput";
 
-interface IPropsInputNames{
-    error: string | undefined
-    touched: boolean | undefined
-    labelName: string
-    name: string
-    value: string
-    handleChange:any
-    handleBlur: any
-    placeholder: string
-}
 
-const InputNames: FC<IPropsInputNames> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder}) => {
+const InputNames: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder}) => {
     return (
         <div className='flex flex-col w-2/5'>
             <label htmlFor={name} className="ml-2 block text-sm text-gray-900">

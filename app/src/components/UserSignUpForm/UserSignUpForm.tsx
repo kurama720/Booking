@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Formik, FormikHelpers} from "formik";
 import {IUserSignUp} from "./IUserSignUp";
 import {useNavigate} from "react-router-dom";
@@ -9,9 +9,11 @@ import InputNames from "./InputNames/InputNames";
 import InputEmail from "./InputEmail/InputEmail";
 import InputPassword from "./InputPassword/InputPassword";
 import InputConfirmPassword from "./InputConfirmPassword/InputConfirmPassword";
+import {IServerErrors} from "./IServerErrors";
 
 
 const UserSignUpForm = () => {
+    const [serverErrors,setServerErrors] = useState<null | IServerErrors>(null)
 
     let history = useNavigate()
 
@@ -29,9 +31,12 @@ const UserSignUpForm = () => {
         }
         try {
             const response = await axios.post(`http://localhost:8000/accounts/signup/`, dataForSignUp)
-            console.log(response)
+            if(response){
+                setServerErrors(null)
+                history(Paths.LOG_IN)
+            }
         } catch (e: any) {
-            console.error(e.message)
+            setServerErrors(e.response.data)
         } finally {
             actions.resetForm()
         }
@@ -60,8 +65,8 @@ const UserSignUpForm = () => {
               }) =>
                 (
                     <div className="min-h-full flex items-center justify-center mt-3 ">
-                        <div className="max-w-md w-full space-y-8 shadow-lg p-8 rounded-md">
-                            <div>
+                        <div className="max-w-md w-full space-y-8 shadow p-8">
+                            <div className='flex items-center justify-between'>
                                 <h2 className="text-3xl font-extrabold text-gray-700">Sign up</h2>
                             </div>
                             <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
@@ -101,6 +106,7 @@ const UserSignUpForm = () => {
                                             handleChange={handleChange}
                                             touched={touched.email}
                                             placeholder={'E-mail'}
+                                            serverError={serverErrors?.email}
                                         />
                                     </div>
                                     {/*Password*/}
@@ -114,6 +120,8 @@ const UserSignUpForm = () => {
                                             handleChange={handleChange}
                                             touched={touched.password}
                                             placeholder={'Enter Password'}
+                                            serverError={serverErrors?.password}
+
                                         />
                                     </div>
                                     {/*Confirm Password*/}
@@ -142,7 +150,7 @@ const UserSignUpForm = () => {
                             </form>
                             <div className="flex items-center justify-center">
                                 <span>Already have an account?</span>
-                                <button className="cursor-pointer text-indigo-600 ml-2" onClick={redirectToLogIn}>
+                                <button className="cursor-pointer text-indigo-600 ml-2 hover:border-indigo-600" onClick={redirectToLogIn}>
                                     Login in!
                                 </button>
                             </div>

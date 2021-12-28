@@ -1,18 +1,9 @@
 import React, {FC, useState} from 'react';
 import {BsExclamationCircleFill, BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
+import {IPropsInput} from "../IPropsInput";
 
-interface IPropsInputPassword{
-    error: string | undefined
-    touched: boolean | undefined
-    labelName: string
-    name: string
-    value: string
-    handleChange:any
-    handleBlur: any
-    placeholder: string
-}
 
-const InputConfirmPassword: FC<IPropsInputPassword> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder}) => {
+const InputConfirmPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder}) => {
     const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState<boolean>(false)
 
     const showPasswordConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

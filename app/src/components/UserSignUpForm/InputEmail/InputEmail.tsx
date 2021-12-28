@@ -1,19 +1,10 @@
 import React, {FC} from 'react';
 import {MailIcon} from "@heroicons/react/solid";
 import {BsExclamationCircleFill} from "react-icons/bs";
+import {IPropsInput} from "../IPropsInput";
 
-interface IPropsInputNames{
-    error: string | undefined
-    touched: boolean | undefined
-    labelName: string
-    name: string
-    value: string
-    handleChange:any
-    handleBlur: any
-    placeholder: string
-}
 
-const InputEmail:FC<IPropsInputNames> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder}) => {
+const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder,serverError}) => {
     return (
         <>
             <label htmlFor={name} className="ml-2 block text-sm text-gray-900">
@@ -36,6 +27,10 @@ const InputEmail:FC<IPropsInputNames> = ({error,touched,labelName,name,value,han
             </div>
             {touched && error && <span
                 className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{error}</span>}
+            {
+                serverError && <span
+                    className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{serverError} Try again!</span>
+            }
         </>
     );
 };

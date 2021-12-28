@@ -1,26 +1,22 @@
 import React, {FC, useState} from 'react';
 import {BsExclamationCircleFill, BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
 import {InformationCircleIcon} from "@heroicons/react/solid";
+import {IPropsInput} from "../IPropsInput";
 
 
-interface IPropsInputPassword{
-    error: string | undefined
-    touched: boolean | undefined
-    labelName: string
-    name: string
-    value: string
-    handleChange:any
-    handleBlur: any
-    placeholder: string
-}
 
-const InputPassword: FC<IPropsInputPassword> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder}) => {
+const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder,serverError}) => {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
     const showPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
         setIsShowPassword(!isShowPassword)
     }
+
+
+    // const isOneDigit = /\d/.test(value)
+    // const isOneUppercase = /[A-Z]/.test(value)
+    // const isLength = value.length >= 8
 
     return (
         <div>
@@ -53,6 +49,11 @@ const InputPassword: FC<IPropsInputPassword> = ({error,touched,labelName,name,va
             </div>
             {touched && error && <span
                 className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{error}</span>}
+            {
+                serverError && <span
+                    className='flex justify-start items-start text-red-600 text-sm'><span className='pt-1 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{serverError} Try again!</span>
+            }
+
         </div>
     );
 };
