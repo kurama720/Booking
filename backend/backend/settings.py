@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=31),
+    'REFRESH_TOKEN_LIFETIME': timedelta(microseconds=1),
+    'AUTH_TOKEN_CLASSES': ('accounts.api.tokens.CustomAccessToken', )
 }
 
 SPECTACULAR_SETTINGS = {
