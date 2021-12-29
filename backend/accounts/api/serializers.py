@@ -1,8 +1,9 @@
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
+from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework.validators import UniqueValidator
-
 from accounts.models import ClientUser
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -32,3 +33,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])  # Assign password
         user.save()
         return user
+
+
+@extend_schema_serializer(
+    examples=[
+        OpenApiExample('Response', value={'access': 'string'}, response_only=True)
+    ]
+)
+class CustomTokenObtainSerializer(TokenObtainPairSerializer):
+    """Override the serializer library class to remove the refresh token"""
+
+    def validate(self, attrs):
+        """Remove the refresh token from the output dictionary"""
+        data = super().validate(attrs)
+        data.pop("refresh")
+        return data
