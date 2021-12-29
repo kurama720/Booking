@@ -20,7 +20,7 @@
 
 ### Swagger docs
 
-`To be continued`
+Open [Swagger documentation](https://localhost:3000/swagger/)
 
 ## Setting up development environment
 
