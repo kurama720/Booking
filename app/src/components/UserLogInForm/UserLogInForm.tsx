@@ -35,6 +35,8 @@ const UserLogInForm = () => {
         values
       );
 
+      console.log(data);
+
       // if (data && checked) {
       //   history(Paths.HOME)
       //   setToken(data.token)
@@ -45,6 +47,7 @@ const UserLogInForm = () => {
       //     })
       //   );
       // } else if (data && !checked) {
+      //   setToken(data.token)
       //   history(Paths.HOME)
       // }
     } catch (err) {
