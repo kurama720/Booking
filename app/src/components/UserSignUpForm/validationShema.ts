@@ -1,9 +1,7 @@
 import * as yup from "yup";
 
 
-//validate schema
 export const validationSchema = yup.object().shape({
-
     first_name: yup.string().matches(/^[a-zA-Z]+$/, "Must be only letters")
         .min(2, 'The minimum letters be 2!')
         .max(32, 'The maximum letters be 2!').required('First Name is required!'),
