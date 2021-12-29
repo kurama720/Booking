@@ -1,0 +1,19 @@
+before_script:
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y && apt-get install rsync -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+deploy:
+  stage: deploy
+  environment:
+    name: development
+    url: https://booking-dev.yoho.by
+  script:
+    - git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ikapeykin/booking-ci-cd.git
+    - chmod +x ./booking-ci-cd/vds-service/deploy.sh
+    - ./booking-ci-cd/vds-service/deploy.sh
+  only:
+    - develop

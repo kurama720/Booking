@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Formik, FormikHelpers, Form, Field } from "formik";
+import Cookies from "js-cookie";
 import { UserLogin } from "../UserLogInForm/utils/interfaces/interfaces";
+import { useAuth } from "../../hooks/auth.hook";
 import * as yup from "yup";
 import { Paths } from "../../paths/path";
 import Button from "../../components/Button/Button";
@@ -16,11 +18,12 @@ import {
 import axios from "axios";
 
 const UserLogInForm = () => {
+  const { login, setErrorMessage, errorMessage, token } = useAuth();
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
-  const [token, setToken] = useState(null);
-  const refContain = useRef<HTMLInputElement>(null);
+  const refContainPassword = useRef<HTMLInputElement>(null);
+  const [rememberEmail, setRememberEmail] = useState("");
   const [userLogInData, setUserLogInData] = useState<any>({
     email: "",
     password: "",
@@ -31,27 +34,21 @@ const UserLogInForm = () => {
   const submitUserInformation = async (values: UserLogin) => {
     try {
       const data = await axios.post(
-        `http://localhost:8000/accounts/signin`,
+        `http://localhost:8000/accounts/signin/`,
         values
       );
 
-      console.log(data);
+      if (data) {
+        login(data.data, data.request.status);
+        history(Paths.HOME);
+      }
 
-      // if (data && checked) {
-      //   history(Paths.HOME)
-      //   setToken(data.token)
-      //   localStorage.setItem(
-      //     "userInfo",
-      //     JSON.stringify({
-      //       token: data.token
-      //     })
-      //   );
-      // } else if (data && !checked) {
-      //   setToken(data.token)
-      //   history(Paths.HOME)
-      // }
-    } catch (err) {
-      console.error(err);
+      if (checked) {
+        Cookies.set("email", values.email, { expires: 7 });
+        Cookies.set("password", values.password, { expires: 7 });
+      }
+    } catch (e: any) {
+      setErrorMessage(e.message);
     }
   };
 
@@ -79,12 +76,19 @@ const UserLogInForm = () => {
   };
 
   useEffect(() => {
-    if (visiblePassword && refContain.current) {
-      refContain.current.type = "text";
-    } else if (!visiblePassword && refContain.current) {
-      refContain.current.type = "password";
+    if (visiblePassword && refContainPassword.current) {
+      refContainPassword.current.type = "text";
+    } else if (!visiblePassword && refContainPassword.current) {
+      refContainPassword.current.type = "password";
     }
-  }, [visiblePassword]);
+
+    if (Cookies.get("email") !== "") {
+      const data = Cookies.get("email");
+      if (data) {
+        setRememberEmail(data);
+      }
+    }
+  }, [visiblePassword, token, rememberEmail]);
 
   return (
     <div className="w-screen flex justify-center">
@@ -253,7 +257,7 @@ const UserLogInForm = () => {
                             type="password"
                             key="password"
                             onChange={handleChange}
-                            innerRef={refContain}
+                            innerRef={refContainPassword}
                             onBlur={handleBlur}
                             autoComplete="current-password"
                             className={
@@ -268,14 +272,12 @@ const UserLogInForm = () => {
                               {errors.password}
                             </p>
                           )}
-                          {!!token &&
-                            !!userLogInData.password &&
-                            !!userLogInData.password && (
-                              <p className="text-red-500 text-xs font-body">
-                                Incorrect password. Try again or click the
-                                "Forgot your password?" link to reset it.
-                              </p>
-                            )}
+                          {!!errorMessage && (
+                            <p className="text-red-500 text-xs font-body">
+                              Incorrect password. Try again or click the "Forgot
+                              your password?" link to reset it.
+                            </p>
+                          )}
                         </div>
                       )}
                     </div>
