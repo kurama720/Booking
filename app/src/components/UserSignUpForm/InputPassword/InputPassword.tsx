@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {BsExclamationCircleFill, BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
-import {InformationCircleIcon} from "@heroicons/react/solid";
+// import {InformationCircleIcon} from "@heroicons/react/solid";
 import {IPropsInput} from "../IPropsInput";
 
 
@@ -13,7 +13,6 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
         setIsShowPassword(!isShowPassword)
     }
 
-
     // const isOneDigit = /\d/.test(value)
     // const isOneUppercase = /[A-Z]/.test(value)
     // const isLength = value.length >= 8
@@ -21,7 +20,7 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
     return (
         <div>
             <label htmlFor={name} className="block text-xs text-gray-700 font-body flex items-center">
-                {labelName} <InformationCircleIcon className='w-3 h-3 ml-1.5 text-gray-400 '/>
+                {labelName}
             </label>
             <div
                 className={`flex  rounded-md border ${error && touched ? 'border-red-500' : 'border-gray-300'} items-center`}>
@@ -31,7 +30,7 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
                     autoComplete='off'
                     type={isShowPassword ? 'text' : 'password'}
                     className={`appearance-none font-body text-gray-900 text-sm relative block w-full px-3 py-2 placeholder-gray-500  rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                    placeholder="Enter Password"
+                    placeholder={placeholder}
                     value={value}
                     onChange={handleChange}
                     onBlur={handleBlur}
