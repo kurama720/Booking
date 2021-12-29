@@ -48,3 +48,9 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         data.pop("refresh")
         return data
+
+
+class CustomTokenDestroySerializer(serializers.Serializer):
+    """Custom serializer to serialize data from post-request for logout"""
+    text = serializers.CharField(write_only=True)
+    status = serializers.CharField(read_only=True)
