@@ -1,23 +1,35 @@
 # Booking
 
+[![pipeline status](https://gitlab.com/alexey.bogushevich/booking/badges/develop/pipeline.svg)](https://gitlab.com/alexey.bogushevich/booking/-/commits/develop)
+
+
 ##### Table of Contents
 
-1. [Documentation](#documentation) 
+1. [Documentation](#documentation)
    1. [Swagger documentation](#swagger-docs)
-2. [Setting up development environment](#setting-up-development-environment)
+   2. [Frontend documentation](#frontend-docs)
+   3. [Backend documentation](#backend-docs)
+   4. [Deployment](#deployment)
+   5. [Tests](#tests)
+   6. [Contributing](#contributing)
+3. [Setting up development environment](#setting-up-development-environment)
    1. [Environment variables](#environment-variables)
    2. [Installing docker & docker-compose](#installing-docker-and-docker-compose)
    3. [Setting up Booking](#setting-up-booking)
       1. [How to check code with PyLinter and Black](#how-to-check-code-with-pylinter-and-black)
-3. [Third party integrations](#third-party-integrations)
+4. [Third party integrations](#third-party-integrations)
 
 ## Documentation
 
-`To be continued`
+#### Tech Stack: `to be determined`
+
+### FrontEnd
+
+### BackEnd
 
 ### Swagger docs
 
-`To be continued`
+Open [Swagger documentation](https://localhost:3000/swagger/)
 
 ## Setting up development environment
 
