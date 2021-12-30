@@ -1,6 +1,5 @@
 import React, {FC, useState} from 'react';
 import {BsExclamationCircleFill, BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
-// import {InformationCircleIcon} from "@heroicons/react/solid";
 import {IPropsInput} from "../IPropsInput";
 
 
@@ -12,7 +11,6 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
         e.stopPropagation()
         setIsShowPassword(!isShowPassword)
     }
-
     // const isOneDigit = /\d/.test(value)
     // const isOneUppercase = /[A-Z]/.test(value)
     // const isLength = value.length >= 8
@@ -49,9 +47,10 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
             {touched && error && <span
                 className='flex justify-start items-start text-red-600 text-xs font-body'><span className='pt-0.5 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{error}</span>}
             {
-                serverError && <span
+                 serverError && <span
                     className='flex justify-start items-start text-red-600 text-xs font-body'><span className='pt-0.5 pr-1 '><BsExclamationCircleFill className='text-red-600 w-3 h-3'/></span>{serverError} Try again!</span>
             }
+
 
         </div>
     );

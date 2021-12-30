@@ -14,8 +14,8 @@ import {IServerErrors} from "./IServerErrors";
 
 const UserSignUpForm = () => {
     const [serverErrors,setServerErrors] = useState<null | IServerErrors>(null)
-
     let history = useNavigate()
+
 
     const redirectToLogIn = () => {
         history(Paths.LOG_IN)
@@ -33,12 +33,11 @@ const UserSignUpForm = () => {
             const response = await axios.post(`http://localhost:8000/accounts/signup/`, dataForSignUp)
             if(response){
                 setServerErrors(null)
+                actions.resetForm()
                 history(Paths.LOG_IN)
             }
         } catch (e: any) {
             setServerErrors(e.response.data)
-        } finally {
-            actions.resetForm()
         }
     }
 
@@ -121,7 +120,6 @@ const UserSignUpForm = () => {
                                             touched={touched.password}
                                             placeholder={'Enter Password'}
                                             serverError={serverErrors?.password}
-
                                         />
                                     </div>
                                     {/*Confirm Password*/}
