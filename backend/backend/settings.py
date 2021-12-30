@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'rest_framework_simplejwt',
+    'apartments',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -150,3 +151,6 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+MEDIA_URL = '/images/'
+MEDIA_ROOT = BASE_DIR / 'images'
