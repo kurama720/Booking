@@ -106,6 +106,7 @@ const UserSignUpForm = () => {
                                             touched={touched.email}
                                             placeholder={'E-mail'}
                                             serverError={serverErrors?.email}
+                                            setServerError={setServerErrors}
                                         />
                                     </div>
                                     {/*Password*/}
@@ -120,6 +121,7 @@ const UserSignUpForm = () => {
                                             touched={touched.password}
                                             placeholder={'Enter Password'}
                                             serverError={serverErrors?.password}
+                                            setServerError={setServerErrors}
                                         />
                                     </div>
                                     {/*Confirm Password*/}

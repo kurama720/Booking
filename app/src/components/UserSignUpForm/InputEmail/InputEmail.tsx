@@ -4,7 +4,14 @@ import {BsExclamationCircleFill} from "react-icons/bs";
 import {IPropsInput} from "../IPropsInput";
 
 
-const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder,serverError}) => {
+const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder,serverError,setServerError}) => {
+
+   const handleFocus = () => {
+     if(serverError){
+         setServerError({email: ''})
+     }
+   }
+
     return (
         <>
             <label htmlFor={name} className="block text-xs text-gray-700 font-body">
@@ -12,7 +19,7 @@ const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleCh
             </label>
             <div
                 className={`flex  rounded-md border ${error && touched ? 'border-red-500' : 'border-gray-300'} items-center`}>
-                <span className='pl-1.5 '><MailIcon className='h-6 w-5 text-gray-400'/></span>
+                <span className='pl-1.5 '><MailIcon className={`h-6 w-5 ${error && touched ? 'text-red-400': 'text-gray-400'}`}/></span>
                 <input
                     id={name}
                     name={name}
@@ -23,6 +30,7 @@ const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleCh
                     value={value}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onFocus={handleFocus}
                 />
             </div>
             {touched && error && <span

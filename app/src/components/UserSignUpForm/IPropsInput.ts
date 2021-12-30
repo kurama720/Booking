@@ -10,4 +10,5 @@ export interface IPropsInput{
     handleBlur: (e: any) => void
     placeholder: string
     serverError?: string | undefined
+    setServerError?: any
 }
