@@ -13,7 +13,7 @@ const Footer = () => {
         <footer className='w-full bg-gray-50'>
             <div className="w-full max-w-screen-xl my-0 mx-auto">
                 <div className='h-px bg-gray-300 mt-2'/>
-                <div className='flex items-center justify-between py-10'>
+                <div className='flex items-center justify-between py-8'>
                     <div className='flex justify-center items-center'>
                         <span className='text-xs text-gray-700 font-body'>© 2022 Nodic, Inc.</span>
                     </div>
