@@ -1,17 +1,23 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import {Splide, SplideSlide} from '@splidejs/react-splide';
+import picture from '../../assets/1.png'
+import {HeartIcon} from "@heroicons/react/outline";
+import {StarIcon, HeartIcon as SolidHeartIcon} from "@heroicons/react/solid"
 import '@splidejs/splide/dist/css/splide.min.css';
-import picture from '../../assets/image 2.png'
-import {
-    HeartIcon,
-} from "@heroicons/react/outline";
-import {StarIcon} from "@heroicons/react/solid"
+import './react-splide.css'
 
-const ObjectCard = () => {
+const ApartmentCard: FC = () => {
+    const [isLike, setIsLike] = useState<boolean>(false)
+
+    //mock array of pictures
     const mokArrayPicture = [picture, picture, picture, picture, picture, picture, picture]
 
+    const handleIsLike = () => {
+        setIsLike(prev => !prev)
+    }
+
     return (
-        <div className='bg-gray-100 max-w-screen-sm'>
+        <div className='max-w-screen-sm p-4'>
             <div className='flex'>
                 <Splide
                     options={{
@@ -20,16 +26,19 @@ const ObjectCard = () => {
                         width: 240
                     }}
                 >
-                    {mokArrayPicture.map(item => <SplideSlide>
-                        <img src={item} alt="Image 1"/>
-                    </SplideSlide>)}
+                    {mokArrayPicture.map((item, index) =>
+                        <SplideSlide key={index}>
+                            <img src={item} alt="Image 1" className='rounded'/>
+                        </SplideSlide>
+                    )}
                 </Splide>
-
-                <div className='w-full pl-2 flex justify-between flex-col'>
+                <div className='w-full pl-3 flex justify-between flex-col'>
                     <div>
                         <div className='flex justify-between items-center'>
                             <h4 className='text-xl font-body text-gray-900'>Apartment name</h4>
-                            <button className=''><HeartIcon className='w-5 h-5'/></button>
+                            <button className='' onClick={handleIsLike}>{isLike ?
+                                <SolidHeartIcon className='w-5 h-5 text-red-500'/> :
+                                <HeartIcon className='w-5 h-5'/>}</button>
                         </div>
                         <div className='flex justify-start'>
                             <span className='text-xs font-body text-gray-500'>2 guests</span>
@@ -37,33 +46,30 @@ const ObjectCard = () => {
                             <span className='text-xs font-body text-gray-500'>2 beds</span>
                         </div>
                     </div>
-
-
                     <div className='flex justify-between items-end'>
                         <div className='flex items-center'>
                             <span>
                                 <StarIcon className='w-4 h-4 text-blue-600'/>
                             </span>
-                            <span>4,3</span>
-                            <span>(15 reviews)</span>
+                            <span className='text-xs font-body text-gray-900'>4,3</span>
+                            <span className='text-xs font-body text-gray-500'>(15 reviews)</span>
                         </div>
                         <div className='flex flex-col'>
                             <div>
-                                <span>$93</span>
-                                <span>/</span>
-                                <span>night</span>
+                                <span className='text-xs font-body text-gray-900 font-medium'>$93</span>
+                                <span className='text-xs font-body text-gray-500 mx-0.5'>/</span>
+                                <span className='text-xs font-body text-gray-500'>night</span>
                             </div>
                             <div>
-                                <span>Total $280</span>
+                                <span className='text-xs font-body text-gray-500'>Total $280</span>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
+            <div className='w-full h-px bg-gray-200 mt-2'/>
         </div>
     );
 };
 
-export default ObjectCard;
+export default ApartmentCard;
