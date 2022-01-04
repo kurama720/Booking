@@ -8,7 +8,6 @@ import './react-splide.css'
 
 const ApartmentCard: FC = () => {
     const [isLike, setIsLike] = useState<boolean>(false)
-
     //mock array of pictures
     const mokArrayPicture = [picture, picture, picture, picture, picture, picture, picture]
 
