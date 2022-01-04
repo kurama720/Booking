@@ -4,7 +4,6 @@ import {BrowserRouter as Router,Route, Routes} from "react-router-dom";
 import {Paths} from "./paths/paths";
 import SignUpPage from "./pages/SignUpPage";
 
-
 function App() {
     return (
         <div className="App">

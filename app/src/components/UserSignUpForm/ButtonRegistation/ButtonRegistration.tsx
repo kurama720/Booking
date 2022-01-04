@@ -6,7 +6,7 @@ interface IPropsButtonRegistration{
     children: React.ReactChildren | React.ReactNode
 }
 
-const ButtonRegistration:FC<IPropsButtonRegistration> =({isValid,children,dirty}) => {
+const ButtonRegistration:FC<IPropsButtonRegistration> =({isValid, children, dirty}) => {
     return (
         <button
             type="submit"

@@ -3,8 +3,7 @@ import {BsExclamationCircleFill} from "react-icons/bs";
 import {IPropsInput} from "../IPropsInput";
 import Input from "../Input/Input";
 
-
-const InputNames: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder}) => {
+const InputNames: FC<IPropsInput> = ({error, touched, labelName, name, value, handleChange, handleBlur, placeholder}) => {
     return (
         <div className={`flex flex-col first-of-type:mr-3 last-of-type:ml-3 ${error && touched ? 'mt-3' : 'border-gray-300'}`}>
             <label htmlFor={name} className="block text-xs text-gray-700 font-body">

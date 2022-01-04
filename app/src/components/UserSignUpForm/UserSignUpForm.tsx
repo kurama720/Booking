@@ -13,11 +13,9 @@ import ButtonLogIn from "./ButtonLogIn/ButtonLogIn";
 import ButtonRegistration from "./ButtonRegistation/ButtonRegistration";
 import AuthService from "../../api/AuthService";
 
-
 const UserSignUpForm = () => {
     const [serverErrors,setServerErrors] = useState<null | IServerErrors>(null)
     let history = useNavigate()
-
 
     const redirectToLogIn = () => {
         history(Paths.LOG_IN)
@@ -72,7 +70,6 @@ const UserSignUpForm = () => {
                             </div>
                             <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
                                 <div className="rounded-md ">
-                                    {/*First Name*/}
                                     <div className='flex items-center justify-between '>
                                         <InputNames
                                             error={errors.first_name}
@@ -84,7 +81,6 @@ const UserSignUpForm = () => {
                                             touched={touched.first_name}
                                             placeholder={'First Name'}
                                         />
-
                                         <InputNames
                                             error={errors.last_name}
                                             labelName={'Last Name'}
@@ -96,7 +92,6 @@ const UserSignUpForm = () => {
                                             placeholder={'Last Name'}
                                         />
                                     </div>
-                                    {/*email*/}
                                     <div className='mt-3'>
                                         <InputEmail
                                             error={errors.email}
@@ -111,7 +106,6 @@ const UserSignUpForm = () => {
                                             setServerError={setServerErrors}
                                         />
                                     </div>
-                                    {/*Password*/}
                                     <div className='mt-3'>
                                         <InputPassword
                                             error={errors.password}
@@ -126,7 +120,6 @@ const UserSignUpForm = () => {
                                             setServerError={setServerErrors}
                                         />
                                     </div>
-                                    {/*Confirm Password*/}
                                     <div className='mt-3 '>
                                         <InputConfirmPassword
                                             error={errors.confirm_password}

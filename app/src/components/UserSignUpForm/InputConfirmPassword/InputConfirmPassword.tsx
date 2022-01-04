@@ -4,14 +4,14 @@ import {IPropsInput} from "../IPropsInput";
 import ButtonIsShowPassword from "../ButtonIsShowPassword/ButtonIsShowPassword";
 import Input from "../Input/Input";
 
-
-const InputConfirmPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder}) => {
+const InputConfirmPassword: FC<IPropsInput> = ({error, touched, labelName, name, value, handleChange, handleBlur, placeholder}) => {
     const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState<boolean>(false)
 
     const showPasswordConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
         setIsShowPasswordConfirm(!isShowPasswordConfirm)
     }
+
     return (
         <>
             <label htmlFor={name} className="block text-xs text-gray-700 font-body">

@@ -7,8 +7,8 @@ export interface IPropsInput{
     name: string
     value: string
     handleChange: (e: React.ChangeEvent<any>) => void
-    handleBlur: (e: any) => void
+    handleBlur: (e: React.FocusEvent<any>) => void
     placeholder: string
     serverError?: string | undefined
-    setServerError?: any
+    setServerError?:  any
 }

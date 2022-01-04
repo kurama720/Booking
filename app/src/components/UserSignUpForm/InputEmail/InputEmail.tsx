@@ -4,8 +4,7 @@ import {BsExclamationCircleFill} from "react-icons/bs";
 import {IPropsInput} from "../IPropsInput";
 import Input from "../Input/Input";
 
-
-const InputEmail:FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur,placeholder,serverError,setServerError}) => {
+const InputEmail:FC<IPropsInput> = ({error, touched, labelName, name, value, handleChange, handleBlur, placeholder, serverError, setServerError}) => {
 
    const handleFocus = () => {
      if(serverError){

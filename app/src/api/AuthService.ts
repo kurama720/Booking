@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import {IUserSignUp} from "../components/UserSignUpForm/IUserSignUp";
 
 export default class AuthService{

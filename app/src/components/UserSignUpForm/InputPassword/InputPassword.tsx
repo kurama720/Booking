@@ -4,9 +4,7 @@ import {IPropsInput} from "../IPropsInput";
 import ButtonIsShowPassword from "../ButtonIsShowPassword/ButtonIsShowPassword";
 import Input from "../Input/Input";
 
-
-
-const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,handleChange,handleBlur, placeholder,serverError,setServerError}) => {
+const InputPassword: FC<IPropsInput> = ({error, touched, labelName, name, value, handleChange, handleBlur, placeholder, serverError, setServerError}) => {
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
     const showPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -19,7 +17,6 @@ const InputPassword: FC<IPropsInput> = ({error,touched,labelName,name,value,hand
             setServerError({password: ''})
         }
     }
-
 
     return (
         <div>
