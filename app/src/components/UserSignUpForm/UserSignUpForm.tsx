@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Formik, FormikHelpers} from "formik";
 import {IUserSignUp} from "./IUserSignUp";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {Paths} from "../../paths/paths";
 import {validationSchema} from "./validationShema";
 import InputNames from "./InputNames/InputNames";
@@ -10,6 +9,9 @@ import InputEmail from "./InputEmail/InputEmail";
 import InputPassword from "./InputPassword/InputPassword";
 import InputConfirmPassword from "./InputConfirmPassword/InputConfirmPassword";
 import {IServerErrors} from "./IServerErrors";
+import ButtonLogIn from "./ButtonLogIn/ButtonLogIn";
+import ButtonRegistration from "./ButtonRegistation/ButtonRegistration";
+import AuthService from "../../api/AuthService";
 
 
 const UserSignUpForm = () => {
@@ -30,7 +32,7 @@ const UserSignUpForm = () => {
             confirm_password: values.confirm_password
         }
         try {
-            const response = await axios.post(`http://localhost:8000/accounts/signup/`, dataForSignUp)
+            const response = await AuthService.signUp(dataForSignUp)
             if(response){
                 setServerErrors(null)
                 actions.resetForm()
@@ -139,20 +141,12 @@ const UserSignUpForm = () => {
                                     </div>
                                 </div>
                                 <div className='flex items-center justify-between'>
-                                    <button
-                                        type="submit"
-                                        disabled={!(isValid && dirty)}
-                                        className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${!(isValid && dirty) ? 'bg-gray-200 text-gray-700' : 'bg-blue-600 text-white'}   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
-                                    >
-                                       Create account
-                                    </button>
+                                    <ButtonRegistration isValid={isValid} dirty={dirty}>Create account</ButtonRegistration>
                                 </div>
                             </form>
                             <div className="flex items-center justify-center">
                                 <span className='text-gray-600 font-body text-xs'>Already have an account?</span>
-                                <button className="cursor-pointer text-blue-600 ml-2 hover:border-blue-600" onClick={redirectToLogIn}>
-                                    Login in!
-                                </button>
+                                <ButtonLogIn redirectToLogIn={redirectToLogIn}> Log in! </ButtonLogIn>
                             </div>
                         </div>
                     </div>
