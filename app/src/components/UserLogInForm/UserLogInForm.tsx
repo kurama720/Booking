@@ -6,7 +6,6 @@ import { useAuth } from "../../hooks/auth.hook";
 import * as yup from "yup";
 import { Paths } from "../../paths/path";
 import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
 import {
   XIcon,
   MailIcon,
@@ -15,7 +14,8 @@ import {
   UserCircleIcon,
   ChevronDownIcon,
 } from "@heroicons/react/solid";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+import {useNavigate} from "react-router-dom";
 
 const UserLogInForm = () => {
   const { login, setErrorMessage, errorMessage, token } = useAuth();
@@ -31,12 +31,12 @@ const UserLogInForm = () => {
     password: "",
   });
 
-  let history = useNavigate();
+  let history = useNavigate()
 
   const submitUserInformation = async (values: UserLogin) => {
     try {
       const data = await axios.post(
-        `http://localhost:8000/accounts/signin/`,
+        `${process.env.REACT_APP_API_URL}accounts/signin/`,
         values
       );
 
@@ -49,8 +49,13 @@ const UserLogInForm = () => {
         Cookies.set("email", values.email, { expires: 7 });
         Cookies.set("password", values.password, { expires: 7 });
       }
-    } catch (e: any) {
-      setErrorMessage(e.message);
+    } catch (error) {
+      const isAxiosError = (something: any): something is AxiosError => {
+        return something.isAxiosError === true
+      }
+      if (isAxiosError(error)){
+        setErrorMessage(error.message);
+      }
     }
   };
 
@@ -77,7 +82,7 @@ const UserLogInForm = () => {
     setVisiblePassword((prev) => !prev);
   };
 
-  const handleEmailPostFix = (e: any) => {
+  const handleEmailPostFix = (e: React.ChangeEvent<HTMLInputElement>) => {
     let postfix = e.target.value.substr(-3);
     setPostFix(postfix);
   };
@@ -148,7 +153,7 @@ const UserLogInForm = () => {
                       Log In
                     </h2>
                     <Button
-                      className="rounded-3xl flex items-start h-9"
+                      classNames="rounded-3xl flex items-start h-9"
                       type="button"
                       context={
                         <XIcon className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500" />
@@ -191,7 +196,7 @@ const UserLogInForm = () => {
                               name="email"
                               type="email"
                               autoComplete="email"
-                              onChange={(e: any) => {
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 handleChange(e);
                                 handleEmailPostFix(e);
                               }}
