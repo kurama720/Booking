@@ -1,7 +1,7 @@
 import pandas as pd
 
 from django.contrib import admin, messages
-from django.db import IntegrityError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
@@ -33,33 +33,35 @@ class ApartmentAdmin(admin.ModelAdmin):
                 messages.warning(request, 'The wrong file type was uploaded')
                 return HttpResponseRedirect(request.path_info)
 
-            file_data = pd.read_csv(csv_file, sep=';', header=None)
+            file_data = pd.read_csv(csv_file, sep=';')
             row_iter = file_data.iterrows()
-
-            apartments: list[Apartment] = [
-                Apartment(id=row[0],
-                          title=row[1],
-                          price=row[2],
-                          img=row[3],
-                          lat=row[4].split(',')[0],
-                          lon=row[4].split(',')[1],
-                          description=row[5])
-                for _, row in row_iter
-            ]
             try:
+                apartments: list[Apartment] = [
+                    Apartment(id=row['id'],
+                              title=row['title'],
+                              price=row['price'],
+                              img=row['image'],
+                              lat=row['coordinates'].split(',')[0],
+                              lon=row['coordinates'].split(',')[1],
+                              description=row['description'])
+                    for _, row in row_iter if not Apartment.objects.filter(id=row[0]).exists()
+                ]
+                if not apartments:
+                    raise ObjectDoesNotExist
                 Apartment.objects.bulk_create(apartments)  # Adding data to the database
                 self.message_user(request, "Your csv file has been imported")
-
-            except IntegrityError:
-                self.message_user(request, f"Add an existing apartment. Modify the csv file")
-
-            url = reverse('admin:index')
-            return HttpResponseRedirect(url)
+                url = reverse('admin:index')
+                return HttpResponseRedirect(url)
+            except ValidationError:
+                self.message_user(request, "The format of the data in the csv file does not fit", level=messages.WARNING)
+            except ObjectDoesNotExist:
+                self.message_user(request, "All such records already exist in the database", level=messages.WARNING)
 
         form = CsvImportForm()
         data = {'form': form}
 
         return render(request, 'admin/csv_upload.html', data)
+
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
