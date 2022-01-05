@@ -14,7 +14,7 @@ import ButtonRegistration from "./ButtonRegistation/ButtonRegistration";
 import AuthService from "../../api/AuthService";
 
 const UserSignUpForm = () => {
-    const [serverErrors,setServerErrors] = useState<null | IServerErrors>(null)
+    const [serverErrors,setServerErrors] = useState<IServerErrors>({email: '', password: ''})
     let history = useNavigate()
 
     const redirectToLogIn = () => {
@@ -32,7 +32,7 @@ const UserSignUpForm = () => {
         try {
             const response = await AuthService.signUp(dataForSignUp)
             if(response){
-                setServerErrors(null)
+                setServerErrors({email: '', password: ''})
                 actions.resetForm()
                 history(Paths.LOG_IN)
             }

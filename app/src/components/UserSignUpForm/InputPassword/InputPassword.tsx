@@ -13,7 +13,7 @@ const InputPassword: FC<IPropsInput> = ({error, touched, labelName, name, value,
     }
 
     const handleFocus = () => {
-        if( serverError) {
+        if(serverError && setServerError) {
             setServerError({password: ''})
         }
     }
