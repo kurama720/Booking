@@ -1,5 +1,13 @@
 FROM node:16.13.1 as builder
 
+# Install system requirements
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y --no-install-recommends build-essential gettext libpq-dev git poppler-utils \
+ && apt-get autoremove -y \
+ && apt-get clean -y \
+ && rm -rf /var/lib/apt/lists/*
+
 # Set the default directory where CMD will execute
 WORKDIR /usr/src/app
 
@@ -13,6 +21,8 @@ COPY ./app ./
 RUN yarn build
 
 FROM nginx:1.17
+
+EXPOSE 80
 
 COPY ./nginx/ /etc/nginx/
 
