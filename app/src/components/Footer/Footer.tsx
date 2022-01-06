@@ -7,7 +7,6 @@ import {BsFacebook} from 'react-icons/bs'
 import {AiOutlineTwitter} from 'react-icons/ai'
 import {FaInstagram} from 'react-icons/fa'
 
-
 const Footer = () => {
     return (
         <footer className='w-full bg-gray-50'>
