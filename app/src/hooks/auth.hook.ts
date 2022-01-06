@@ -1,24 +1,27 @@
-import { useState, useCallback, useEffect } from "react";
-import { LocalKey, LocalStorage } from "ts-localstorage";
+import {useCallback, useEffect, useState} from "react";
+import {LocalKey, LocalStorage} from "ts-localstorage";
 
 const storageName = "userData" as LocalKey<any>;
 
 export const useAuth = () => {
-  const [token, setToken] = useState<null | string>(null);
+  const [token, setToken] = useState<any>(null);
   const [requestStatus, setRequestStatus] = useState<null | number>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [check, isCheck] = useState<boolean>(false)
 
-  const login = useCallback((jwtToken, status) => {
+  const login = useCallback((jwtToken, status, checked) => {
     setToken(jwtToken);
     setRequestStatus(status);
     setErrorMessage("");
+    isCheck(checked)
 
     localStorage.setItem(
-      storageName,
-      JSON.stringify({
-        token: jwtToken,
-        status: requestStatus,
-      })
+        storageName,
+        JSON.stringify({
+          token: jwtToken,
+          status: status,
+          checked: checked
+        })
     );
   }, []);
 
@@ -32,8 +35,8 @@ export const useAuth = () => {
   useEffect(() => {
     const data = LocalStorage.getItem(storageName);
 
-    if (data && data.token) {
-      login(data.token, data.status);
+    if (data && data.token && data.checked) {
+      login(data.token, data.status, data.checked);
     }
   }, [login]);
 

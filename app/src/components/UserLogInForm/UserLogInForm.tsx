@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Field, Form, Formik, FormikHelpers} from "formik";
-import Cookies from "js-cookie";
 import {UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
 import {useAuth} from "../../hooks/auth.hook";
 import * as yup from "yup";
 import {Paths} from "../../paths/path";
+import {LocalKey, LocalStorage} from "ts-localstorage";
 import Button from "../../components/Button/Button";
 import {
   ChevronDownIcon,
@@ -17,6 +17,8 @@ import {
 } from "@heroicons/react/solid";
 import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
+
+const storageName = "userData" as LocalKey<any>;
 
 const UserLogInForm = () => {
   const {login, setErrorMessage, errorMessage, token} = useAuth();
@@ -40,14 +42,10 @@ const UserLogInForm = () => {
       );
 
       if (data) {
-        login(data.data, data.request.status);
+        login(data, data.request.status, checked);
         history(Paths.HOME);
       }
 
-      if (checked && values.email && values.password) {
-        Cookies.set("email", values.email, {expires: 1});
-        Cookies.set("password", values.password, {expires: 1});
-      }
     } catch (error) {
       const isAxiosError = (something: any): something is AxiosError => {
         return something.isAxiosError === true
@@ -86,19 +84,28 @@ const UserLogInForm = () => {
   }
 
   useEffect(() => {
+    const storageItem = LocalStorage.getItem(storageName)
+
     if (visiblePassword && refContainPassword.current) {
       refContainPassword.current.type = "text";
     } else if (!visiblePassword && refContainPassword.current) {
       refContainPassword.current.type = "password";
     }
 
-    if (!!Cookies.get("email") && !!Cookies.get("password")) {
-      setInitialState({
-        email: Cookies.get("email"),
-        password: Cookies.get("password")
-      })
+    if (!!storageItem) {
+      const checkStatus = LocalStorage.getItem(storageName).checked
+      
+      if (checkStatus) {
+        const localStorageItem = LocalStorage.getItem(storageName).token.config.data
+        const data = JSON.parse(localStorageItem)
+
+        setInitialState({
+          email: data.email,
+          password: data.password,
+        })
+      }
     }
-  }, [visiblePassword, email]);
+  }, [visiblePassword, email, login]);
 
 
   return (
@@ -119,7 +126,6 @@ const UserLogInForm = () => {
             }}
         >
           {({errors, touched, isValid, dirty, handleChange, handleBlur, setFieldTouched}) => {
-            console.log(touched.password)
             return (
                 <div
                     className={
