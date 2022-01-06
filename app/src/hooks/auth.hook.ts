@@ -1,10 +1,11 @@
 import {useCallback, useEffect, useState} from "react";
 import {LocalKey, LocalStorage} from "ts-localstorage";
+import {JWT} from '../hooks/auth.hook.interface'
 
-const storageName = "userData" as LocalKey<any>;
+const storageName = "userData" as LocalKey<JWT>;
 
 export const useAuth = () => {
-  const [token, setToken] = useState<any>(null);
+  const [token, setToken] = useState<object | null>(null);
   const [requestStatus, setRequestStatus] = useState<null | number>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [check, isCheck] = useState<boolean>(false)
@@ -47,5 +48,6 @@ export const useAuth = () => {
     requestStatus,
     setErrorMessage,
     errorMessage,
+    check
   };
 };

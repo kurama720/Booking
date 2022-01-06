@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {Field, Form, Formik, FormikHelpers} from "formik";
-import {UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
+import {JWT, UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
 import {useAuth} from "../../hooks/auth.hook";
 import * as yup from "yup";
 import {Paths} from "../../paths/path";
@@ -18,10 +18,10 @@ import {
 import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
-const storageName = "userData" as LocalKey<any>;
+const storageName = "userData" as LocalKey<JWT>;
 
 const UserLogInForm = () => {
-  const {login, setErrorMessage, errorMessage, token} = useAuth();
+  const {login, setErrorMessage, errorMessage} = useAuth();
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
@@ -47,8 +47,8 @@ const UserLogInForm = () => {
       }
 
     } catch (error) {
-      const isAxiosError = (something: any): something is AxiosError => {
-        return something.isAxiosError === true
+      const isAxiosError = (errorData: any): errorData is AxiosError => {
+        return errorData.isAxiosError === true
       }
       if (isAxiosError(error)) {
         setErrorMessage(error.message);
@@ -93,10 +93,10 @@ const UserLogInForm = () => {
     }
 
     if (!!storageItem) {
-      const checkStatus = LocalStorage.getItem(storageName).checked
-      
+      const checkStatus = storageItem.checked
+
       if (checkStatus) {
-        const localStorageItem = LocalStorage.getItem(storageName).token.config.data
+        const localStorageItem = storageItem.token.config.data
         const data = JSON.parse(localStorageItem)
 
         setInitialState({
@@ -125,7 +125,7 @@ const UserLogInForm = () => {
               }, 500);
             }}
         >
-          {({errors, touched, isValid, dirty, handleChange, handleBlur, setFieldTouched}) => {
+          {({errors, touched, isValid, dirty, handleChange, handleBlur}) => {
             return (
                 <div
                     className={
@@ -164,94 +164,97 @@ const UserLogInForm = () => {
                         <div>
                           <Form className="mt-8 space-y-6" action="#">
                             <div className="rounded-md">
-                              {(!dirty && !touched.email && !!!initialState.email && !!!initialState.email) ||
-                              (!dirty && touched.email && errors.email) ||
-                              (dirty && touched.email && errors.email) ||
-                              (dirty && !touched.email) || (!email && !!!initialState.email && !!!initialState.email) ? (
-                                  <div className="mb-5 relative">
-                                    <label
-                                        htmlFor="email-address"
-                                        className="text-xs text-gray-700 font-body"
-                                    >
-                                      Email
-                                    </label>
-                                    <div
-                                        className="absolute left-0 pl-3 z-10 top-8 flex items-center pointer-event-none">
-                                      <MailIcon className="h-6 w-5" fill="#9CA3AF"/>
-                                    </div>
-                                    {touched.email && errors.email && (
-                                        <>
+                              {
+                                (!dirty && !touched.email && !!!initialState.email && !!!initialState.email) ||
+                                (!dirty && touched.email && errors.email) ||
+                                (dirty && touched.email && errors.email) ||
+                                (dirty && !touched.email) ||
+                                (!email && !!!initialState.email && !!!initialState.email)
+                                    ? (
+                                        <div className="mb-5 relative">
+                                          <label
+                                              htmlFor="email-address"
+                                              className="text-xs text-gray-700 font-body"
+                                          >
+                                            Email
+                                          </label>
                                           <div
                                               className="absolute left-0 pl-3 z-10 top-8 flex items-center pointer-event-none">
-                                            <MailIcon
-                                                className="h-6 w-5"
-                                                fill="#EF4444"
+                                            <MailIcon className="h-6 w-5" fill="#9CA3AF"/>
+                                          </div>
+                                          {touched.email && errors.email && (
+                                              <>
+                                                <div
+                                                    className="absolute left-0 pl-3 z-10 top-8 flex items-center pointer-event-none">
+                                                  <MailIcon
+                                                      className="h-6 w-5"
+                                                      fill="#EF4444"
+                                                  />
+                                                </div>
+                                              </>
+                                          )}
+                                          <Field
+                                              id="email-address"
+                                              name="email"
+                                              type="email"
+                                              autoComplete="email"
+                                              onChange={handleChange}
+                                              onBlur={handleBlur}
+                                              className={
+                                                !isValid && !dirty
+                                                    ? "appearance-none rounded-md relative block w-full pl-10 pr-14 px-3 py-2 border border-red-300 placeholder-gray-500 text-gray-900  font-body rounded-t-md focus:outline-none font-body focus:ring-indigo-500 focus:border-indigo-500  sm:text-sm"
+                                                    : "appearance-none rounded-md relative block w-full pl-10 pr-14 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 font-body rounded-t-md focus:outline-none focus:ring-indigo-500 font-body focus:border-indigo-500 sm:text-sm"
+                                              }
+                                              placeholder="Email"
+                                          />
+                                          {touched.email && errors.email && (
+                                              <div className='flex pt-[0.6rem]'>
+                                                <ExclamationCircleIcon className='w-4 h-4' fill='#EF4444'/>
+                                                <p className="text-red-500 text-xs font-body ml-[0.25rem]">
+                                                  {errors.email}
+                                                </p>
+                                              </div>
+                                          )}
+                                        </div>
+                                    ) : (email && !errors.email) || (!!initialState.email && !!initialState.email) ? (
+                                        <div className="mb-5 relative">
+                                          <div
+                                              className="absolute left-4  z-10 top-5 flex items-center pointer-event-none">
+                                            <UserCircleIcon
+                                                className="h-6 w-6"
+                                                fill="#D1D5DB"
                                             />
                                           </div>
-                                        </>
-                                    )}
-                                    <Field
-                                        id="email-address"
-                                        name="email"
-                                        type="email"
-                                        autoComplete="email"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        className={
-                                          !isValid && !dirty
-                                              ? "appearance-none rounded-md relative block w-full pl-10 pr-14 px-3 py-2 border border-red-300 placeholder-gray-500 text-gray-900  font-body rounded-t-md focus:outline-none font-body focus:ring-indigo-500 focus:border-indigo-500  sm:text-sm"
-                                              : "appearance-none rounded-md relative block w-full pl-10 pr-14 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 font-body rounded-t-md focus:outline-none focus:ring-indigo-500 font-body focus:border-indigo-500 sm:text-sm"
-                                        }
-                                        placeholder="Email"
-                                    />
-                                    {touched.email && errors.email && (
-                                        <div className='flex pt-[0.6rem]'>
-                                          <ExclamationCircleIcon className='w-4 h-4' fill='#EF4444'/>
-                                          <p className="text-red-500 text-xs font-body ml-[0.25rem]">
-                                            {errors.email}
-                                          </p>
-                                        </div>
-                                    )}
-                                  </div>
-                              ) : (email && !errors.email) || (!!initialState.email && !!initialState.email) ? (
-                                  <div className="mb-5 relative">
-                                    <div
-                                        className="absolute left-4  z-10 top-5 flex items-center pointer-event-none">
-                                      <UserCircleIcon
-                                          className="h-6 w-6"
-                                          fill="#D1D5DB"
-                                      />
-                                    </div>
-                                    <Button
-                                        type="button"
-                                        onClick={() =>
-                                            console.log("Manage a profile of accounts")
-                                        }
-                                        context={
-                                          <ChevronDownIcon
-                                              className="h-6 w-6"
-                                              fill="#9CA3AF"
+                                          <Button
+                                              type="button"
+                                              onClick={() =>
+                                                  console.log("Manage a profile of accounts")
+                                              }
+                                              context={
+                                                <ChevronDownIcon
+                                                    className="h-6 w-6"
+                                                    fill="#9CA3AF"
+                                                />
+                                              }
+                                              classNames="absolute left-icon z-10 top-5 flex items-center pointer-event-none"
                                           />
-                                        }
-                                        classNames="absolute left-icon z-10 top-5 flex items-center pointer-event-none"
-                                    />
-                                    <div
-                                        className="absolute left-14 z-10 top-5 flex items-center pointer-event-none">
-                                      <MailIcon className="h-6 w-5" fill="#9CA3AF"/>
-                                    </div>
-                                    <Field
-                                        id="email-address"
-                                        name="email"
-                                        type="email"
-                                        disabled={true}
-                                        autoComplete="email"
-                                        key="email"
-                                        className="appearance-none bg-gray-50 rounded-3xl relative block w-full pl-20 pr-14 px-3 py-5  placeholder-gray-500 text-gray-900  font-body focus: outline-none focus: caret-transparent"
-                                    />
-                                  </div>
-                              ) : (
-                                  <></>
-                              )}
+                                          <div
+                                              className="absolute left-14 z-10 top-5 flex items-center pointer-event-none">
+                                            <MailIcon className="h-6 w-5" fill="#9CA3AF"/>
+                                          </div>
+                                          <Field
+                                              id="email-address"
+                                              name="email"
+                                              type="email"
+                                              disabled={true}
+                                              autoComplete="email"
+                                              key="email"
+                                              className="appearance-none bg-gray-50 rounded-3xl relative block w-full pl-20 pr-14 px-3 py-5  placeholder-gray-500 text-gray-900  font-body focus: outline-none focus: caret-transparent"
+                                          />
+                                        </div>
+                                    ) : (
+                                        <></>
+                                    )}
                               {dirty && !errors.email && email && (
                                   <div className="relative">
                                     <label
