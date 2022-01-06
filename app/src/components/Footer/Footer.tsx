@@ -1,5 +1,8 @@
 import React from 'react';
-import {GlobeAltIcon,CurrencyDollarIcon} from "@heroicons/react/solid";
+import {
+    GlobeAltIcon,
+    CurrencyDollarIcon,
+} from "@heroicons/react/solid";
 import {BsFacebook} from 'react-icons/bs'
 import {AiOutlineTwitter} from 'react-icons/ai'
 import {FaInstagram} from 'react-icons/fa'
@@ -23,9 +26,10 @@ const Footer = () => {
                                 className='text-xs font-body text-gray-700 ml-0.5'>USD</span></div>
                         </div>
                         <div className='flex items-center ml-20'>
-                            <span className='mr-2'><a href="#"><BsFacebook className='text-gray-700 font-body' /></a></span>
-                            <span className='mr-2'><a href="#"><AiOutlineTwitter className='text-gray-700 w-4 h-4 font-body'/></a></span>
-                            <span className=''><a href="#"><FaInstagram className='text-gray-700 font-body'/></a></span>
+                            <span className='mr-2'><a href="https://www.google.by/"><BsFacebook
+                                className='text-gray-700'/></a></span>
+                            <span className='mr-2'><a href="#"><AiOutlineTwitter className='text-gray-700'/></a></span>
+                            <span className=''><a href="#"><FaInstagram className='text-gray-700'/></a></span>
                         </div>
                     </div>
                 </div>
