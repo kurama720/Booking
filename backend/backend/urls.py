@@ -30,6 +30,7 @@ urlpatterns = [
          SpectacularSwaggerView.as_view(
                                         url_name='openapi-schema'),
          name='swagger-ui'),
+    path('apartments/', include('apartments.urls')),
 ]
 
 if settings.DEBUG:
