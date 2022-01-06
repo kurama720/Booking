@@ -5,7 +5,6 @@ import {Paths} from "./paths/paths";
 import SignUpPage from "./pages/SignUpPage";
 import Footer from "./components/Footer/Footer";
 
-
 function App() {
     return (
         <div className="App">
