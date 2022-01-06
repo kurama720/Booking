@@ -165,11 +165,11 @@ const UserLogInForm = () => {
                           <Form className="mt-8 space-y-6" action="#">
                             <div className="rounded-md">
                               {
-                                (!dirty && !touched.email && !!!initialState.email && !!!initialState.email) ||
+                                (!dirty && !touched.email && !!!initialState.email && !!!initialState.password) ||
                                 (!dirty && touched.email && errors.email) ||
                                 (dirty && touched.email && errors.email) ||
                                 (dirty && !touched.email) ||
-                                (!email && !!!initialState.email && !!!initialState.email)
+                                (!email && !!!initialState.email && !!!initialState.password)
                                     ? (
                                         <div className="mb-5 relative">
                                           <label
@@ -216,7 +216,7 @@ const UserLogInForm = () => {
                                               </div>
                                           )}
                                         </div>
-                                    ) : (email && !errors.email) || (!!initialState.email && !!initialState.email) ? (
+                                    ) : (email && !errors.email) || (!!initialState.email && !!initialState.password) ? (
                                         <div className="mb-5 relative">
                                           <div
                                               className="absolute left-4  z-10 top-5 flex items-center pointer-event-none">
