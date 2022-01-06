@@ -17,7 +17,7 @@ done
 
 echo "Collect static files"
 
-while ! python manage.py collectstatic 2>&1; do
+while ! python manage.py collectstatic --noinput 2>&1; do
    echo "Collectstatic is in progress status"
    sleep 3
 done
