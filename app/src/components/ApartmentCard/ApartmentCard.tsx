@@ -1,6 +1,5 @@
 import React, {FC, useState} from 'react';
 import {Splide, SplideSlide} from '@splidejs/react-splide';
-import picture from '../../assets/1.png'
 import {HeartIcon} from "@heroicons/react/outline";
 import {StarIcon, HeartIcon as SolidHeartIcon} from "@heroicons/react/solid"
 import '@splidejs/splide/dist/css/splide.min.css';
@@ -8,8 +7,7 @@ import './react-splide.css'
 
 const ApartmentCard: FC = () => {
     const [isLike, setIsLike] = useState<boolean>(false)
-    //mock array of pictures
-    const mokArrayPicture = [picture, picture, picture, picture, picture, picture, picture]
+    const pictureList: Array<string> = []
 
     const handleIsLike = () => {
         setIsLike(prev => !prev)
@@ -25,9 +23,9 @@ const ApartmentCard: FC = () => {
                         width: 240
                     }}
                 >
-                    {mokArrayPicture.map((item, index) =>
+                    {pictureList.map((item, index) =>
                         <SplideSlide key={index}>
-                            <img src={item} alt="Image 1" className='rounded'/>
+                            <img src={item} alt={`image ${index}`} className='rounded'/>
                         </SplideSlide>
                     )}
                 </Splide>
