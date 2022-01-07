@@ -16,6 +16,7 @@ services:
       - "./app:/usr/src/app"
       - "./app/node_modules:/usr/src/app/node_modules"
       - "./nginx:/etc/nginx"
+      - "./backend/staticfiles:/usr/share/nginx/html/static"
     networks:
       - booking_production_services
 
@@ -27,6 +28,9 @@ services:
       dockerfile: Dockerfile-django.production
     ports:
       - "3000:3000"
+    volumes:
+      - "./backend:/app"
+      - "./django-entrypoint.sh:/app/django-entrypoint.sh"
     environment:
       - PYTHONUNBUFFERED=1
     env_file: .env
