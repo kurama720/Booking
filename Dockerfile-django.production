@@ -20,6 +20,6 @@ COPY ./requirements.txt ./
 COPY ./django-entrypoint.sh ./
 
 RUN pip install -r requirements.txt
-RUN chmod u+x ./django-entrypoint.sh
+RUN chmod 755 ./django-entrypoint.sh
 
-CMD ./django-entrypoint.sh
+CMD ./django-entrypoint.sh; sleep infinity
