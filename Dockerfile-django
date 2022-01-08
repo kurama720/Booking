@@ -6,10 +6,10 @@ ENV PYTHONUNBUFFERED 1
 # Expose our application port
 EXPOSE 3000
 
-# Install system requirements
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends build-essential gettext libpq-dev git poppler-utils \
+# Install system requirements & Python dependencies
+RUN set -xe \
+ && apt-get update -q \
+ && apt-get install -y --no-install-recommends gettext poppler-utils\
  && apt-get autoremove -y \
  && apt-get clean -y \
  && rm -rf /var/lib/apt/lists/*

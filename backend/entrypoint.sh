@@ -25,5 +25,3 @@ done
 echo "Django docker is fully configured successfully."
 
 gunicorn backend.wsgi:application --workers 2 --log-level info --bind 0.0.0.0:3000
-
-exec "$@"
