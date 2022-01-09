@@ -12,8 +12,8 @@ deploy:
     name: development
     url: https://booking-dev.yoho.by
   script:
-    - git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ikapeykin/booking-ci-cd.git
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ikapeykin/booking-ci-cd.git
     - chmod +x ./booking-ci-cd/vds-service/deploy.sh
     - ./booking-ci-cd/vds-service/deploy.sh
-  only:
-    - develop
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "develop"

@@ -3,6 +3,8 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 
 from accounts.managers import CustomUserManager
+from accounts.validators import first_name_validator
+from accounts.validators import last_name_validator
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -22,8 +24,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class ClientUser(User):
-    first_name = models.CharField(max_length=32, name='first_name')
-    last_name = models.CharField(max_length=32, name='last_name')
+    first_name = models.CharField(max_length=32, name='first_name', validators=[first_name_validator])
+    last_name = models.CharField(max_length=32, name='last_name', validators=[last_name_validator])
 
     class Meta:
         verbose_name = 'Client'

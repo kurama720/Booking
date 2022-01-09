@@ -26,8 +26,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         validated_data.pop('confirm_password')
         user = ClientUser.objects.create(
             email=validated_data['email'],  # Assign email
-            first_name=validated_data['first_name'],  # Assign first name
-            last_name=validated_data['last_name'],  # Assign last name
+            first_name=validated_data['first_name'].capitalize(),  # Assign first name
+            last_name=validated_data['last_name'].capitalize(),  # Assign last name
         )
 
         user.set_password(validated_data['password'])  # Assign password
@@ -48,3 +48,9 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         data.pop("refresh")
         return data
+
+
+class CustomTokenDestroySerializer(serializers.Serializer):
+    """Custom serializer to serialize data from post-request for logout"""
+    text = serializers.CharField(write_only=True)
+    status = serializers.CharField(read_only=True)
