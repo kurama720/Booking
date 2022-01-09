@@ -30,3 +30,15 @@ class ClientUser(User):
     class Meta:
         verbose_name = 'Client'
         verbose_name_plural = 'Clients'
+
+
+# Test model to realize many_to_one apartment relation. Need to overwrite.
+class BusinessClientUser(ClientUser):
+    organization_name = models.CharField(max_length=60, name='organization_name', unique=True)
+
+    class Meta:
+        verbose_name = 'BusinessClient'
+        verbose_name_plural = 'BusinessClients'
+
+    def __str__(self):
+        return self.organization_name

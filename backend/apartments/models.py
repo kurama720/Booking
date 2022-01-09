@@ -6,11 +6,13 @@ from django.db.models import Q
 
 from accounts.models import ClientUser
 
+from accounts.models import BusinessClientUser
+
 
 class Apartment(models.Model):
     """Model for defining apartments"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid1, editable=False)  # unique key
-    title = models.TextField()  # apartment name
+    title = models.TextField(unique=True)  # apartment name
     price = models.PositiveIntegerField(db_index=True)  # price per day
     img = models.ImageField(upload_to='apartments/')  # apartment avatar
     lat = models.FloatField()  # latitude
@@ -19,6 +21,10 @@ class Apartment(models.Model):
     num_of_bedrooms = models.PositiveIntegerField(default=2)  # number of bedrooms
     rating = models.PositiveIntegerField(blank=True, null=True)  # number-star apartment
     created_at = models.DateTimeField(auto_now_add=True)  # date of addition of apartments
+    business_account = models.ForeignKey(BusinessClientUser,
+                                         related_name='apartments',
+                                         on_delete=models.CASCADE,
+                                         null=True)  # business-account reference
 
     class Meta:
         ordering = ('-rating',)
