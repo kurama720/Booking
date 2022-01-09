@@ -51,3 +51,11 @@ class ApartmentsTest(APITestCase):
         self.assertTrue(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(content), 1)
         self.assertTrue(content['created_at'], hotel.created_at)  # Compare result's creation time with object's
+
+    def test_no_results_found(self):
+        url = reverse('apartment_filter')
+        data: dict = {'num_of_bedrooms': 2}
+        response = self.client.get(url, data, format='json')
+        content: dict = json.loads(response.content)[0]
+        self.assertTrue(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(len(content), 0)
