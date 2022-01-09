@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState, useContext} from "react";
 import {Field, Form, Formik, FormikHelpers} from "formik";
 import {JWT, UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
-import {useAuth} from "../../hooks/auth.hook";
+import {AuthContext} from '../../context/Context'
 import * as yup from "yup";
 import {Paths} from "../../paths/path";
 import {LocalKey, LocalStorage} from "ts-localstorage";
@@ -21,7 +21,7 @@ import {useNavigate} from "react-router-dom";
 const storageName = "userData" as LocalKey<JWT>;
 
 const UserLogInForm = () => {
-  const {login, setErrorMessage, errorMessage} = useAuth();
+  const {login, setErrorMessage, errorMessage} = useContext(AuthContext);
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
