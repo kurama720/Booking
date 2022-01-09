@@ -18,11 +18,20 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+
+from apartments.api.views import ApartmentViewSet
+
+from accounts.api.views import BusinessClientViewSet
+
+router = DefaultRouter()
+router.register('apartments', ApartmentViewSet)
+router.register('business-clients-apartments', BusinessClientViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('apartments/', include('apartments.urls')),
+    path('', include(router.urls)),
     path('openapi/',
          SpectacularAPIView.as_view(),
          name='openapi-schema'),
