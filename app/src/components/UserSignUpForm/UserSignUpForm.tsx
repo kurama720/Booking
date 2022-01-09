@@ -23,7 +23,7 @@ const UserSignUpForm = () => {
 
     const onSubmitDataSignUp = async (values: IUserSignUp, actions: FormikHelpers<IUserSignUp>) => {
         const dataForSignUp: IUserSignUp = {
-            first_name: values.email,
+            first_name: values.first_name,
             last_name: values.last_name,
             email: values.email,
             password: values.password,
