@@ -7,24 +7,33 @@ import {AuthContext} from "../../context/Context";
 const storageName = "userData" as LocalKey<JWT>;
 
 const LogoutButton = () => {
-  const {logout} = useContext(AuthContext);
+  const {logout, token} = useContext(AuthContext);
   const userData: any = LocalStorage.getItem(storageName)
-  const payload = userData.token.data.access
 
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-      "Authorization": `Bearer ${payload}`,
-    },
-  };
   const handleLogout = async () => {
-    const data = await axios.post(`${process.env.REACT_APP_API_URL}accounts/logout/`, {
-      text: 'logout'
-    }, config)
+    try {
+      if (!!userData) {
+        const payload = userData.token.data.access
 
-    if (data.data.logout === 'access') {
-      logout()
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${payload}`,
+          },
+        };
+
+        const data = await axios.post(`${process.env.REACT_APP_API_URL}accounts/logout/`, {
+          text: 'logout'
+        }, config)
+
+        if (data.data.logout === 'access') {
+          logout()
+        }
+      }
+    } catch (e) {
+      console.error(e)
     }
+
   }
 
   return (
