@@ -5,6 +5,10 @@ from accounts.models import ClientUser
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from accounts.models import BusinessClientUser
+
+from apartments.api.serializers import ApartmentSerializer
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -54,3 +58,14 @@ class CustomTokenDestroySerializer(serializers.Serializer):
     """Custom serializer to serialize data from post-request for logout"""
     text = serializers.CharField(write_only=True)
     status = serializers.CharField(read_only=True)
+
+
+class BusinessClientSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for models.BusinessClientUser
+    """
+    apartments = ApartmentSerializer(many=True)
+
+    class Meta:
+        model = BusinessClientUser
+        fields = ["id", "apartments"]

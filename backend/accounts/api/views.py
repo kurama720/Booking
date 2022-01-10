@@ -1,16 +1,18 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
+from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.views import TokenViewBase
 
 from accounts.models import ClientUser
+from accounts.models import BusinessClientUser
 from accounts.api.serializers import RegisterSerializer, CustomTokenObtainSerializer
-
 from accounts.api.serializers import CustomTokenDestroySerializer
-
 from accounts.api.tokens import CustomAccessToken
+from accounts.api.serializers import BusinessClientSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -26,8 +28,9 @@ class CustomTokenObtainView(TokenViewBase):
 
 
 class LogoutView(APIView):
-    permission_classes = (IsAuthenticated, )
     """View to manage logout post-request"""
+    permission_classes = (IsAuthenticated, )
+
     @extend_schema(
         request=CustomTokenDestroySerializer,
         responses={200: CustomTokenDestroySerializer}
@@ -43,3 +46,9 @@ class LogoutView(APIView):
                 return Response(data={"logout": "access"})
             return Response(data="Invalid field value!",
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class BusinessClientViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = BusinessClientUser.objects.all()
+    serializer_class = BusinessClientSerializer
+    http_method_names = ['get', 'head', 'options', 'trace']
