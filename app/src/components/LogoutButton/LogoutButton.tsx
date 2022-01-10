@@ -1,14 +1,18 @@
 import React, {useContext} from 'react';
 import axios from 'axios'
+import {Paths} from "../../paths/path";
 import {LocalKey, LocalStorage} from "ts-localstorage";
 import {JWT} from "../../hooks/auth.hook.interface";
 import {AuthContext} from "../../context/Context";
+import {useNavigate} from "react-router-dom";
 
 const storageName = "userData" as LocalKey<JWT>;
 
 const LogoutButton = () => {
   const {logout, token} = useContext(AuthContext);
   const userData: any = LocalStorage.getItem(storageName)
+
+  let history = useNavigate()
 
   const handleLogout = async () => {
     try {
@@ -28,6 +32,7 @@ const LogoutButton = () => {
 
         if (data.data.logout === 'access') {
           logout()
+          history(Paths.LOG_IN)
         }
       }
     } catch (e) {

@@ -29,7 +29,7 @@ export const useAuth = () => {
   const logout = useCallback(() => {
     setToken(null);
     setRequestStatus(null);
-    console.log('Hello')
+
     localStorage.removeItem(storageName);
   }, []);
 
