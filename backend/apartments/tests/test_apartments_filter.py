@@ -22,7 +22,7 @@ class ApartmentsTest(APITestCase):
 
     def test_filter_num_of_bedrooms(self):
         """Test filter returns two hotels where num_of_bedrooms = 2"""
-        url = reverse('apartment_filter')
+        url = reverse('apartment-list')
         data: dict = {'num_of_bedrooms': 2}
         response = self.client.get(url, data, format='json')
         content: dict = json.loads(response.content)[0]
@@ -32,7 +32,7 @@ class ApartmentsTest(APITestCase):
 
     def test_filter_location(self):
         """Test filter returns one hotel where latitude = 10, longitude = 20"""
-        url = reverse('apartment_filter')
+        url = reverse('apartment-list')
         data: dict = {'lat': 10, 'lon': 20}
         response = self.client.get(url, data, format='json')
         content: dict = json.loads(response.content)[0]
@@ -43,7 +43,7 @@ class ApartmentsTest(APITestCase):
 
     def test_filter_date(self):
         """Test filter return one hotel where created_at = 2022-01-31"""
-        url = reverse('apartment_filter')
+        url = reverse('apartment-list')
         hotel = Apartment.objects.get(title='Test Hotel 1')  # Get an object from db
         data = {'created_at': hotel.created_at}  # Get object's creation time
         response = self.client.get(url, data, format='json')
@@ -53,7 +53,7 @@ class ApartmentsTest(APITestCase):
         self.assertTrue(content['created_at'], hotel.created_at)  # Compare result's creation time with object's
 
     def test_no_results_found(self):
-        url = reverse('apartment_filter')
+        url = reverse('apartment-list')
         data: dict = {'num_of_bedrooms': 2}
         response = self.client.get(url, data, format='json')
         content: dict = json.loads(response.content)[0]
