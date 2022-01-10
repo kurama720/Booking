@@ -3,11 +3,12 @@ import {Splide, SplideSlide} from '@splidejs/react-splide';
 import {HeartIcon} from "@heroicons/react/outline";
 import {StarIcon, HeartIcon as SolidHeartIcon} from "@heroicons/react/solid"
 import '@splidejs/splide/dist/css/splide.min.css';
+import img from '../../assets/img/image 2.png'
 import './react-splide.css'
 
 const ApartmentCard: FC = () => {
     const [isLike, setIsLike] = useState<boolean>(false)
-    const pictureList: Array<string> = []
+    const pictureList: Array<string> = [img,img,img,img,img]
 
     const handleIsLike = () => {
         setIsLike(prev => !prev)
