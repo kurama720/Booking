@@ -30,21 +30,21 @@ class ApartmentAdmin(admin.ModelAdmin):
             csv_file = request.FILES['csv_upload']  # Opening a file from a request
 
             if not csv_file.name.endswith('.csv'):
-                messages.warning(request, 'The wrong file type was uploaded')
+                self.message_user(request, 'The wrong file type was uploaded', level=messages.WARNING)
                 return HttpResponseRedirect(request.path_info)
 
             file_data = pd.read_csv(csv_file, sep=';')
             row_iter = file_data.iterrows()
             try:
                 apartments: list[Apartment] = [
-                    Apartment(id=row['id'],
+                    Apartment(uuid=row['uuid'],
                               title=row['title'],
                               price=row['price'],
                               img=row['image'],
                               lat=row['coordinates'].split(',')[0],
                               lon=row['coordinates'].split(',')[1],
                               description=row['description'])
-                    for _, row in row_iter if not Apartment.objects.filter(id=row[0]).exists()
+                    for _, row in row_iter if not Apartment.objects.filter(uuid=row['uuid']).exists()
                 ]
                 if not apartments:
                     raise ObjectDoesNotExist
@@ -56,6 +56,8 @@ class ApartmentAdmin(admin.ModelAdmin):
                 self.message_user(request, "The format of the data in the csv file does not fit", level=messages.WARNING)
             except ObjectDoesNotExist:
                 self.message_user(request, "All such records already exist in the database", level=messages.WARNING)
+            except KeyError:
+                self.message_user(request, "The csv file has no field name header", level=messages.WARNING)
 
         form = CsvImportForm()
         data = {'form': form}
