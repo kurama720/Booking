@@ -12,7 +12,7 @@ from accounts.models import BusinessClientUser
 class Apartment(models.Model):
     """Model for defining apartments"""
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
-    title = models.TextField(unique=True)
+    title = models.TextField()
     price = models.PositiveIntegerField(db_index=True)
     img = models.ImageField(upload_to='apartments/')
     lat = models.FloatField()
