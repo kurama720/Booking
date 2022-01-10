@@ -1,0 +1,31 @@
+# Development Dockerfile for Django app
+FROM python:3.9-slim as base
+LABEL application=booking_django
+
+ENV PYTHONUNBUFFERED 1
+
+# Expose our application port
+EXPOSE 3000
+
+# Install build requirements
+RUN set -xe \
+ && apt-get update -q \
+ && apt-get install -y --no-install-recommends build-essential gettext libpq-dev git
+
+# Install system requirements & Python dependencies
+RUN set -xe \
+ && apt-get update -q \
+ && apt-get install -y --no-install-recommends gettext poppler-utils\
+ && apt-get autoremove -y \
+ && apt-get clean -y \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY ./requirements.txt ./
+
+RUN pip install -r requirements.txt
+# RUN chmod +x entrypoint.sh
+
+CMD ["/bin/sh", "entrypoint.sh"]
+# CMD python manage.py runserver 0.0.0.0:3000

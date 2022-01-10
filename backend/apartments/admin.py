@@ -1,12 +1,12 @@
 import pandas as pd
 
 from django.contrib import admin, messages
-from django.db import IntegrityError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
 
-from apartments.models import Apartment
+from apartments.models import Apartment, Booking
 from apartments.forms import CsvImportForm
 
 
@@ -30,33 +30,41 @@ class ApartmentAdmin(admin.ModelAdmin):
             csv_file = request.FILES['csv_upload']  # Opening a file from a request
 
             if not csv_file.name.endswith('.csv'):
-                messages.warning(request, 'The wrong file type was uploaded')
+                self.message_user(request, 'The wrong file type was uploaded', level=messages.WARNING)
                 return HttpResponseRedirect(request.path_info)
 
-            file_data = pd.read_csv(csv_file, sep=';', header=None)
+            file_data = pd.read_csv(csv_file, sep=';')
             row_iter = file_data.iterrows()
-
-            apartments: list[Apartment] = [
-                Apartment(id=row[0],
-                          title=row[1],
-                          price=row[2],
-                          img=row[3],
-                          lat=row[4].split(',')[0],
-                          lon=row[4].split(',')[1],
-                          description=row[5])
-                for _, row in row_iter
-            ]
             try:
+                apartments: list[Apartment] = [
+                    Apartment(uuid=row['uuid'],
+                              title=row['title'],
+                              price=row['price'],
+                              img=row['image'],
+                              lat=row['coordinates'].split(',')[0],
+                              lon=row['coordinates'].split(',')[1],
+                              description=row['description'])
+                    for _, row in row_iter if not Apartment.objects.filter(uuid=row['uuid']).exists()
+                ]
+                if not apartments:
+                    raise ObjectDoesNotExist
                 Apartment.objects.bulk_create(apartments)  # Adding data to the database
                 self.message_user(request, "Your csv file has been imported")
-
-            except IntegrityError:
-                self.message_user(request, f"Add an existing apartment. Modify the csv file")
-
-            url = reverse('admin:index')
-            return HttpResponseRedirect(url)
+                url = reverse('admin:index')
+                return HttpResponseRedirect(url)
+            except ValidationError:
+                self.message_user(request, "The format of the data in the csv file does not fit", level=messages.WARNING)
+            except ObjectDoesNotExist:
+                self.message_user(request, "All such records already exist in the database", level=messages.WARNING)
+            except KeyError:
+                self.message_user(request, "The csv file has no field name header", level=messages.WARNING)
 
         form = CsvImportForm()
         data = {'form': form}
 
         return render(request, 'admin/csv_upload.html', data)
+
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ('apartment', 'check_in_date', 'check_out_date')
