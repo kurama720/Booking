@@ -12,6 +12,7 @@ export const useRoutes = (isAuth: boolean) => {
         <Routes>
           <Route path={Paths.HOME} element={<HomePage/>}/>
           <Route path={Paths.LOG_IN} element={<UserLogInPage/>}/>
+          <Route path={Paths.SIGN_UP} element={<SignUpPage/>}/>
         </Routes>
     );
   }
