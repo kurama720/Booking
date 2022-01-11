@@ -1,7 +1,7 @@
 from django.urls import path
 
-from apartments.views import BookingView
+from apartments.api.views import BookingView
 
 urlpatterns = [
-    path('<int:pk>/book', BookingView.as_view()),
+    path('<int:pk>/book', BookingView.as_view())
 ]

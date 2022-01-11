@@ -47,11 +47,11 @@ def get_data_from_hotel_page(url: str) -> None:
     """
     global img_num
     description = ""
-    unique_id = uuid.uuid1().hex
+    unique_id = uuid.uuid4
 
     # check for duplicate unique_id
     while unique_id in hotels_unique_id:
-        unique_id = uuid.uuid1().hex
+        unique_id = uuid.uuid4
 
     hotels_unique_id.add(unique_id)
     soup = make_request_beautifulsoup(url)
