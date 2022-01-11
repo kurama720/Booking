@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Formik, FormikHelpers} from "formik";
 import {IUserSignUp} from "./IUserSignUp";
 import {useNavigate} from "react-router-dom";
-import {Paths} from "../../paths/paths";
+import {Paths} from "../../paths/path";
 import {validationSchema} from "./validationShema";
 import InputNames from "./InputNames/InputNames";
 import InputEmail from "./InputEmail/InputEmail";
