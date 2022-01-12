@@ -64,11 +64,18 @@ const UserLogInForm = () => {
             "Enter a valid email."
         )
         .required("Email is required."),
-    password: yup.string().required("Password is required."),
+    password: yup
+        .string()
+        .required("Password is required.")
+        .matches(
+            /^(?=.*[a-z])(?=^\S+$)(?=.*[A-Z])(?=.*[0-9]).{8,}/,
+            "Password must be at least 8 characters, one uppercase letter, one lowercase letter and without a space!"
+        )
   });
 
   const handlePopUp = () => {
     setPopUpStatus((prev) => !prev);
+    setErrorMessage('')
   };
 
   const handleChacked = () => {
@@ -107,7 +114,6 @@ const UserLogInForm = () => {
     }
   }, [visiblePassword, email, login]);
 
-
   return (
       <div className="w-screen flex justify-center">
         <Formik
@@ -125,7 +131,7 @@ const UserLogInForm = () => {
               }, 500);
             }}
         >
-          {({errors, touched, isValid, dirty, handleChange, handleBlur}) => {
+          {({errors, touched, isValid, dirty, handleChange, handleBlur, resetForm}) => {
             return (
                 <div
                     className={
@@ -156,7 +162,10 @@ const UserLogInForm = () => {
                                 <XIcon
                                     className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500"/>
                               }
-                              onClick={handlePopUp}
+                              onClick={() => {
+                                handlePopUp()
+                                resetForm()
+                              }}
                           />
                         </div>
                     )}
@@ -288,7 +297,7 @@ const UserLogInForm = () => {
                                         onBlur={handleBlur}
                                         autoComplete="current-password"
                                         className={
-                                          (!isValid && !dirty) || !!errorMessage
+                                           !!errorMessage || (touched.password && !!errors.password && !isValid)
                                               ? "appearance-none rounded-md relative block w-full px-3 py-2 border border-red-300 placeholder-gray-500 text-red-900 rounded-t-md  font-body focus:outline-none focus:ring-indigo-500 focus:border-indigo-500  sm:text-sm font-body "
                                               : "appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md font-body focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-body"
                                         }
@@ -344,10 +353,12 @@ const UserLogInForm = () => {
                               {email || (!!initialState.email && !!initialState.password) ? (
                                   <Button
                                       type="submit"
-                                      disabled={!isValid && !dirty}
+                                      disabled={
+                                        !isValid && !dirty || !!errors.email || !!errors.password
+                                      }
                                       context="Log in"
                                       classNames={
-                                        (isValid && dirty) || (!!initialState.email && !!initialState.password)
+                                        isValid && dirty || !!initialState.email && !!initialState.password
                                             ? "group relative w-full flex justify-center text-white py-2.5 px-4  font-body border border-transparent text-sm font-medium rounded-md  bg-blue-600 leading-5"
                                             : "group relative w-full flex justify-center py-2.5 px-4 font-body border border-transparent text-sm font-medium rounded-md text-gray-500 bg-gray-200 leading-5"
                                       }
@@ -355,7 +366,7 @@ const UserLogInForm = () => {
                               ) : (
                                   <Button
                                       type='button'
-                                      disabled={!!errors.email}
+                                      disabled={!!errors.email || !dirty}
                                       onClick={() => {
                                         handleConfirmEmail()
                                       }}
