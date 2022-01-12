@@ -101,3 +101,7 @@ class Booking(models.Model):
     idempotency_key = models.UUIDField(default=uuid.uuid4, unique=True)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    business_client = models.ForeignKey(BusinessClientUser,
+                                        related_name='booking',
+                                        on_delete=models.CASCADE,
+                                        null=True)

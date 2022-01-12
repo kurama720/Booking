@@ -16,6 +16,7 @@ class BusinessClientSerializerTestCase(TestCase):
         test_data = BusinessClientSerializer(test_business_client).data
         expected_data = {
             "id": test_business_client.id,
-            "apartments": []
+            "apartments": [],
+            "booking": []
         }
         self.assertEqual(expected_data, test_data)

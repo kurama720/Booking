@@ -15,7 +15,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     queryset = Apartment.objects.all()
     serializer_class = ApartmentSerializer
     permission_classes = (IsOwnerOrReadOnly, )
-    http_method_names = ('get', 'post', 'put', 'head', 'options', 'trace')
+    http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('lat', 'lon', 'created_at', 'num_of_bedrooms',)
     filter_class = ApartmentFilter

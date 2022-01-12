@@ -20,3 +20,49 @@ class BusinessClientViewApiTestCase(APITestCase):
 
         response = self.client.post(url)
         self.assertEqual(status.HTTP_405_METHOD_NOT_ALLOWED, response.status_code)
+
+
+class BusinessClientRegisterViewApiTestCase(APITestCase):
+    def test_registration_request(self):
+        test_data = dict(
+            organization_name="Feel Goode Test Inc.",
+            email="test@email.cim",
+            password="test123password",
+            confirm_password="test123password",
+            first_name="testfirst",
+            last_name="testsecond"
+        )
+
+        resp_data = test_data.copy()
+        resp_data.pop("password")
+        resp_data.pop("confirm_password")
+
+        url = reverse("business_sign_up")
+        response = self.client.post(url, data=test_data)
+
+        self.assertEqual(resp_data, response.json())
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+
+
+class BusinessClientSignInViewApiTestCase(APITestCase):
+    def test_authorization_request(self):
+        test_business_client = BusinessClientUser.objects.create(
+            organization_name="Feel Goode Test Inc.",
+            email="test@email.cim",
+            first_name="testfirst",
+            last_name="testsecond"
+        )
+        test_business_client.set_password("test123password")
+        test_business_client.save()
+
+        test_data = dict(
+            organization_name="Feel Goode Test Inc.",
+            email="test@email.cim",
+            password="test123password",
+        )
+
+        url = reverse("business_sign_in")
+        response = self.client.post(url, data=test_data)
+
+        self.assertIn("access", response.json())
+        self.assertEqual(status.HTTP_200_OK, response.status_code)

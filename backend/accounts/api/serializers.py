@@ -1,5 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.validators import UniqueValidator
 from accounts.models import ClientUser
 from rest_framework import serializers
@@ -8,6 +9,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from accounts.models import BusinessClientUser
 
 from apartments.api.serializers import ApartmentSerializer
+
+from apartments.api.serializers import BookingSerializer
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -62,10 +65,51 @@ class CustomTokenDestroySerializer(serializers.Serializer):
 
 class BusinessClientSerializer(serializers.ModelSerializer):
     """
-    Serializer class for models.BusinessClientUser
+    Serializer class for models.BusinessClientUser representation
     """
     apartments = ApartmentSerializer(many=True)
+    booking = BookingSerializer(many=True)
 
     class Meta:
         model = BusinessClientUser
-        fields = ["id", "apartments"]
+        fields = ["id", "apartments", "booking"]
+
+
+class BusinessClientRegisterSerializer(RegisterSerializer):
+    """
+    Serializer class for models.BusinessClientUser register
+    """
+    class Meta:
+        model = BusinessClientUser
+        fields = ('email', 'password', 'confirm_password', 'first_name', 'last_name', 'organization_name')
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'organization_name': {'required': True}
+        }
+
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        raw_password = validated_data.pop("password")
+        business_client = BusinessClientUser.objects.create(**validated_data)
+        business_client.set_password(raw_password)
+        business_client.save()
+        return business_client
+
+
+class BusinessClientSignInSerializer(CustomTokenObtainSerializer):
+    """
+    serializer class for business-client sign in
+    """
+    organization_name = serializers.CharField(max_length=60, required=True)
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        is_email_valid = BusinessClientUser.objects.filter(
+            organization_name=attrs.get("organization_name"),
+            email=attrs.get("email")).exists()
+        if is_email_valid:
+            return data
+        raise AuthenticationFailed(
+            self.error_messages['no_active_account'],
+            'no_active_account',)
