@@ -27,5 +27,10 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         business_client_user = request.user.clientuser.businessclientuser
         serializer.validated_data.update(business_account=business_client_user)
+        intermediate_ser_data = serializer.validated_data.copy()
+        intermediate_ser_data.pop("img")
+        is_obj_exists = Apartment.objects.filter(**intermediate_ser_data).exists()
+        if is_obj_exists:
+            raise ValidationError("This object already exists!")
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
