@@ -44,10 +44,9 @@ const UserSignUpForm = () => {
     const initialValues: IUserSignUp = {
         first_name: '',
         last_name: '',
-        email: 'name@example.com',
-        password: 'Test1234',
-        confirm_password: 'Test1234',
-        rememberMe: false
+        email: '',
+        password: '',
+        confirm_password: '',
     }
 
     return (
@@ -101,7 +100,7 @@ const UserSignUpForm = () => {
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
                                             touched={touched.email}
-                                            placeholder={'E-mail'}
+                                            placeholder={'name@example.com'}
                                             serverError={serverErrors?.email}
                                             setServerError={setServerErrors}
                                         />
