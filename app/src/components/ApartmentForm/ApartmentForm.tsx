@@ -13,7 +13,11 @@ const ApartmentForm: FC = () => {
     const [quantityGuests, setQuantityGuests] = useState<number>(1)
     const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false)
     const handleSubmit = (data: IFormApartment) => {
-        console.log(data)
+        const dataForReserve = {
+            ...data,
+            guests: quantityGuests
+        }
+        console.log(dataForReserve)
     }
 
     const handleChangeShowGuestsWindow = (): void => {
@@ -97,14 +101,14 @@ const ApartmentForm: FC = () => {
                                                 <span className='font-body text-xs text-gray-500'>ages 13 or above</span>
                                             </div>
                                             <div className='flex justify-center items-center'>
-                                                <button onClick={decrementGuests} disabled={quantityGuests <= 1}>
+                                                <button onClick={decrementGuests} disabled={quantityGuests <= 1} type='button'>
                                                     <div
-                                                        className='bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center '>
+                                                        className={`${quantityGuests <= 1 ? 'bg-gray-200' : 'bg-blue-600 '} w-8 h-8 rounded-full flex items-center justify-center`}>
                                                         <MinusIcon className='w-3 text-white '/>
                                                     </div>
                                                 </button>
                                                 <span className='mx-5'>{quantityGuests}</span>
-                                                <button onClick={incrementGuests}>
+                                                <button onClick={incrementGuests} type='button'>
                                                     <div
                                                         className='bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center'>
                                                         <PlusIcon className='w-3 h-3 text-white '/>
