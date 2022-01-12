@@ -13,6 +13,8 @@ from accounts.api.serializers import RegisterSerializer, CustomTokenObtainSerial
 from accounts.api.serializers import CustomTokenDestroySerializer
 from accounts.api.tokens import CustomAccessToken
 from accounts.api.serializers import BusinessClientSerializer
+from accounts.api.serializers import BusinessClientRegisterSerializer
+from accounts.api.serializers import BusinessClientSignInSerializer
 
 
 class RegisterView(generics.CreateAPIView):
@@ -52,3 +54,13 @@ class BusinessClientViewSet(RetrieveModelMixin, GenericViewSet):
     queryset = BusinessClientUser.objects.all()
     serializer_class = BusinessClientSerializer
     http_method_names = ['get', 'head', 'options', 'trace']
+
+
+class BusinessClientRegisterView(generics.CreateAPIView):
+    queryset = BusinessClientUser.objects.all()
+    permission_classes = (AllowAny, )
+    serializer_class = BusinessClientRegisterSerializer
+
+
+class BusinessClientSignInView(TokenViewBase):
+    serializer_class = BusinessClientSignInSerializer
