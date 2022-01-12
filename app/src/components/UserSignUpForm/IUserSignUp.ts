@@ -4,5 +4,4 @@ export interface IUserSignUp {
     email: string
     password: string
     confirm_password: string
-    rememberMe?: boolean
 }

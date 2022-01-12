@@ -9,9 +9,9 @@ const ButtonIsShowPassword:FC<IPropsButtonIsShowPassword> = ({showPassword,isSho
             className='pr-2'
             onClick={showPassword}>{isShowPassword
             ?
-            <BsFillEyeSlashFill className='text-gray-400'/>
-            :
             <BsFillEyeFill className='text-gray-400'/>
+            :
+            <BsFillEyeSlashFill className='text-gray-400'/>
         }
         </button>
     );
