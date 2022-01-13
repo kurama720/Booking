@@ -63,19 +63,20 @@ const UserLogInForm = () => {
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             "Enter a valid email."
         )
-        .required("Email is required."),
+        .required("All the fields must be filled"),
     password: yup
         .string()
-        .required("Password is required.")
+        .required("All the fields must be filled")
         .matches(
-            /^(?=.*[a-z])(?=^\S+$)(?=.*[A-Z])(?=.*[0-9]).{8,}/,
-            "Password must be at least 8 characters, one uppercase letter, one lowercase letter and without a space!"
+            /^(?=^\S+$)(?=.*[A-z])(?=.*[0-9]).{8,}/,
+           'Invalid password and/or email, try again'
         )
   });
 
   const handlePopUp = () => {
     setPopUpStatus((prev) => !prev);
     setErrorMessage('')
+    setChecked(false)
   };
 
   const handleChacked = () => {
@@ -315,8 +316,7 @@ const UserLogInForm = () => {
                                         <div className='flex pt-[0.6rem]'>
                                           <ExclamationCircleIcon className='w-4 h-4' fill='#EF4444'/>
                                           <p className="text-red-500 text-xs font-body ml-[0.25rem]">
-                                            Incorrect password. Try again or click the
-                                            "Forgot your password?" link to reset it.
+                                            Invalid password and/or email, try again
                                           </p>
                                         </div>
                                     )}
