@@ -44,9 +44,9 @@ const UserSignUpForm = () => {
     const initialValues: IUserSignUp = {
         first_name: '',
         last_name: '',
-        email: 'name@example.com',
-        password: 'Test1234',
-        confirm_password: 'Test1234',
+        email: '',
+        password: '',
+        confirm_password: '',
     }
 
     return (

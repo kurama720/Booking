@@ -32,7 +32,8 @@ class ApartmentSerializerTestCase(TestCase):
         )
         test_data = ApartmentSerializer(test_apartment).data
         expected_data = dict(
-            id=str(test_apartment.id),
+            id=test_apartment.id,
+            uuid=str(test_apartment.uuid),
             title="some title",
             price=120,
             img=test_apartment.img.url,
