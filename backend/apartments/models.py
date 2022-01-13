@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
 from accounts.models import ClientUser, BusinessClientUser
+from apartments.validators import SCHEMA, JSONSchemaValidator
 
 
 def apartment_directory_path(instance, filename):
@@ -22,13 +23,13 @@ class Apartment(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     description = models.TextField()
-    num_of_bedrooms = models.PositiveIntegerField(default=2)
     rating = models.PositiveIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     business_account = models.ForeignKey(BusinessClientUser,
                                          related_name='apartments',
                                          on_delete=models.CASCADE,
                                          null=True)
+    feature = models.JSONField(validators=[JSONSchemaValidator(limit_value=SCHEMA)], blank=True, null=True)
 
     def check_apartment_booking(self, client_check_in_date: datetime.date,
                                 client_check_out_date: datetime.date) -> int:
