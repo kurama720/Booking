@@ -15,7 +15,7 @@ class ApartmentAdmin(admin.ModelAdmin):
     """A class for adding apartments to the admin panel"""
     list_display = ('title', 'price')
     ordering = ('price',)
-    list_filter = ('num_of_bedrooms', 'rating')
+    list_filter = ('rating',)
     search_fields = ('title', 'description')
 
     def get_urls(self):
