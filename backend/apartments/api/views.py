@@ -1,11 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
-from apartments.services import ApartmentFilter
+from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment
 from apartments.api.permissions import IsOwnerOrReadOnly
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer
@@ -68,3 +68,12 @@ class BookingView(GenericAPIView):
         else:
             return Response(data="Apartment is not available for booking",
                             status=status.HTTP_403_FORBIDDEN)
+
+
+class BookingHistoryView(ListAPIView):
+    """View to provide book history"""
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('check_in_date', 'business_client')
+    filter_class = BookingHistoryFilter
