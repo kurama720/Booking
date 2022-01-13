@@ -3,6 +3,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {useAuth} from "../../app/src/hooks/auth.hook";
 import {useRoutes} from "../src/hooks/routes.hook";
 import {AuthContext} from './context/Context'
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const {
@@ -28,6 +29,7 @@ function App() {
       }}>
         <div className="App">
           <Router>{routes}</Router>
+          <Footer/>
         </div>
       </AuthContext.Provider>
   );
