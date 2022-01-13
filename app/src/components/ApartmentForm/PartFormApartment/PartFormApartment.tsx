@@ -7,15 +7,33 @@ import {IPropsFormApartment} from "./IPropsPartFormApartment";
 import InputDate from "../InputDate/InputDate";
 
 const PartFormApartment: FC<IPropsFormApartment> = (props) => {
-    const {values, handleChange, handleBlur, handleSubmit, quantityGuests, isShowGuestsWindow, setQuantityGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
+    const {values, errors,touched, handleChange, handleBlur, handleSubmit, quantityGuests, isShowGuestsWindow, setQuantityGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
     return (
         <Form onSubmit={handleSubmit}>
             <div className='flex align-center justify-center my-6'>
                 <div className='flex flex-col items-start justify-center'>
-                    <InputDate value={values.check_in} handleChange={handleChange} handleBlur={handleBlur} label={'Check-in'} borderRadius={'left'}/>
+                    <InputDate
+                        name={'check_in'}
+                        value={values.check_in}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        label={'Check-in'}
+                        borderRadius={'left'}
+                        error={errors.check_in}
+                        touched={touched.check_in}
+                    />
                 </div>
                 <div>
-                    <InputDate value={values.check_out} handleChange={handleChange} handleBlur={handleBlur} label={'Check-out'} borderRadius={'right'}/>
+                    <InputDate
+                        name={'check_out'}
+                        value={values.check_out}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        label={'Check-out'}
+                        borderRadius={'right'}
+                        error={errors.check_out}
+                        touched={touched.check_out}
+                    />
                 </div>
             </div>
             <div>

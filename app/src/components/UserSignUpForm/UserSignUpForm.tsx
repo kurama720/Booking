@@ -47,7 +47,6 @@ const UserSignUpForm = () => {
         email: 'name@example.com',
         password: 'Test1234',
         confirm_password: 'Test1234',
-        rememberMe: false
     }
 
     return (

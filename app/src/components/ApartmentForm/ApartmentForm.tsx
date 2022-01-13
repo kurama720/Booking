@@ -3,6 +3,7 @@ import {StarIcon} from '@heroicons/react/solid';
 import {Formik} from "formik";
 import {dataForApartmentForm, IFormApartment} from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
+import {validationSchema} from "./validationSchema";
 
 const ApartmentForm: FC = () => {
     const [quantityGuests, setQuantityGuests] = useState<number>(1)
@@ -51,6 +52,8 @@ const ApartmentForm: FC = () => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
+                    validateOnBlur
+                    validationSchema={validationSchema}
                 >
                     {(
                          formikProps
@@ -58,6 +61,8 @@ const ApartmentForm: FC = () => {
                         (
                             <PartFormApartment
                                 values={formikProps.values}
+                                touched={formikProps.touched}
+                                errors={formikProps.errors}
                                 handleChange={formikProps.handleChange}
                                 setQuantityGuests={setQuantityGuests}
                                 handleBlur={formikProps.handleBlur}
