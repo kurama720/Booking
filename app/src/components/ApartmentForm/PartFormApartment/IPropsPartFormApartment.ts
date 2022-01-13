@@ -3,8 +3,8 @@ import React from "react";
 
 export interface IPropsFormApartment {
     values: IFormApartment
-    errors: any
-    touched: any
+    errors: { [field: string]: string }
+    touched: { [field: string]: boolean }
     handleChange: (e: React.ChangeEvent<any>) => void
     handleBlur: (e: React.FocusEvent<any>) => void
     handleSubmit:  (e?: (React.FormEvent<HTMLFormElement> | undefined)) => void

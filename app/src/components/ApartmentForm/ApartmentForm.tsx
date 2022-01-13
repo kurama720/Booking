@@ -8,12 +8,18 @@ import {validationSchema} from "./validationSchema";
 const ApartmentForm: FC = () => {
     const [quantityGuests, setQuantityGuests] = useState<number>(1)
     const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false)
+    const [serverErrors,setServerErrors] = useState(null)
 
-    const handleSubmit = (data: IFormApartment) => {
+    const handleSubmit = async (data: IFormApartment) => {
         const dataForReserve: dataForApartmentForm = {
             ...data,
             guests: quantityGuests
         }
+        // try {
+        //     const response = await axios.post(`${process.env.REACT_APP_API_URL}`)
+        // }catch (e){
+        //     setServerErrors(null)
+        // }
         console.log(dataForReserve)
     }
 
