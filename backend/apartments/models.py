@@ -95,11 +95,11 @@ class Apartment(models.Model):
 
 class Booking(models.Model):
     """Model for defining booking apartments"""
-    check_in_date = models.DateField(default=timezone.now)
-    check_out_date = models.DateField(default=timezone.now)
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
     num_of_persons = models.PositiveIntegerField()
     comment = models.TextField(blank=True)
-    idempotency_key = models.UUIDField(default=uuid.uuid4, unique=True)
+    idempotency_key = models.UUIDField(unique=True)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
     business_client = models.ForeignKey(BusinessClientUser,
