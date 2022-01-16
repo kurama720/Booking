@@ -100,7 +100,7 @@ const UserSignUpForm = () => {
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
                                             touched={touched.email}
-                                            placeholder={'E-mail'}
+                                            placeholder={'name@example.com'}
                                             serverError={serverErrors?.email}
                                             setServerError={setServerErrors}
                                         />

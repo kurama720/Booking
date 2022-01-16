@@ -15,12 +15,6 @@ const ApartmentForm: FC = () => {
             ...data,
             guests: quantityGuests
         }
-        // try {
-        //     const response = await axios.post(`${process.env.REACT_APP_API_URL}`)
-        // }catch (e){
-        //     setServerErrors(null)
-        // }
-        console.log(dataForReserve)
     }
 
     const handleChangeShowGuestsWindow = (): void => {
