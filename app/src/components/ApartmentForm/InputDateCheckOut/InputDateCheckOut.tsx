@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {BsExclamationCircleFill} from "react-icons/bs"
 import {IPropsInputDateCheckOut} from "./IPropsInputDateCheckOut";
-import {parseDateMax} from "../../../models/parseDate";
+import {parseDateMax, parseDateMin} from "../../../models/parseDate";
 
 const InputDateCheckOut: FC<IPropsInputDateCheckOut> = ({value, handleBlur, handleChange, touched, error, valueCheckDate}) => {
     return (
@@ -15,7 +15,7 @@ const InputDateCheckOut: FC<IPropsInputDateCheckOut> = ({value, handleBlur, hand
                     value={value}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    min={valueCheckDate ? parseDateMax(valueCheckDate) : ''}
+                    min={valueCheckDate ? parseDateMax(valueCheckDate) : parseDateMin()}
                 />
             </div>
             {touched && error && <span
