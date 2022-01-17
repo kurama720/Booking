@@ -82,18 +82,19 @@ class Apartment(models.Model):
                     num_of_persons=client_num_of_persons,
                     comment=client_comment,
                     idempotency_key=client_idempotency_key,
-                    client=client_user
+                    client=client_user,
+                    business_client=self.business_account
                 )
                 return True
             return False
 
-    def apartment_review(self, client_comment: str,  client_rating: int,
+    def apartment_review(self, client_comment: str,  client_rate: int,
                           client_user: ClientUser) -> None:
         """
         Add apartment review
 
         :param client_comment: comment on apartment
-        :param client_rating: apartment rating
+        :param client_rate: apartment rate
         :param client_user: client from request
         :return: None
         """
@@ -101,28 +102,28 @@ class Apartment(models.Model):
         return ApartmentReview.objects.create(
             apartment=self,
             comment=client_comment,
-            rating=client_rating,
+            rate=client_rate,
             client=client_user
         )
 
     def get_apartment_reviews_information(self) -> dict:
         """
-        Get average apartment rating and number of apartment reviews
+        Get average apartment rate and number of apartment reviews
 
-        :return: rating data and number of reviews in dict format
+        :return: rate data and number of reviews in dict format
         """
-        return ApartmentReview.objects.filter(apartment=self).aggregate(rate=Round(Avg(F('rating'))),
-                                                                        reviews=Count('rating'))
+        return ApartmentReview.objects.filter(apartment=self).aggregate(rate=Round(Avg(F('rate'))),
+                                                                        reviews=Count('rate'))
 
     def get_apartment_reviews(self) -> dict:
         """
-        Get average apartment rating and apartment reviews
+        Get average apartment rate and apartment reviews
 
-        :return: rating and reviews data in dict format
+        :return: rate and reviews data in dict format
         """
         apartment_review_data = ApartmentReview.objects.filter(apartment=self)
-        reviews_response = apartment_review_data.aggregate(rate=Round(Avg(F('rating'))))
-        apartment_reviews = {'reviews': list(apartment_review_data.values('comment', 'rating'))}
+        reviews_response = apartment_review_data.aggregate(rate=Round(Avg(F('rate'))))
+        apartment_reviews = {'reviews': list(apartment_review_data.values('comment', 'rate'))}
         reviews_response.update(apartment_reviews)
         return reviews_response
 
@@ -135,7 +136,7 @@ class Booking(models.Model):
     check_in_date = models.DateField()
     check_out_date = models.DateField()
     num_of_persons = models.PositiveIntegerField()
-    comment = models.TextField(blank=True)
+    comment = models.TextField(blank=True, null=True)
     idempotency_key = models.UUIDField(unique=True)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
@@ -148,6 +149,6 @@ class Booking(models.Model):
 class ApartmentReview(models.Model):
     """Model for defining apartments reviews"""
     comment = models.TextField()
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+    rate = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
