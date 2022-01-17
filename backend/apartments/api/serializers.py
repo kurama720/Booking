@@ -34,4 +34,4 @@ class ReviewsSerializer(serializers.ModelSerializer):
     """Serializer to serialize data from apartments reviews requests"""
     class Meta:
         model = ApartmentReview
-        fields = ("comment", "rating")
+        fields = ("comment", "rate")
