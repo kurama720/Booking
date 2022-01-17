@@ -1,19 +1,21 @@
 import React, {FC} from 'react';
-import {IPropsInputDate} from "./IPropsInputeDate";
+import {IPropsInputDate} from "../IPropsInputeDate";
 import {BsExclamationCircleFill} from "react-icons/bs";
+import {parseDateMin} from "../../../models/parseDate";
 
-const InputDate: FC<IPropsInputDate> = ({value, name, handleBlur, handleChange, label, borderRadius, touched, error}) => {
+const InputDateCheckIn: FC<IPropsInputDate> = ({value, handleBlur, handleChange, touched, error}) => {
     return (
         <div className={`${!(error && touched) ? 'mb-4' : ''}`}>
-            <label htmlFor={name} className='block text-xs font-body text-gray-700'>{label}</label>
-            <div className={`${borderRadius === 'right'? 'rounded-r-lg' :'rounded-l-lg'} border-gray-300 border py-[9px]`}>
+            <label htmlFor='check_in' className='block text-xs font-body text-gray-700'>Check in</label>
+            <div className={`rounded-l-lg border-gray-300 border py-[9px]`}>
                 <input
                     className='focus-visible:outline-0'
                     type="date"
-                    name={name}
+                    name={'check_in'}
                     value={value}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    min={parseDateMin()}
                 />
             </div>
             {touched && error && <span
@@ -22,4 +24,4 @@ const InputDate: FC<IPropsInputDate> = ({value, name, handleBlur, handleChange, 
     );
 };
 
-export default InputDate;
+export default React.memo(InputDateCheckIn);
