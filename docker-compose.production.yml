@@ -43,7 +43,7 @@ services:
     image: postgres:13
     container_name: booking_postgres
     volumes:
-      - ".data/postgres:/var/lib/postgresql/data"
+      - postgres_volume:/var/lib/postgresql/data/
     environment:
       POSTGRES_DB: booking
       POSTGRES_USER: booking
@@ -53,6 +53,8 @@ services:
     networks:
       - booking_production_services
 
+volumes:
+  postgres_volume:
 
 networks:
   booking_production_services:
