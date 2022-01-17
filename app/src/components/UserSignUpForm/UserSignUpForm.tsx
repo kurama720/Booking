@@ -68,7 +68,7 @@ const UserSignUpForm: FC<IPropsUserSignUpForm> = ({setActive}) => {
                   handleBlur, isValid, handleSubmit, dirty
               }) =>
                 (
-                    <div className="max-w-md w-full space-y-8 shadow p-8 bg-white rounded-md">
+                    <div className="max-w-md w-full space-y-8 shadow p-8 bg-white rounded-md" onClick={e => e.stopPropagation()}>
                         <div className='flex items-center justify-between'>
                             <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">Sign up</h2>
                             <button onClick={closeModal}><XIcon className='text-gray-500 w-6 h-6 hover:text-gray-700'/>
