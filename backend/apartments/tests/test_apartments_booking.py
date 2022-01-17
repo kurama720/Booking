@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
@@ -28,8 +30,8 @@ class BookingViewApiTestCase(APITestCase):
         booking_data = dict(
             num_of_persons=2,
             comment="comment",
-            check_in_date="2022-01-14",
-            check_out_date="2022-01-16",
+            check_in_date=datetime.today().strftime('%Y-%m-%d'),
+            check_out_date=(datetime.today() + timedelta(days=2)).strftime('%Y-%m-%d'),
             idempotency_key="e60aced9666b11ec8b03744ca19f6797"
         )
         self.client.force_authenticate(self.user)

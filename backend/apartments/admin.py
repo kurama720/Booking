@@ -72,4 +72,4 @@ class BookingAdmin(admin.ModelAdmin):
 
 @admin.register(ApartmentReview)
 class ApartmentReviewsAdmin(admin.ModelAdmin):
-    list_display = ('apartment', 'rating', 'comment')
+    list_display = ('apartment', 'rate', 'comment')

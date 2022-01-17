@@ -27,11 +27,11 @@ class ReviewsViewApiTestCase(APITestCase):
         """Test requests for apartment reviews"""
         test_review1 = dict(
             comment="comment1",
-            rating=5
+            rate=5
         )
         test_review2 = dict(
             comment="comment2",
-            rating=4
+            rate=4
         )
         self.client.force_authenticate(self.user)
         apartment_id = self.apartment.id

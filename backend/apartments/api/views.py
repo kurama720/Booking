@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
@@ -95,7 +95,7 @@ class BookingHistoryView(ListAPIView):
 
 class ReviewsView(GenericAPIView):
     """View to manage apartments reviews requests"""
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = ApartmentReview.objects.all()
     serializer_class = ReviewsSerializer
 
@@ -120,6 +120,6 @@ class ReviewsView(GenericAPIView):
         client = request.user
         serializer.is_valid(raise_exception=True)
         comment = serializer.validated_data.get("comment")
-        rating = serializer.validated_data.get("rating")
-        apartment.apartment_review(comment, rating, client)
+        rate = serializer.validated_data.get("rate")
+        apartment.apartment_review(comment, rate, client)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
