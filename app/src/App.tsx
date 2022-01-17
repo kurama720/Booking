@@ -27,7 +27,7 @@ function App() {
         errorMessage,
         check
       }}>
-        <div className="App">
+        <div className="App flex flex-col min-h-screen h-full">
           <Router>{routes}</Router>
           <Footer/>
         </div>
