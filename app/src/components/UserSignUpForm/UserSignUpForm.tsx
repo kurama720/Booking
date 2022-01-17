@@ -62,7 +62,7 @@ const UserSignUpForm = () => {
                   handleBlur, isValid, handleSubmit, dirty
               }) =>
                 (
-                    <div className="min-h-full flex items-center justify-center mt-3 ">
+                    <div className="flex items-center justify-center mt-3 ">
                         <div className="max-w-md w-full space-y-8 shadow p-8">
                             <div className='flex items-center justify-between'>
                                 <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">Sign up</h2>
