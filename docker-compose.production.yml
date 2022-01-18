@@ -12,6 +12,7 @@ services:
       - "80:80"
     depends_on:
       - booking_django
+    env_file: .env
     volumes:
       - "./app:/usr/src/app"
       - "./app/node_modules:/usr/src/app/node_modules"
