@@ -13,22 +13,27 @@ class ApartmentsTest(APITestCase):
     def setUp(self):
         """Create test hotels in test database"""
         Apartment.objects.create(title='Test Hotel 1', price=100, img=None, lat=10, lon=20,
-                                 description='The first test hotel', num_of_bedrooms=2, rating=5,)
+                                 description='The first test hotel', rating=5, feature={'guests': 2,
+                                                                                        'bedrooms': 2,
+                                                                                        'beds': 3,
+                                                                                        'bathrooms': 1, })
         Apartment.objects.create(title='Test Hotel 2', price=80, img=None, lat=30, lon=40,
-                                 description='The second test hotel', num_of_bedrooms=2, rating=4,)
+                                 description='The second test hotel', rating=4, feature=None)
         Apartment.objects.create(title='Test Hotel 3', price=50, img=None, lat=40, lon=50,
-                                 description='The third test hotel', num_of_bedrooms=4, rating=2,
-                                 created_at='2022-01-05T15:21:51.480331Z')
+                                 description='The third test hotel', rating=2, feature={'guests': 2,
+                                                                                        'bedrooms': 2,
+                                                                                        'beds': 3,
+                                                                                        'bathrooms': 1, })
 
-    def test_filter_num_of_bedrooms(self):
-        """Test filter returns two hotels where num_of_bedrooms = 2"""
+    def test_filter_feature(self):
+        """Test filter returns two hotels where guests = 2"""
         url = reverse('apartment-list')
-        data: dict = {'num_of_bedrooms': 2}
-        response = self.client.get(url, data, format='json')
+        data: dict = {'guests': 2}
+        response = self.client.get(url, feature=data, format='json')
         content: dict = json.loads(response.content)[0]
         self.assertTrue(response.status_code, status.HTTP_200_OK)
         self.assertTrue(len(content), 2)
-        self.assertTrue(content['num_of_bedrooms'], 2)
+        self.assertTrue(content['feature']['guests'], 2)
 
     def test_filter_location(self):
         """Test filter returns one hotel where latitude = 10, longitude = 20"""
@@ -52,10 +57,3 @@ class ApartmentsTest(APITestCase):
         self.assertTrue(len(content), 1)
         self.assertTrue(content['created_at'], hotel.created_at)  # Compare result's creation time with object's
 
-    def test_no_results_found(self):
-        url = reverse('apartment-list')
-        data: dict = {'num_of_bedrooms': 2}
-        response = self.client.get(url, data, format='json')
-        content: dict = json.loads(response.content)[0]
-        self.assertTrue(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(content), 0)
