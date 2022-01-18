@@ -19,7 +19,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly, )
     http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('lat', 'lon', 'created_at', 'num_of_bedrooms',)
+    filter_fields = ('lat', 'lon', 'created_at', 'feature',)
     filter_class = ApartmentFilter
 
     def retrieve(self, request,  pk: int):
