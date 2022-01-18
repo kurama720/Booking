@@ -4,7 +4,6 @@ import {useAuth} from "../../app/src/hooks/auth.hook";
 import {useRoutes} from "../src/hooks/routes.hook";
 import {AuthContext} from './context/Context'
 import Footer from "./components/Footer/Footer";
-import SlideShow from "./components/SlideShow/SlideShow";
 
 function App() {
   const {
@@ -30,7 +29,6 @@ function App() {
       }}>
         <div className="App flex flex-col min-h-screen h-full">
           <Router>{routes}</Router>
-            <SlideShow />
           <Footer/>
         </div>
       </AuthContext.Provider>

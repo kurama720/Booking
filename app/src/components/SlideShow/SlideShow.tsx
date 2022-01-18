@@ -13,7 +13,7 @@ const SlideShow = () => {
         <>
             <button onClick={openModal}>Show all photos</button>
             <Modal active={showSlider} setActive={setShowSlider}>
-                <SliderApartmentPhotos setActive={setShowSlider}/>
+                <SliderApartmentPhotos setActive={setShowSlider} listSrcPicture={[]}/>
             </Modal>
         </>
     );

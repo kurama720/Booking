@@ -1,24 +1,23 @@
 import React, {FC} from 'react';
 import {XIcon} from "@heroicons/react/solid";
 import {Splide, SplideSlide} from "@splidejs/react-splide";
-import img from "../../../assets/img/image.png";
+import img from "../../../assets/img/image1.svg";
 import '@splidejs/splide/dist/css/splide.min.css';
+import {IPropsSliderApartmentPhotos} from "./IPropsSliderApartmentPhotos";
 
+const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({setActive, listSrcPicture}) => {
 
-interface IPropsSliderApartmentPhotos {
-    setActive: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({setActive}) => {
+    const mokList = [img, img, img, img, img]
 
     const closeModal = () => {
         setActive(false)
     }
 
     return (
-        <div className='bg-white rounded-md max-w-[870px] w-full px-2.5 py-2' onClick={e => e.stopPropagation()}>
-            <div className='flex justify-between items-center'>
-                <span>Apartment photos</span>
+        <div className='bg-white rounded-md max-w-[870px] w-full px-[32px] py-[40px]'
+             onClick={e => e.stopPropagation()}>
+            <div className='flex justify-between items-center mb-6'>
+                <span className='text-2xl font-body font-bold text-gray-600'>Apartment photos</span>
                 <button onClick={closeModal}><XIcon className='text-gray-500 w-6 h-6 hover:text-gray-700'/></button>
             </div>
             <div className='flex justify-center items-center'>
@@ -29,15 +28,11 @@ const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({setActive}) => 
                         width: 800
                     }}
                 >
-                    <SplideSlide>
-                        <img src={img} alt='' className='rounded'/>
-                    </SplideSlide>
-                    <SplideSlide>
-                        <img src={img} alt='' className='rounded'/>
-                    </SplideSlide>
-                    <SplideSlide>
-                        <img src={img} alt='' className='rounded'/>
-                    </SplideSlide>
+                    {mokList.map((item,index) =>
+                        <SplideSlide key={index}>
+                            <img src={item} alt={`img-${index}`} className='rounded object-cover w-full h-full'/>
+                        </SplideSlide>
+                    )}
                 </Splide>
             </div>
         </div>
