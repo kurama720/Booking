@@ -1,18 +1,21 @@
 import React, {FC, useState} from 'react';
 import {StarIcon} from '@heroicons/react/solid';
-import {Formik} from "formik";
-import {dataForApartmentForm, IFormApartment} from "./IFormApartment";
+import {dataForApartmentForm} from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
-import {validationSchema} from "./validationSchema";
+import {DateRange} from "@mui/lab/DateRangePicker";
+import {parseDate} from "../../models/parseDate";
 
 const ApartmentForm: FC = () => {
+    const [value, setValue] = React.useState<DateRange<Date>>([null, null]);
     const [quantityGuests, setQuantityGuests] = useState<number>(1)
     const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false)
-    const [serverErrors,setServerErrors] = useState(null)
+    const [serverErrors, setServerErrors] = useState(null)
 
-    const handleSubmit = async (data: IFormApartment) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         const dataForReserve: dataForApartmentForm = {
-            ...data,
+            check_in: parseDate(value[0]),
+            check_out: parseDate(value[1]),
             guests: quantityGuests
         }
     }
@@ -29,13 +32,8 @@ const ApartmentForm: FC = () => {
         setQuantityGuests(prev => prev - 1)
     }
 
-    const initialValues: IFormApartment = {
-        check_in: '',
-        check_out: '',
-    }
-
     return (
-        <div className=''>
+        <div>
             <div className='shadow w-full p-6 max-w-[350px]'>
                 <div className='flex justify-between items-center'>
                     <div>
@@ -49,32 +47,17 @@ const ApartmentForm: FC = () => {
                         <span className='text-blue-600 text-sm font-body font-medium'>15 reviews</span>
                     </div>
                 </div>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={handleSubmit}
-                    validateOnBlur
-                    validationSchema={validationSchema}
-                >
-                    {(
-                         formikProps
-                      ) =>
-                        (
-                            <PartFormApartment
-                                values={formikProps.values}
-                                touched={formikProps.touched}
-                                errors={formikProps.errors}
-                                handleChange={formikProps.handleChange}
-                                setQuantityGuests={setQuantityGuests}
-                                handleBlur={formikProps.handleBlur}
-                                handleSubmit={formikProps.handleSubmit}
-                                quantityGuests={quantityGuests}
-                                isShowGuestsWindow={isShowGuestsWindow}
-                                decrementGuests={decrementGuests}
-                                incrementGuests={incrementGuests}
-                                handleChangeShowGuestsWindow={handleChangeShowGuestsWindow}
-                            />
-                        )}
-                </Formik>
+                <PartFormApartment
+                    valueDate={value}
+                    setValueDate={setValue}
+                    setQuantityGuests={setQuantityGuests}
+                    handleSubmit={handleSubmit}
+                    quantityGuests={quantityGuests}
+                    isShowGuestsWindow={isShowGuestsWindow}
+                    decrementGuests={decrementGuests}
+                    incrementGuests={incrementGuests}
+                    handleChangeShowGuestsWindow={handleChangeShowGuestsWindow}
+                />
             </div>
         </div>
     );

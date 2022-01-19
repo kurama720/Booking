@@ -1,34 +1,19 @@
 import React, {FC} from 'react';
-import {Form} from "formik";
 import {MailIcon} from "@heroicons/react/solid";
 import {ChevronDownIcon, ChevronUpIcon, MinusIcon, PlusIcon} from "@heroicons/react/outline";
 import Button from "../../Button/Button";
 import {IPropsFormApartment} from "./IPropsPartFormApartment";
-import InputDateCheckIn from "../InputDateCheckIn/InputDateCheckIn";
-import InputDateCheckOut from "../InputDateCheckOut/InputDateCheckOut";
+import Calendar from '../Calendar/Calendar';
 
 const PartFormApartment: FC<IPropsFormApartment> = (props) => {
-    const {values, errors,touched, handleChange, handleBlur, handleSubmit, quantityGuests, isShowGuestsWindow, setQuantityGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
+    const { valueDate, setValueDate, handleSubmit, quantityGuests, isShowGuestsWindow, setQuantityGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
     return (
-        <Form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div className='flex align-center justify-center my-6'>
-                <div className='flex flex-col items-start justify-center'>
-                    <InputDateCheckIn
-                        value={values.check_in}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={errors.check_in}
-                        touched={touched.check_in}
-                    />
-                </div>
                 <div>
-                    <InputDateCheckOut
-                        value={values.check_out}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        error={errors.check_out}
-                        touched={touched.check_out}
-                        valueCheckDate={values.check_in}
+                    <Calendar
+                        valueDate={valueDate}
+                        setValueDate={setValueDate}
                     />
                 </div>
             </div>
@@ -101,7 +86,7 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
                     type={'submit'}
                 />
             </div>
-        </Form>
+        </form>
     );
 };
 

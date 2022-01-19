@@ -1,13 +1,10 @@
-import {IFormApartment} from "../IFormApartment";
 import React from "react";
+import {DateRange} from "@mui/lab/DateRangePicker/RangeTypes";
 
 export interface IPropsFormApartment {
-    values: IFormApartment
-    errors: { [field: string]: string }
-    touched: { [field: string]: boolean }
-    handleChange: (e: React.ChangeEvent<any>) => void
-    handleBlur: (e: React.FocusEvent<any>) => void
-    handleSubmit:  (e?: (React.FormEvent<HTMLFormElement> | undefined)) => void
+    valueDate: DateRange<Date>
+    setValueDate: React.Dispatch<React.SetStateAction<DateRange<Date>>>
+    handleSubmit:  (e: React.FormEvent<HTMLFormElement>) => void
     quantityGuests: number
     setQuantityGuests: React.Dispatch<React.SetStateAction<number>>
     isShowGuestsWindow: boolean
