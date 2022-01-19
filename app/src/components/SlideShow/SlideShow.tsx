@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import Modal from "../Modal/Modal";
 import SliderApartmentPhotos from "./SliderApartmentPhotos/SliderApartmentPhotos";
 
-const SlideShow = () => {
+const SlideShow:FC = () => {
     const [showSlider,setShowSlider] = useState<boolean>(false)
 
     const openModal = () => {

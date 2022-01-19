@@ -2,8 +2,9 @@ import React, {FC} from 'react';
 import {XIcon} from "@heroicons/react/solid";
 import {Splide, SplideSlide} from "@splidejs/react-splide";
 import img from "../../../assets/img/image1.svg";
-import '@splidejs/splide/dist/css/splide.min.css';
 import {IPropsSliderApartmentPhotos} from "./IPropsSliderApartmentPhotos";
+import '@splidejs/splide/dist/css/splide.min.css';
+import '../../ApartmentCard/react-splide.css'
 
 const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({setActive, listSrcPicture}) => {
 
@@ -30,7 +31,7 @@ const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({setActive, list
                 >
                     {mokList.map((item,index) =>
                         <SplideSlide key={index}>
-                            <img src={item} alt={`img-${index}`} className='rounded object-cover w-full h-full'/>
+                            <img src={item} alt={`img-${index}`} className='rounded object-cover w-full h-full max-w-[800px] max-h-[581px]'/>
                         </SplideSlide>
                     )}
                 </Splide>
