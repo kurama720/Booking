@@ -4,6 +4,9 @@ from django.core.exceptions import ValidationError
 
 
 class PasswordNumberValidator(object):
+    def get_help_text(self):
+        return f"The password must contain at least 2 digits."
+
     def validate(self, password, user=None):
         if not re.findall('(?=(.*\d){2})', password):
             raise ValidationError(
@@ -13,6 +16,9 @@ class PasswordNumberValidator(object):
 
 
 class PasswordLetterValidator(object):
+    def get_help_text(self):
+        return f"The password must contain at least 2 letters."
+
     def validate(self, password, user=None):
         if not re.findall('(?=.*[a-zA-Z]{2})', password):
             raise ValidationError(
