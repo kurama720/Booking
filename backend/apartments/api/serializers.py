@@ -1,6 +1,8 @@
+import datetime
+
 from rest_framework import serializers
 
-from apartments.models import Apartment, Booking
+from apartments.models import Apartment, Booking, ApartmentReview
 
 
 class ApartmentSerializer(serializers.ModelSerializer):
@@ -20,7 +22,16 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = ("num_of_persons", "comment", "check_in_date", "check_out_date",
                   "idempotency_key")
 
-        def validate(self, attrs):
-            if Booking.objects.filter(idempotency_key=attrs["idempotency_key"]):
-                raise serializers.ValidationError("idempotency_key not unique")
-            return super().validate(attrs)
+    def validate(self, attrs):
+        if attrs['check_in_date'] < datetime.date.today():
+            raise serializers.ValidationError({'check_in_date': "Apartment is not available for booking"})
+        if attrs['check_out_date'] <= attrs['check_in_date']:
+            raise serializers.ValidationError({'check_out_date': "Check-out date must be later than check-in date"})
+        return super().validate(attrs)
+
+
+class ReviewsSerializer(serializers.ModelSerializer):
+    """Serializer to serialize data from apartments reviews requests"""
+    class Meta:
+        model = ApartmentReview
+        fields = ("comment", "rate")

@@ -1,14 +1,16 @@
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
-from apartments.services import ApartmentFilter
-from apartments.models import Booking, Apartment
+from apartments.services import ApartmentFilter, BookingHistoryFilter
+from apartments.models import Booking, Apartment, ApartmentReview
 from apartments.api.permissions import IsOwnerOrReadOnly
-from apartments.api.serializers import ApartmentSerializer, BookingSerializer
+from apartments.api.serializers import ApartmentSerializer, BookingSerializer, ReviewsSerializer
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -17,8 +19,19 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly, )
     http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('lat', 'lon', 'created_at', 'num_of_bedrooms',)
+    filter_fields = ('lat', 'lon', 'created_at', 'feature',)
     filter_class = ApartmentFilter
+
+    def retrieve(self, request,  pk: int):
+        """Process GET requests /apartments/{id}
+
+        :param pk: apartment unique id from request path
+        """
+        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+        apartment_data = ApartmentSerializer(apartment).data
+        reviews_information = apartment.get_apartment_reviews_information()
+        apartment_data.update(reviews_information)
+        return Response(data=apartment_data)
 
     def create(self, request, *args, **kwargs):
         if business_acc_id := request.data.get("business_account"):
@@ -40,6 +53,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 class BookingView(GenericAPIView):
     """View to manage booking apartments requests"""
+    permission_classes = (IsAuthenticated,)
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
@@ -68,3 +82,44 @@ class BookingView(GenericAPIView):
         else:
             return Response(data="Apartment is not available for booking",
                             status=status.HTTP_403_FORBIDDEN)
+
+
+class BookingHistoryView(ListAPIView):
+    """View to provide book history"""
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('check_in_date', 'business_client')
+    filter_class = BookingHistoryFilter
+
+
+class ReviewsView(GenericAPIView):
+    """View to manage apartments reviews requests"""
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    queryset = ApartmentReview.objects.all()
+    serializer_class = ReviewsSerializer
+
+    def get(self, request, pk: int):
+        """
+        Process GET requests
+
+        :param pk: apartment unique id from request path
+        """
+        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+        apartment_reviews = apartment.get_apartment_reviews()
+        return Response(data=apartment_reviews)
+
+    def post(self, request, pk: int):
+        """
+        Process POST requests
+
+        :param pk: apartment unique id from request path
+        """
+        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+        serializer = ReviewsSerializer(data=request.data)
+        client = request.user
+        serializer.is_valid(raise_exception=True)
+        comment = serializer.validated_data.get("comment")
+        rate = serializer.validated_data.get("rate")
+        apartment.apartment_review(comment, rate, client)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)

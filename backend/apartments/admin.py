@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
 
-from apartments.models import Apartment, Booking
+from apartments.models import Apartment, Booking, ApartmentReview
 from apartments.forms import CsvImportForm
 
 
@@ -15,7 +15,7 @@ class ApartmentAdmin(admin.ModelAdmin):
     """A class for adding apartments to the admin panel"""
     list_display = ('title', 'price')
     ordering = ('price',)
-    list_filter = ('num_of_bedrooms', 'rating')
+    list_filter = ('rating',)
     search_fields = ('title', 'description')
 
     def get_urls(self):
@@ -68,3 +68,8 @@ class ApartmentAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('apartment', 'check_in_date', 'check_out_date')
+
+
+@admin.register(ApartmentReview)
+class ApartmentReviewsAdmin(admin.ModelAdmin):
+    list_display = ('apartment', 'rate', 'comment')
