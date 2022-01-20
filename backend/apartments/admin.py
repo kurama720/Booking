@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
 
-from apartments.models import Apartment, Booking, ApartmentReview
+from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
 from apartments.forms import CsvImportForm
 
 
@@ -73,3 +73,8 @@ class BookingAdmin(admin.ModelAdmin):
 @admin.register(ApartmentReview)
 class ApartmentReviewsAdmin(admin.ModelAdmin):
     list_display = ('apartment', 'rate', 'comment')
+
+
+@admin.register(ApartmentsImage)
+class ApartmentsImageAdmin(admin.ModelAdmin):
+    list_display = ('apartments', 'img')
