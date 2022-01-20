@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from accounts.api.views import RegisterView, CustomTokenObtainView
 from accounts.api.views import LogoutView
@@ -12,4 +12,5 @@ urlpatterns = [
     path('business/signup/', BusinessClientRegisterView.as_view(), name='business_sign_up'),
     path('business/signin/', BusinessClientSignInView.as_view(), name='business_sign_in'),
     path('business/logout/', LogoutView.as_view(), name='business_log_out'),
+    path('reset-password/', include('django_rest_passwordreset.urls', namespace='password-reset')),
 ]

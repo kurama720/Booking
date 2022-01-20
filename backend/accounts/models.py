@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.dispatch import receiver
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import EmailMultiAlternatives
 
 from accounts.managers import CustomUserManager
 from accounts.validators import first_name_validator
@@ -42,3 +46,13 @@ class BusinessClientUser(ClientUser):
 
     def __str__(self):
         return self.organization_name
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'),
+                                                   reset_password_token.key)
+
+    msg = EmailMultiAlternatives("Password Reset for yoho.by", email_plaintext_message, "yoho.by", [reset_password_token.user.email])
+    msg.send()

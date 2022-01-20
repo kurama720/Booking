@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apartments',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
