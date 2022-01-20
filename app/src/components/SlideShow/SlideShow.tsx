@@ -1,19 +1,25 @@
 import React, {FC, useState} from 'react';
 import Modal from "../Modal/Modal";
 import SliderApartmentPhotos from "./SliderApartmentPhotos/SliderApartmentPhotos";
+import {PhotographIcon} from '@heroicons/react/solid'
 
 const SlideShow:FC = () => {
-    const [showSlider,setShowSlider] = useState<boolean>(false)
+    const [isShowSlider,setIsShowSlider] = useState<boolean>(false)
 
     const openModal = () => {
-        setShowSlider(true)
+        setIsShowSlider(true)
     }
 
     return (
         <>
-            <button onClick={openModal}>Show all photos</button>
-            <Modal active={showSlider} setActive={setShowSlider}>
-                <SliderApartmentPhotos setActive={setShowSlider} listSrcPicture={[]}/>
+            <button onClick={openModal} className='max-w-[130px] w-full rounded-[2px]'>
+                <div className='flex justify-center items-center p-2'>
+                    <span className='mr-2.5'><PhotographIcon className='w-3 h-3 text-gray-400'/></span>
+                    <span className='text-xs font-body font-medium text-gray-700'>Show all photos</span>
+                </div>
+            </button>
+            <Modal active={isShowSlider} setActive={setIsShowSlider}>
+                <SliderApartmentPhotos setActive={setIsShowSlider} listSrcPicture={[]}/>
             </Modal>
         </>
     );
