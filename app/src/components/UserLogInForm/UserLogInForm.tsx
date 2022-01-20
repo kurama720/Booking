@@ -4,6 +4,7 @@ import {JWT, UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
 import {AuthContext} from '../../context/Context'
 import * as yup from "yup";
 import {Paths} from "../../paths/path";
+import Cookies from 'js-cookie'
 import {LocalKey, LocalStorage} from "ts-localstorage";
 import Button from "../../components/Button/Button";
 import {
@@ -18,11 +19,14 @@ import {
 import axios, {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
-const storageName = "userData" as LocalKey<JWT>;
+interface UserLogInFormProps {
+  status: boolean;
+  handleLogInPopUp: () => void;
+  handleSignUpPopUpStatus: () => void
+}
 
-const UserLogInForm = () => {
+const UserLogInForm = ({status, handleLogInPopUp, handleSignUpPopUpStatus}: UserLogInFormProps) => {
   const {login, setErrorMessage, errorMessage} = useContext(AuthContext);
-  const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
   const refContainPassword = useRef<HTMLInputElement>(null);
@@ -43,7 +47,22 @@ const UserLogInForm = () => {
 
       if (data) {
         login(data, data.request.status, checked);
-        history(Paths.HOME);
+        handleLogInPopUp()
+
+        if (!!Cookies.get('user')) {
+          Cookies.remove('user')
+          Cookies.set('user', JSON.stringify({
+            email: values.email,
+            password: values.password,
+            checked: checked
+          }))
+        } else {
+          Cookies.set('user', JSON.stringify({
+            email: values.email,
+            password: values.password,
+            checked: checked
+          }))
+        }
       }
 
     } catch (error) {
@@ -69,12 +88,12 @@ const UserLogInForm = () => {
         .required("All the fields must be filled")
         .matches(
             /^(?=^\S+$)(?=.*[A-z])(?=.*[0-9]).{8,}/,
-           'Invalid password and/or email, try again'
+            'Invalid password and/or email, try again'
         )
   });
 
   const handlePopUp = () => {
-    setPopUpStatus((prev) => !prev);
+    handleLogInPopUp()
     setErrorMessage('')
     setChecked(false)
   };
@@ -92,7 +111,7 @@ const UserLogInForm = () => {
   }
 
   useEffect(() => {
-    const storageItem = LocalStorage.getItem(storageName)
+    const storageItem = Cookies.get('user')
 
     if (visiblePassword && refContainPassword.current) {
       refContainPassword.current.type = "text";
@@ -101,22 +120,21 @@ const UserLogInForm = () => {
     }
 
     if (!!storageItem) {
-      const checkStatus = storageItem.checked
+      const data = JSON.parse(storageItem)
+      const checkStatus = data.checked
 
       if (checkStatus) {
-        const localStorageItem = storageItem.token.config.data
-        const data = JSON.parse(localStorageItem)
-
         setInitialState({
           email: data.email,
           password: data.password,
         })
       }
     }
-  }, [visiblePassword, email, login]);
+  }, [visiblePassword, login]);
 
   return (
-      <div className="w-screen flex justify-center">
+      <div className="h-full flex justify-center items-center"
+           onClick={e => e.stopPropagation()}>
         <Formik
             initialValues={initialState}
             enableReinitialize
@@ -132,25 +150,26 @@ const UserLogInForm = () => {
               }, 500);
             }}
         >
-          {({errors, touched, isValid, dirty, handleChange, handleBlur, resetForm}) => {
+          {({
+              errors,
+              touched,
+              isValid,
+              dirty,
+              handleChange,
+              handleBlur,
+              resetForm
+            }) => {
             return (
                 <div
                     className={
-                      popUpStatus
-                          ? `rounded-md py-8 px-10 w-body max-w-lg mt-36 shadow`
-                          : `rounded-md  mt-36 shadow`
+                      status
+                          ? `rounded-md py-8 px-10 w-body max-w-lg shadow bg-white`
+                          : `rounded-md  mt-36 shadow bg-white`
                     }
                 >
-                  <div className="w-full">
-                    {!popUpStatus ? (
-                        <div>
-                          <Button
-                              context="Log In"
-                              classNames="px-3.5 py-2.5 text-sm font-medium leading-4 font-body text-blue-700 bg-sky-100 rounded-md  shadow-sm hover:bg-sky-300  duration-500"
-                              onClick={handlePopUp}
-                              type="button"
-                          />
-                        </div>
+                  <div className="h-full">
+                    {!status ? (
+                        <></>
                     ) : (
                         <div className="flex justify-between w-full items-center">
                           <h2 className=" text-3xl font-extrabold text-gray-500 font-body">
@@ -159,18 +178,18 @@ const UserLogInForm = () => {
                           <Button
                               classNames="rounded-3xl flex items-start h-9"
                               type="button"
-                              context={
-                                <XIcon
-                                    className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500"/>
-                              }
                               onClick={() => {
                                 handlePopUp()
                                 resetForm()
                               }}
+                              context={
+                                <XIcon
+                                    className="h-6 w-6 fill-gray-400 hover:fill-gray-500 duration-500"/>
+                              }
                           />
                         </div>
                     )}
-                    {popUpStatus ? (
+                    {status ? (
                         <div>
                           <Form className="mt-8 space-y-6" action="#">
                             <div className="rounded-md">
@@ -298,7 +317,7 @@ const UserLogInForm = () => {
                                         onBlur={handleBlur}
                                         autoComplete="current-password"
                                         className={
-                                           !!errorMessage || (touched.password && !!errors.password && !isValid)
+                                          !!errorMessage || (touched.password && !!errors.password && !isValid)
                                               ? "appearance-none rounded-md relative block w-full px-3 py-2 border border-red-300 placeholder-gray-500 text-red-900 rounded-t-md  font-body focus:outline-none focus:ring-indigo-500 focus:border-indigo-500  sm:text-sm font-body "
                                               : "appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md font-body focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm font-body"
                                         }
@@ -354,7 +373,7 @@ const UserLogInForm = () => {
                                   <Button
                                       type="submit"
                                       disabled={
-                                        !isValid && !dirty || !!errors.email || !!errors.password
+                                          !isValid && !dirty || !!errors.email || !!errors.password
                                       }
                                       context="Log in"
                                       classNames={
@@ -386,7 +405,10 @@ const UserLogInForm = () => {
                       </span>
                             <Button
                                 type="button"
-                                onClick={() => history(Paths.SIGN_UP)}
+                                onClick={() => {
+                                  handleLogInPopUp()
+                                  handleSignUpPopUpStatus()
+                                }}
                                 context="Sign Up"
                                 classNames="cursor-pointer text-blue-600 ml-2 text-sm leading-5 font-medium font-body hover:text-blue-700"
                             />

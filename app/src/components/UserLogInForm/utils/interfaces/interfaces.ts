@@ -32,3 +32,12 @@ export interface JWT {
   status: number | string;
   token: token;
 }
+
+export interface Token {
+  config: config;
+  data: object;
+  headers: object;
+  request: object;
+  status: number;
+  statusText: string;
+}
