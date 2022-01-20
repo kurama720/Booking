@@ -1,16 +1,17 @@
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
-from apartments.models import Booking, Apartment, ApartmentReview
+from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
 from apartments.api.permissions import IsOwnerOrReadOnly
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer, ReviewsSerializer
+from apartments.business_logic import check_files_in_request
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -21,6 +22,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('lat', 'lon', 'created_at', 'feature',)
     filter_class = ApartmentFilter
+    parser_classes = (MultiPartParser, FormParser)
 
     def retrieve(self, request,  pk: int):
         """Process GET requests /apartments/{id}
@@ -28,7 +30,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         :param pk: apartment unique id from request path
         """
         apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
-        apartment_data = ApartmentSerializer(apartment).data
+        apartment_data = self.get_serializer(apartment).data
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
         return Response(data=apartment_data)
@@ -38,17 +40,36 @@ class ApartmentViewSet(viewsets.ModelViewSet):
             if business_acc_id != str(request.user.id):
                 raise ValidationError("Invalid 'business_account' field value. " +
                                       "Choose correct account or skip this value")
-        serializer = ApartmentSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        business_client_user = request.user.clientuser.businessclientuser
-        serializer.validated_data.update(business_account=business_client_user)
-        intermediate_ser_data = serializer.validated_data.copy()
-        intermediate_ser_data.pop("img")
-        is_obj_exists = Apartment.objects.filter(**intermediate_ser_data).exists()
-        if is_obj_exists:
-            raise ValidationError("This object already exists!")
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if images := check_files_in_request(request):
+            request.data.pop("img_content")
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            business_client_user = request.user.clientuser.businessclientuser
+            serializer.validated_data.update(business_account=business_client_user)
+            intermediate_ser_data = serializer.validated_data.copy()
+            is_obj_exists = Apartment.objects.filter(**intermediate_ser_data).exists()
+            if is_obj_exists:
+                raise ValidationError("This object already exists!")
+            serializer.save()
+
+            serializer.instance.add_images_to_apartments(images)
+            response_data = serializer.data
+            return Response(response_data, status=status.HTTP_201_CREATED)
+        return Response(data={"img_content": ["This field is required."]},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        if images := check_files_in_request(request):
+            response_data = super().update(request,
+                                           *args,
+                                           **kwargs).data
+            instance = self.get_object()
+            instance.add_images_to_apartments(images)
+            to_update_data = self.get_serializer(instance).data
+            response_data.update(to_update_data)
+            return Response(data=response_data)
+        return Response(data={"img_content": ["This field is required."]},
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookingView(GenericAPIView):
