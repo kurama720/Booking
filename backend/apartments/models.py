@@ -12,7 +12,7 @@ from apartments.validators import SCHEMA, JSONSchemaValidator
 
 
 def apartment_directory_path(instance, filename):
-    return f"apartments/{instance.title}/{filename}"
+    return f"apartments/{instance.apartments.title}/{filename}"
 
 
 class Apartment(models.Model):
@@ -20,7 +20,6 @@ class Apartment(models.Model):
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     title = models.TextField()
     price = models.PositiveIntegerField(db_index=True)
-    img = models.ImageField(upload_to=apartment_directory_path)
     lat = models.FloatField()
     lon = models.FloatField()
     description = models.TextField()
@@ -127,6 +126,34 @@ class Apartment(models.Model):
         reviews_response.update(apartment_reviews)
         return reviews_response
 
+    def add_images_to_apartments(self,
+                                 images: list) -> None:
+        """
+        This function create images model objects and
+        bound them to apartments object.
+
+        :param model: images model class
+        :param images: images intermediate objects list
+        :return: None
+        """
+        uploaded_images = []
+        images_names = [image.name for image in images]
+        existing_apartment_images = ApartmentsImage.objects.filter(apartments=self)
+        stored_images_names = [image.img.name.split("/")[-1] for image in existing_apartment_images]
+        bound_images_names = [image.img.name.split("/")[-1] for image in self.img_content.all()]
+        if (not set(bound_images_names).intersection(set(images_names)) or
+                len(bound_images_names) > len(images_names)):
+            existing_apartment_images.delete()
+        for image in images:
+            if image.name not in stored_images_names:
+                content = ApartmentsImage.objects.create(apartments=self,
+                                                         img=image)
+                uploaded_images.append(content)
+            elif image.name not in bound_images_names:
+                index = stored_images_names.index(image.name)
+                content = existing_apartment_images[index]
+                uploaded_images.append(content)
+
     def __str__(self):
         return self.title
 
@@ -152,3 +179,15 @@ class ApartmentReview(models.Model):
     rate = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+
+
+class ApartmentsImage(models.Model):
+    """Model to representation apartments images"""
+    apartments = models.ForeignKey(Apartment,
+                                   related_name="img_content",
+                                   on_delete=models.CASCADE,
+                                   null=True)
+    img = models.ImageField(upload_to=apartment_directory_path)
+
+    def __str__(self):
+        return str(self.img)

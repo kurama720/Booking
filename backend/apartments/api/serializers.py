@@ -2,13 +2,35 @@ import datetime
 
 from rest_framework import serializers
 
-from apartments.models import Apartment, Booking, ApartmentReview
+from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
+
+
+class ApartmentsImageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for models.ApartmentImages
+    """
+    class Meta:
+        model = ApartmentsImage
+        fields = ("img", )
+
+    def to_representation(self, value):
+        try:
+            url = value.img.url
+        except AttributeError:
+            return None
+        request = self.context.get('request', None)
+        if request is not None:
+            return request.build_absolute_uri(url)
+        return url
 
 
 class ApartmentSerializer(serializers.ModelSerializer):
     """
     Serializer class for models.Apartment
     """
+    img_content = ApartmentsImageSerializer(many=True,
+                                            required=False)
+
     class Meta:
         model = Apartment
         fields = "__all__"

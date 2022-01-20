@@ -1,28 +1,32 @@
+from uuid import uuid4
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import AccessToken
 
-from accounts.models import BusinessClientUser
-from apartments.models import Apartment
-from accounts.models import ClientUser
+from PIL import Image
 
-# change to current image path
-image_path = "images/IMG-1.jpg"
+from accounts.models import BusinessClientUser, ClientUser
+from apartments.models import Apartment, ApartmentsImage
+
+
+test_image = Image.new("RGB", (700, 900), color=150)
+test_image.save("Test_image.jpg")
+image_to_upload = SimpleUploadedFile(name="Test_image.jpg",
+                                   content=open("Test_image.jpg", "rb").read(),
+                                   content_type="image/jpeg"
+                                   )
 
 # test data for post-requests body
-post_data = dict(
-    title="some title",
-    price=120,
-    img=SimpleUploadedFile(name="test_image.jpg",
-                           content=open(image_path, "rb").read(),
-                           content_type="image/jpeg"),
-    lat=21,
-    lon=299,
-    description="some description",
-    num_of_bedrooms=2,
-)
+post_data = {
+    "title": "some title",
+    "price": 120,
+    "lat": 21,
+    "lon": 299,
+    "description": "some description",
+}
 
 
 class ApartmentViewApiTestCase(APITestCase):
@@ -43,9 +47,13 @@ class ApartmentViewApiTestCase(APITestCase):
         )
 
         token = str(AccessToken().for_user(test_business_client))
-
+        images = [image_to_upload]
+        test_data["img_content"] = images
         url = reverse("apartment-list")
-        response = self.client.post(url, data=test_data, HTTP_AUTHORIZATION=f"Bearer {token}")
+        response = self.client.post(url,
+                                    data=test_data,
+                                    HTTP_AUTHORIZATION=f"Bearer {token}",
+                                    )
 
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(test_business_client.id, response.json().get("business_account"))
@@ -56,7 +64,9 @@ class ApartmentViewApiTestCase(APITestCase):
 
     def test_post_reject(self):
         url = reverse("apartment-list")
-        response = self.client.post(url, data=post_data)
+        response = self.client.post(url,
+                                    data=post_data,
+                                    )
         self.assertEqual(status.HTTP_401_UNAUTHORIZED, response.status_code)
 
         test_client_user = ClientUser.objects.create(
@@ -67,7 +77,10 @@ class ApartmentViewApiTestCase(APITestCase):
         )
         token = str(AccessToken().for_user(test_client_user))
 
-        response = self.client.post(url, data=post_data, HTTP_AUTHORIZATION=f"Bearer {token}")
+        response = self.client.post(url,
+                                    data=post_data,
+                                    HTTP_AUTHORIZATION=f"Bearer {token}",
+                                    )
         self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
 
     def test_update_access(self):
@@ -84,13 +97,21 @@ class ApartmentViewApiTestCase(APITestCase):
         test_apartment = Apartment.objects.create(**test_update_data, business_account=test_business_client)
 
         test_update_data["title"] = "new title"
-        new_image_path = "images/IMG-3.jpg"
-        test_update_data["img"] = SimpleUploadedFile(name="test_image.jpg",
-                                                     content=open(new_image_path, "rb").read(),
-                                                     content_type="image/jpeg")
+        new_test_image = Image.new("RGB", (300, 300), color=255)
+        new_test_image.save("New_test_image.jpg")
+        image_to_upload_2 = SimpleUploadedFile(name="New_test_image.jpg",
+                                               content=open("New_test_image.jpg",
+                                                            "rb").read(),
+                                               content_type="image/jpeg"
+                                               )
+
+        images = [image_to_upload, image_to_upload_2]
+        test_update_data["img_content"] = images
 
         url = reverse("apartment-detail", args=[test_apartment.id])
-        response = self.client.put(url, data=test_update_data, HTTP_AUTHORIZATION=f"Bearer {token}")
-
+        response = self.client.put(url,
+                                   data=test_update_data,
+                                   HTTP_AUTHORIZATION=f"Bearer {token}",
+                                   )
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(test_business_client.id, response.json().get("business_account"))
