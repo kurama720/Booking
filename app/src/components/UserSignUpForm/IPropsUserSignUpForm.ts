@@ -1,5 +1,6 @@
 import React from "react";
 
 export interface IPropsUserSignUpForm{
-    setActive: React.Dispatch<React.SetStateAction<boolean>>
+    setActive: () => void
+    handleLogInPopUp: () => void
 }
