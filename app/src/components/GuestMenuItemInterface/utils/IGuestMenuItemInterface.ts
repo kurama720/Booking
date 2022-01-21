@@ -12,4 +12,6 @@ export interface GuestMenuProps {
   header: string;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
+  numberOfGuests: number;
+  setNumberOfGuests:  React.Dispatch<React.SetStateAction<number>>;
 }

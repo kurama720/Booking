@@ -1,8 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Formik, FormikHelpers} from "formik";
 import {IUserSignUp} from "./IUserSignUp";
-import {useNavigate} from "react-router-dom";
-import {Paths} from "../../paths/path";
 import {validationSchema} from "./validationShema";
 import InputNames from "./InputNames/InputNames";
 import InputEmail from "./InputEmail/InputEmail";
@@ -17,7 +15,6 @@ import {IPropsUserSignUpForm} from "./IPropsUserSignUpForm";
 
 const UserSignUpForm: FC<IPropsUserSignUpForm> = ({setActive, handleLogInPopUp}) => {
     const [serverErrors, setServerErrors] = useState<IServerErrors>({email: '', password: ''})
-    let history = useNavigate()
 
     const redirectToLogIn = () => {
         setActive()
@@ -41,7 +38,8 @@ const UserSignUpForm: FC<IPropsUserSignUpForm> = ({setActive, handleLogInPopUp})
             if (response) {
                 setServerErrors({email: '', password: ''})
                 actions.resetForm()
-                history(Paths.LOG_IN)
+                setActive()
+                handleLogInPopUp()
             }
         } catch (e: any) {
             setServerErrors(e.response.data)
