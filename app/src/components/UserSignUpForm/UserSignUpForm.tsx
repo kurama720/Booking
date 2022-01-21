@@ -15,16 +15,17 @@ import AuthService from "../../api/AuthService";
 import {XIcon} from '@heroicons/react/solid';
 import {IPropsUserSignUpForm} from "./IPropsUserSignUpForm";
 
-const UserSignUpForm: FC<IPropsUserSignUpForm> = ({setActive}) => {
+const UserSignUpForm: FC<IPropsUserSignUpForm> = ({setActive, handleLogInPopUp}) => {
     const [serverErrors, setServerErrors] = useState<IServerErrors>({email: '', password: ''})
     let history = useNavigate()
 
     const redirectToLogIn = () => {
-        history(Paths.LOG_IN)
+        setActive()
+        handleLogInPopUp()
     }
 
     const closeModal = () => {
-        setActive(false)
+        setActive()
     }
 
     const onSubmitDataSignUp = async (values: IUserSignUp, actions: FormikHelpers<IUserSignUp>) => {
