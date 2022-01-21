@@ -41,7 +41,7 @@ services:
       - booking_production_services
 
   booking_postgres:
-    image: postgres:13
+    image: postgis/postgis
     container_name: booking_postgres
     volumes:
       - postgres_volume:/var/lib/postgresql/data/
