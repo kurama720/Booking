@@ -1,16 +1,19 @@
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.mixins import CreateModelMixin
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
+from rest_framework.viewsets import GenericViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
 from apartments.api.permissions import IsOwnerOrReadOnly
-from apartments.api.serializers import ApartmentSerializer, BookingSerializer, ReviewsSerializer
+from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
+                                        ReviewsSerializer, PriceAnalyticSerializer)
 from apartments.business_logic import check_files_in_request
 
 
@@ -144,3 +147,13 @@ class ReviewsView(GenericAPIView):
         rate = serializer.validated_data.get("rate")
         apartment.apartment_review(comment, rate, client)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+
+class PriceAnalyticView(CreateModelMixin, GenericViewSet):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = PriceAnalyticSerializer
+
+    def perform_create(self, serializer):
+        flat = serializer.validated_data.get("flat")
+        prices = Apartment.get_prices_count_by_location(flat)
+        serializer.validated_data.update(prices)
