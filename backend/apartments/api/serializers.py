@@ -57,3 +57,23 @@ class ReviewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApartmentReview
         fields = ("comment", "rate")
+
+
+class PriceAnalyticSerializer(serializers.Serializer):
+    """Serializer for price-analytic endpoint data"""
+    flat = serializers.ListField(required=True,
+                                 max_length=2,
+                                 min_length=2,
+                                 child=serializers.ListField(
+                                     max_length=2,
+                                     min_length=2,
+                                     child=serializers.FloatField()
+                                 ))
+    prices = serializers.ListField(read_only=True)
+
+    def validate(self, attrs):
+        flat = attrs.get("flat")
+        if (flat[0][0] > flat[1][0] or
+                flat[0][1] > flat[1][1]):
+            raise serializers.ValidationError({"flat": ["Invalid coordinates value!"]})
+        return super().validate(attrs)

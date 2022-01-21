@@ -6,6 +6,8 @@ from django.db.models import Q, F, Avg, Count
 from django.shortcuts import get_object_or_404
 from django.core.validators import MaxValueValidator
 
+from rest_framework.exceptions import ValidationError
+
 from accounts.models import ClientUser, BusinessClientUser
 from apartments.utils import Round
 from apartments.validators import SCHEMA, JSONSchemaValidator
@@ -132,7 +134,6 @@ class Apartment(models.Model):
         This function create images model objects and
         bound them to apartments object.
 
-        :param model: images model class
         :param images: images intermediate objects list
         :return: None
         """
@@ -153,6 +154,25 @@ class Apartment(models.Model):
                 index = stored_images_names.index(image.name)
                 content = existing_apartment_images[index]
                 uploaded_images.append(content)
+
+    @classmethod
+    def get_prices_count_by_location(cls, flat: list[list]) -> dict:
+        """
+        Finds all hotels in the given location and represent them like {hotels_price: hotels_count}
+        :param flat: list that contain coordinates of bottom left and
+         top right angles square location
+        :return: list of apartments
+        """
+        latitude_bottom, longitude_bottom = flat[0]
+        latitude_top, longitude_top = flat[1]
+        analytic_data = cls.objects.filter((Q(lat__gt=latitude_bottom) &
+                                            Q(lat__lt=latitude_top)) &
+                                           (Q(lon__gt=longitude_bottom) &
+                                            Q(lon__lt=longitude_top))).values(
+                                                  "price").annotate(hotels_count=Count("id"))
+        data = dict(prices=[{item["price"]:
+                             item["hotels_count"]} for item in analytic_data])
+        return data
 
     def __str__(self):
         return self.title
