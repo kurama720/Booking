@@ -8,4 +8,6 @@ interface BookingState {
 export interface GuestMenuItemProps {
   setUserBookingDate:  React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
+  numberOfGuests: number;
+  setNumberOfGuests:  React.Dispatch<React.SetStateAction<number>>;
 }

@@ -33,6 +33,7 @@ const Header =
       const [city, setCity] = useState<Cities[]>([])
       const [suggestionCityName, setSuggestionCityName] = useState<string>('')
       const [date, setDate] = React.useState<DateRange<Date>>([null, null]);
+      const [numberOfGuests, setNumberOfGuests] = useState(1)
 
       const handleMenuGuest = () => {
         isActiveModel((prev => !prev))
@@ -137,6 +138,8 @@ const Header =
                 <GuestMenuItem
                     userBookingDate={userBookingDate}
                     setUserBookingDate={setUserBookingDate}
+                    numberOfGuests={numberOfGuests}
+                    setNumberOfGuests={setNumberOfGuests}
                 />
             )}
             {
