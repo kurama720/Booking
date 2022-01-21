@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import SliderCardMap from "./SliderCardMap/SliderCardMap";
 import {HeartIcon as SolidHeartIcon, StarIcon} from "@heroicons/react/solid";
 import {HeartIcon} from "@heroicons/react/outline";
-import img from "../../assets/img/image 2.png";
+import img from "../../assets/img/image1.svg";
 
 const MapApartmentCard = () => {
     const [isLikeCard, setIsLikeCard] = useState<boolean>(false)
