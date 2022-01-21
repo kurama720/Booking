@@ -41,7 +41,8 @@ urlpatterns = [
                                         url_name='openapi-schema'),
          name='swagger-ui'),
     path('apartments/', include('apartments.urls')),
-    path('book-history/', BookingHistoryView.as_view(), name="book_history")
+    path('book-history/', BookingHistoryView.as_view(), name="book_history"),
+    path('map/', include('markers.urls')),
 ]
 
 if settings.DEBUG:

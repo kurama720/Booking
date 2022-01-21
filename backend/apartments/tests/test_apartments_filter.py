@@ -12,14 +12,14 @@ class ApartmentsTest(APITestCase):
 
     def setUp(self):
         """Create test hotels in test database"""
-        Apartment.objects.create(title='Test Hotel 1', price=100, img=None, lat=10, lon=20,
+        Apartment.objects.create(title='Test Hotel 1', price=100, lat=10, lon=20,
                                  description='The first test hotel', rating=5, feature={'guests': 2,
                                                                                         'bedrooms': 2,
                                                                                         'beds': 3,
                                                                                         'bathrooms': 1, })
-        Apartment.objects.create(title='Test Hotel 2', price=80, img=None, lat=30, lon=40,
+        Apartment.objects.create(title='Test Hotel 2', price=80, lat=30, lon=40,
                                  description='The second test hotel', rating=4, feature=None)
-        Apartment.objects.create(title='Test Hotel 3', price=50, img=None, lat=40, lon=50,
+        Apartment.objects.create(title='Test Hotel 3', price=50, lat=40, lon=50,
                                  description='The third test hotel', rating=2, feature={'guests': 2,
                                                                                         'bedrooms': 2,
                                                                                         'beds': 3,

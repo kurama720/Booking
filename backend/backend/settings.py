@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'apartments',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
+    'django.contrib.gis',
+    'rest_framework_gis',
+    'markers',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +88,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
         "HOST": os.getenv("DJANGO_DATABASE_HOST"),
         "PORT": os.getenv("DJANGO_DATABASE_PORT", default=5432),
         "NAME": os.getenv("DJANGO_DATABASE_NAME"),
