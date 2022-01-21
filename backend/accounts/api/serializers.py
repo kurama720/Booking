@@ -2,15 +2,12 @@ from django.contrib.auth.password_validation import validate_password
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.validators import UniqueValidator
-from accounts.models import ClientUser
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from accounts.models import BusinessClientUser
+from accounts.models import ClientUser, BusinessClientUser
 
-from apartments.api.serializers import ApartmentSerializer
-
-from apartments.api.serializers import BookingSerializer
+from apartments.api.serializers import ApartmentSerializer, BookingSerializer
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -113,3 +110,11 @@ class BusinessClientSignInSerializer(CustomTokenObtainSerializer):
         raise AuthenticationFailed(
             self.error_messages['no_active_account'],
             'no_active_account',)
+
+
+class ResetPasswordEmailRequestSerializer(serializers.Serializer):
+    """Serializer for request reset password"""
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        fields = ['email']

@@ -6,15 +6,19 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.views import TokenViewBase
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
-from accounts.models import ClientUser
-from accounts.models import BusinessClientUser
-from accounts.api.serializers import RegisterSerializer, CustomTokenObtainSerializer
-from accounts.api.serializers import CustomTokenDestroySerializer
+from accounts.models import ClientUser, BusinessClientUser
 from accounts.api.tokens import CustomAccessToken
-from accounts.api.serializers import BusinessClientSerializer
-from accounts.api.serializers import BusinessClientRegisterSerializer
-from accounts.api.serializers import BusinessClientSignInSerializer
+from accounts.api.serializers import (BusinessClientSerializer, BusinessClientRegisterSerializer,
+                                      BusinessClientSignInSerializer, RegisterSerializer,
+                                      CustomTokenObtainSerializer, CustomTokenDestroySerializer,
+                                      ResetPasswordEmailRequestSerializer)
+from accounts.utils import Util
 
 
 class RegisterView(generics.CreateAPIView):
@@ -31,7 +35,7 @@ class CustomTokenObtainView(TokenViewBase):
 
 class LogoutView(APIView):
     """View to manage logout post-request"""
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     @extend_schema(
         request=CustomTokenDestroySerializer,
@@ -58,9 +62,28 @@ class BusinessClientViewSet(RetrieveModelMixin, GenericViewSet):
 
 class BusinessClientRegisterView(generics.CreateAPIView):
     queryset = BusinessClientUser.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = BusinessClientRegisterSerializer
 
 
 class BusinessClientSignInView(TokenViewBase):
     serializer_class = BusinessClientSignInSerializer
+
+
+class RequestPasswordResetView(generics.GenericAPIView):
+    """View for send a message to email a registered user"""
+    serializer_class = ResetPasswordEmailRequestSerializer
+
+    def post(self, request):
+        email = request.data.get('email')
+        if ClientUser.objects.filter(email=email).exists():
+            user = ClientUser.objects.get(email=email)
+            uid64 = urlsafe_base64_encode(smart_bytes(user.id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            current_site = get_current_site(request=request).domain
+            relative_link = f"password-reset/{uid64}/{token}"
+            absurl = f"http://{current_site}{relative_link}"
+            email_body = f"Hello {user.email}. Use link below to reset your password \n' {absurl}"
+            data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Resset your password'}
+            Util.send_mail(data)
+        return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
