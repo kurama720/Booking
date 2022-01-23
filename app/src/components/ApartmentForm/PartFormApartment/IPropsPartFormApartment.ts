@@ -5,8 +5,8 @@ export interface IPropsFormApartment {
     valueDate: DateRange<Date>
     setValueDate: React.Dispatch<React.SetStateAction<DateRange<Date>>>
     handleSubmit:  (e: React.FormEvent<HTMLFormElement>) => void
-    numberGuests: number
-    setNumberGuests: React.Dispatch<React.SetStateAction<number>>
+    numberOfGuests: number
+    setNumberOfGuests: React.Dispatch<React.SetStateAction<number>>
     isShowGuestsWindow: boolean
     decrementGuests: () => void
     incrementGuests: () => void

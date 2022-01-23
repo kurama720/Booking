@@ -6,7 +6,7 @@ import {IPropsFormApartment} from "./IPropsPartFormApartment";
 import Calendar from '../Calendar/Calendar';
 
 const PartFormApartment: FC<IPropsFormApartment> = (props) => {
-    const { valueDate, setValueDate, handleSubmit, numberGuests, isShowGuestsWindow, setNumberGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
+    const { valueDate, setValueDate, handleSubmit, numberOfGuests, isShowGuestsWindow, setNumberOfGuests, decrementGuests, incrementGuests, handleChangeShowGuestsWindow} = props
     return (
         <form onSubmit={handleSubmit}>
             <div className='flex align-center justify-center my-6'>
@@ -26,8 +26,8 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
                     <span className='pl-1.5 '><MailIcon className={`h-6 w-5 text-gray-400`}/></span>
                     <input
                         disabled type='number'
-                        value={numberGuests}
-                        onChange={e => setNumberGuests(Number(e.target.value))}
+                        value={numberOfGuests}
+                        onChange={e => setNumberOfGuests(Number(e.target.value))}
                         name='guests'
                         id='guests'
                         className={`bg-white appearance-none font-body text-gray-900 text-sm relative w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}/>
@@ -47,14 +47,14 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
                             <span className='font-body text-xs text-gray-500'>ages 13 or above</span>
                         </div>
                         <div className='flex justify-center items-center'>
-                            <button onClick={decrementGuests} disabled={numberGuests <= 1}
+                            <button onClick={decrementGuests} disabled={numberOfGuests <= 1}
                                     type='button'>
                                 <div
-                                    className={`${numberGuests <= 1 ? 'bg-gray-200' : 'bg-blue-600 '} w-8 h-8 rounded-full flex items-center justify-center`}>
+                                    className={`${numberOfGuests <= 1 ? 'bg-gray-200' : 'bg-blue-600 '} w-8 h-8 rounded-full flex items-center justify-center`}>
                                     <MinusIcon className='w-3 text-white '/>
                                 </div>
                             </button>
-                            <span className='mx-5'>{numberGuests}</span>
+                            <span className='mx-5'>{numberOfGuests}</span>
                             <button onClick={incrementGuests} type='button'>
                                 <div
                                     className='bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center'>

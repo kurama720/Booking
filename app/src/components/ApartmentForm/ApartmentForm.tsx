@@ -7,16 +7,15 @@ import {parseDate} from "../../models/parseDate";
 
 const ApartmentForm: FC = () => {
     const [valueDate, setValueDate] = React.useState<DateRange<Date>>([null, null]);
-    const [numberGuests, setNumberGuests] = useState<number>(1)
+    const [numberOfGuests, setNumberOfGuests] = useState<number>(1)
     const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false)
-    const [serverErrors, setServerErrors] = useState(null)
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const dataForReserve: dataForApartmentForm = {
             check_in: parseDate(valueDate[0]),
             check_out: parseDate(valueDate[1]),
-            guests: numberGuests
+            guests: numberOfGuests
         }
     }
 
@@ -25,11 +24,11 @@ const ApartmentForm: FC = () => {
     }
 
     const incrementGuests = (): void => {
-        setNumberGuests(prev => prev + 1)
+        setNumberOfGuests(prev => prev + 1)
     }
 
     const decrementGuests = (): void => {
-        setNumberGuests(prev => prev - 1)
+        setNumberOfGuests(prev => prev - 1)
     }
 
     return (
@@ -50,9 +49,9 @@ const ApartmentForm: FC = () => {
                 <PartFormApartment
                     valueDate={valueDate}
                     setValueDate={setValueDate}
-                    setNumberGuests={setNumberGuests}
+                    setNumberOfGuests={setNumberOfGuests}
                     handleSubmit={handleSubmit}
-                    numberGuests={numberGuests}
+                    numberOfGuests={numberOfGuests}
                     isShowGuestsWindow={isShowGuestsWindow}
                     decrementGuests={decrementGuests}
                     incrementGuests={incrementGuests}
