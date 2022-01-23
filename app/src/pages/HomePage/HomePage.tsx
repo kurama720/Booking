@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Header from "../../components/Header/Header";
 import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
+import ResetPasswordForm from '../../components/ResetPasswordForm';
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Modal from '../../components/Modal/Modal'
 import {BookingState} from "./utils/HomePageInterface";
@@ -11,6 +12,7 @@ const HomePage = () => {
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false)
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false)
   const [activeLogout, isActiveLogout] = useState<boolean>(false)
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] = useState<boolean>(false)
   const [calendarPopUpStatus, setCalendarPopUpStatus] = useState<boolean>(false)
   const [userBookingDate, setUserBookingDate] = useState<BookingState>({
     city: '',
@@ -29,6 +31,10 @@ const HomePage = () => {
 
   const handleLogoutPopUpStatus = () => {
     isActiveLogout((prev) => !prev)
+  }
+
+  const handleResetPasswordPopUpStatus = () => {
+    setResetPasswordPopUpStatus((prev) => !prev)
   }
 
   const handleCalendarPopUpStatus = () => {
@@ -56,6 +62,7 @@ const HomePage = () => {
                       popUpStatus={popUpStatus}
                       handleLogInPopUp={handleLogInPopUp}
                       handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+                      handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
                   />
                 </Modal>
             )
@@ -85,6 +92,19 @@ const HomePage = () => {
               />
             </Modal>
         )}
+        {
+            resetPasswordPopUpStatus && (
+                <Modal
+                    active={resetPasswordPopUpStatus}
+                    setActive={handleResetPasswordPopUpStatus}
+                >
+                  <ResetPasswordForm
+                      setActive={handleResetPasswordPopUpStatus}
+                      handleSignUpPopUp={handleSignUpPopUpStatus}
+                  />
+                </Modal>
+            )
+        }
       </div>
   );
 };

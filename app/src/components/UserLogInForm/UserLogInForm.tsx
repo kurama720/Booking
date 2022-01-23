@@ -3,7 +3,6 @@ import {Field, Form, Formik, FormikHelpers} from "formik";
 import {UserLogin} from "../UserLogInForm/utils/interfaces/interfaces";
 import {AuthContext} from '../../context/Context'
 import * as yup from "yup";
-import {Paths} from "../../paths/path";
 import Cookies from 'js-cookie'
 import Button from "../../components/Button/Button";
 import {
@@ -16,15 +15,15 @@ import {
   XIcon
 } from "@heroicons/react/solid";
 import axios, {AxiosError} from "axios";
-import {useNavigate} from "react-router-dom";
 
 interface UserLogInFormProps {
   status: boolean;
   handleLogInPopUp: () => void;
-  handleSignUpPopUpStatus: () => void
+  handleSignUpPopUpStatus: () => void;
+  handleResetPasswordPopUpStatus: () => void;
 }
 
-const UserLogInForm = ({status, handleLogInPopUp, handleSignUpPopUpStatus}: UserLogInFormProps) => {
+const UserLogInForm = ({status, handleLogInPopUp, handleSignUpPopUpStatus, handleResetPasswordPopUpStatus}: UserLogInFormProps) => {
   const {login, setErrorMessage, errorMessage} = useContext(AuthContext);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
@@ -34,8 +33,6 @@ const UserLogInForm = ({status, handleLogInPopUp, handleSignUpPopUpStatus}: User
     email: '',
     password: ''
   })
-
-  let history = useNavigate()
 
   const submitUserInformation = async (values: UserLogin) => {
     try {
@@ -361,7 +358,10 @@ const UserLogInForm = ({status, handleLogInPopUp, handleSignUpPopUpStatus}: User
                               <div className="text-sm">
                                 <Button
                                     type="button"
-                                    onClick={() => history(Paths.RESET_PASSWORD)}
+                                    onClick={() => {
+                                      handleLogInPopUp();
+                                      handleResetPasswordPopUpStatus()
+                                    }}
                                     classNames="font-medium text-blue-600 hover:text-blue-700 font-body"
                                     context="Forgot your password?"
                                 />

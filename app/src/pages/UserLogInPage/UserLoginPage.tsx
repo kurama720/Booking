@@ -6,12 +6,14 @@ const UserLogInPage =
     ({
        popUpStatus,
        handleLogInPopUp,
-       handleSignUpPopUpStatus
+       handleSignUpPopUpStatus,
+       handleResetPasswordPopUpStatus,
     }: UserLogInFormProps) => (
     <UserLogInForm
         status={popUpStatus}
         handleLogInPopUp={handleLogInPopUp}
         handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+        handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
     />
 )
 
