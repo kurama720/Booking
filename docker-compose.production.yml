@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-node.production
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL}
     container_name: booking_nginx
     ports:
       - "80:80"
