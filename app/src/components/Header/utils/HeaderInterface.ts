@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface Cities {
-  name: string
+  name: string;
 }
 
 export interface BookingState {
