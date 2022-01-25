@@ -11,7 +11,7 @@ from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
-from apartments.api.permissions import IsOwnerOrReadOnly
+from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient
 from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
                                         ReviewsSerializer, PriceAnalyticSerializer)
 from apartments.business_logic import check_files_in_request
@@ -112,9 +112,17 @@ class BookingHistoryView(ListAPIView):
     """View to provide book history"""
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+    permission_classes = (IsBusinessClient, )
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('check_in_date', 'business_client')
+    filter_fields = ('check_in_date', )
     filter_class = BookingHistoryFilter
+
+    def filter_queryset(self, queryset):
+        old_queryset = super().filter_queryset(queryset)
+        queryset = old_queryset.filter(
+            business_client=self.request.user.clientuser.businessclientuser
+        )
+        return queryset
 
 
 class ReviewsView(GenericAPIView):
