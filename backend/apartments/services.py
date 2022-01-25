@@ -50,11 +50,10 @@ class DateAscendingDescendingFilter(DateRangeFilter):
 class BookingHistoryFilter(django_filters.FilterSet):
     """Filter books by check_in_date and business_client fields"""
     check_in_date = DateAscendingDescendingFilter()
-    business_client = NumberFilter()
 
     class Meta:
         model = Booking
-        fields = ('check_in_date', 'business_client')
+        fields = ('check_in_date',)
 
     def __init__(self, data, *args, **kwargs):
         data = data.copy()
