@@ -30,7 +30,6 @@ class BookingHistoryViewApiTestCase(APITestCase):
 
         test_apartments = Apartment.objects.create(title="Test Hotel 1",
                                                    price=100,
-                                                   img=None,
                                                    lat=10,
                                                    lon=20,
                                                    description="The first test hotel",

@@ -44,16 +44,14 @@ class BusinessLogicTestCase(TestCase):
                                                   )
 
     def test_add_images_to_apartments_function_with_one_image(self):
-        self.test_apartment.add_images_to_apartments(ApartmentsImage,
-                                                     [self.image_to_upload])
+        self.test_apartment.add_images_to_apartments([self.image_to_upload])
 
         self.assertEqual(1, len(self.test_apartment.img_content.all()))
         self.assertIn(self.image_to_upload.name[:-4],
                       self.test_apartment.img_content.all()[0].img.name)
 
     def test_add_images_to_apartments_function_with_many_image(self):
-        self.test_apartment.add_images_to_apartments(ApartmentsImage,
-                                                     [self.image_to_upload for _ in range(5)])
+        self.test_apartment.add_images_to_apartments([self.image_to_upload for _ in range(5)])
 
         self.assertEqual(5, len(self.test_apartment.img_content.all()))
         self.assertIn(self.image_to_upload.name[:-4],
