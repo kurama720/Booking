@@ -23,16 +23,13 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly, )
     http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('lat', 'lon', 'created_at', 'feature',)
+    filter_fields = ('lat', 'lon', 'created_at', 'feature', 'min_price', 'max_price')
     filter_class = ApartmentFilter
     parser_classes = (MultiPartParser, FormParser)
 
-    def retrieve(self, request,  pk: int):
-        """Process GET requests /apartments/{id}
-
-        :param pk: apartment unique id from request path
-        """
-        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+    def retrieve(self, request,  *args, **kwargs):
+        """Process GET requests /apartments/{id}"""
+        apartment = self.get_object()
         apartment_data = self.get_serializer(apartment).data
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)

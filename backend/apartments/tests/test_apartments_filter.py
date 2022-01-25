@@ -57,3 +57,14 @@ class ApartmentsTest(APITestCase):
         self.assertTrue(len(content), 1)
         self.assertTrue(content['created_at'], hotel.created_at)  # Compare result's creation time with object's
 
+    def test_price_filter(self):
+        """Test apartment price filter"""
+        url = reverse('apartment-list')
+        response = self.client.get(url, data={'min_price': 50, 'max_price': 80})
+        self.assertEqual(len(response.json()), 2)
+
+        response = self.client.get(url, data={'min_price': 90, 'max_price': 150})
+        self.assertEqual(len(response.json()), 1)
+
+        response = self.client.get(url, data={'min_price': 70, 'max_price': 90})
+        self.assertEqual(len(response.json()), 1)
