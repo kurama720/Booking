@@ -91,6 +91,10 @@ class BusinessClientRegisterSerializer(RegisterSerializer):
     def create(self, validated_data):
         validated_data.pop("confirm_password")
         raw_password = validated_data.pop("password")
+        validated_data.update(
+            first_name=validated_data["first_name"].capitalize(),
+            last_name=validated_data["last_name"].capitalize(),
+        )
         business_client = BusinessClientUser.objects.create(**validated_data)
         business_client.set_password(raw_password)
         business_client.save()
@@ -113,3 +117,21 @@ class BusinessClientSignInSerializer(CustomTokenObtainSerializer):
         raise AuthenticationFailed(
             self.error_messages['no_active_account'],
             'no_active_account',)
+
+
+class ClientUserSerializer(serializers.ModelSerializer):
+    """
+    serializer class for client user model
+    """
+    class Meta:
+        model = ClientUser
+        fields = ("first_name", "last_name")
+
+
+class BusinessClientUserSerializer(serializers.ModelSerializer):
+    """
+    serializer class for business client user model
+    """
+    class Meta:
+        model = BusinessClientUser
+        fields = ("first_name", "last_name", "organization_name")
