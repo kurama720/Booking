@@ -36,3 +36,15 @@ class IsOwnerOrReadOnly(IsBusinessClient):
                 return False
             return obj in bind_to_user_objects
         return False
+
+
+class IsClientOnly(BasePermission):
+    """The request is authenticated as a client user only"""
+
+    def has_permission(self, request, view):
+        try:
+            request.user.clientuser.businessclientuser
+        except (ClientUser.businessclientuser.RelatedObjectDoesNotExist, AttributeError):
+            return bool(request.user.is_authenticated)
+        return False
+
