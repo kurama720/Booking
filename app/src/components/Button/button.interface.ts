@@ -4,6 +4,6 @@ export interface ButtonProps {
   classNames: string;
   context: string | React.ReactNode;
   onClick?: () => void;
-  type: "button" | "submit" | "reset" | undefined;
+  type: "button";
   disabled?: boolean;
 }

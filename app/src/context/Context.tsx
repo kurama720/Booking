@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 
 interface Auth {
-  login: (jwtToken: any, status: any, checked: any) => void;
+  login: (jwtToken: object, status: number | string, checked: boolean) => void;
   logout: () => void;
   token: object | null;
   requestStatus: number | null;
