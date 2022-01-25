@@ -3,5 +3,6 @@ export enum Paths {
   SIGN_UP = "/signup",
   RESET_PASSWORD = "/reset-password",
   HOME = "/",
-  LOG_OUT = '/logout'
+  LOG_OUT = '/logout',
+  MAP = '/map'
 }
