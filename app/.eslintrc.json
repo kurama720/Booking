@@ -37,6 +37,33 @@
         "prettier"
     ],
     "rules": {
-        "no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "off",
+        "react/function-component-definition": "off",
+        "import/prefer-default-export": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "no-nested-ternary": "off",
+        "react/no-unescaped-entities": 0,
+        "jsx-a11y/label-has-associated-control": "off",
+        "react/prop-types": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/button-has-type": "off",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "default",
+                "format": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                ],
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
+            }
+        ]
     }
 }

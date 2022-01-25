@@ -9,7 +9,6 @@ const Location = forwardRef<
   (
     {
       handleSearchLocation,
-      suggestionCityName,
       setCalendarPopUpStatus,
       isActiveModel,
       activeLocationBox,

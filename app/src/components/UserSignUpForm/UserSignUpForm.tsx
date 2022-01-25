@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { Formik, FormikHelpers } from "formik";
 import { XIcon } from "@heroicons/react/solid";
+import axios from "axios";
 import { IUserSignUp } from "./IUserSignUp";
 import { validationSchema } from "./validationShema";
 import InputNames from "./InputNames/InputNames";
@@ -50,8 +51,10 @@ const UserSignUpForm: FC<IPropsUserSignUpForm> = ({
         setActive();
         handleLogInPopUp();
       }
-    } catch (e: any) {
-      setServerErrors(e.response.data);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        setServerErrors(e.response?.data);
+      }
     }
   };
 
@@ -88,7 +91,7 @@ const UserSignUpForm: FC<IPropsUserSignUpForm> = ({
             <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">
               Sign up
             </h2>
-            <button onClick={closeModal}>
+            <button type="button" onClick={closeModal}>
               <XIcon className="text-gray-500 w-6 h-6 hover:text-gray-700" />
             </button>
           </div>

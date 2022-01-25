@@ -1,4 +1,10 @@
-import React, { useState, createRef, useEffect, useContext } from "react";
+import React, {
+  useState,
+  createRef,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import { DateRange } from "@mui/lab/DateRangePicker";
 import NodicLogo from "./utils/image/NodicLogo.png";
 import Calendar from "../Calendar/Calendar";
@@ -40,27 +46,30 @@ function Header({
 
   const locationRef = createRef<HTMLInputElement>();
 
-  const handleSearchLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchLocationValue = e.target.value;
-    const suggestion = cities.filter((city) => {
-      return city.name
-        .toLowerCase()
-        .startsWith(searchLocationValue.toLowerCase());
-    });
-    setCity([...suggestion]);
-    isActiveLocationBox(true);
-    setUserBookingDate({
-      ...userBookingDate,
-      city: searchLocationValue,
-    });
-  };
+  const handleSearchLocation = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const searchLocationValue = e.target.value;
+      const suggestion = cities.filter((cityName) => {
+        return cityName.name
+          .toLowerCase()
+          .startsWith(searchLocationValue.toLowerCase());
+      });
+      setCity([...suggestion]);
+      isActiveLocationBox(true);
+      setUserBookingDate({
+        ...userBookingDate,
+        city: searchLocationValue,
+      });
+    },
+    [isActiveLocationBox, setUserBookingDate, userBookingDate]
+  );
 
   useEffect(() => {
     if (city.length > 5) {
       const newCities = city.slice(0, 5);
       setCity([...newCities]);
     }
-  }, [handleSearchLocation]);
+  }, [handleSearchLocation, city]);
 
   const getSuggestionData = (e: React.MouseEvent) => {
     const suggestionData = e.target as HTMLInputElement;

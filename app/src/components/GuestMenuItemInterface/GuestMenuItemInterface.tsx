@@ -15,7 +15,7 @@ function GuestMenuItemInterface({
       ...userBookingDate,
       numOfPersons: numberOfGuests,
     });
-  }, [numberOfGuests]);
+  }, [numberOfGuests, setUserBookingDate, userBookingDate]);
 
   return (
     <div className="w-full h-full flex justify-between items-center pl-[1.5rem] pr-10">
@@ -27,6 +27,7 @@ function GuestMenuItemInterface({
       </div>
       <div className="flex justify-between w-28">
         <button
+          type="button"
           disabled={numberOfGuests <= 1}
           className={
             numberOfGuests <= 1
@@ -41,6 +42,7 @@ function GuestMenuItemInterface({
           {numberOfGuests}
         </div>
         <button
+          type="button"
           className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
           onClick={() => setNumberOfGuests((prev: number) => prev + 1)}
         >

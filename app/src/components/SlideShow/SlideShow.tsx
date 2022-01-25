@@ -13,6 +13,7 @@ const SlideShow: FC = () => {
   return (
     <>
       <button
+        type="button"
         onClick={openModal}
         className="max-w-[130px] w-full rounded-[2px]"
       >

@@ -15,7 +15,7 @@ function AuthMenu({ activeUserMenu, isActiveUserMenu }: AuthMenuProps) {
           : "w-[5.25rem] h-[2.375rem] mt-px rounded-3xl border shadow-sm flex items-center justify-center"
       }
     >
-      <button onClick={handleMenuStatus}>
+      <button onClick={handleMenuStatus} type="button">
         <MenuAlt1Icon
           className="w-[1.24rem] h-[1.3728rem] mr-[0.6875rem]"
           fill={activeUserMenu ? "#2563EB" : "#9CA3AF"}

@@ -11,7 +11,7 @@ import {
   UserCircleIcon,
   XIcon,
 } from "@heroicons/react/solid";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 import { Paths } from "../../paths/path";
@@ -73,11 +73,8 @@ function UserLogInForm({
           );
         }
       }
-    } catch (error) {
-      const isAxiosError = (errorData: any): errorData is AxiosError => {
-        return errorData.isAxiosError === true;
-      };
-      if (isAxiosError(error)) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
         setErrorMessage(error.message);
       }
     }
@@ -179,7 +176,7 @@ function UserLogInForm({
             >
               <div className="h-full">
                 {!status ? (
-                  <></>
+                  <div />
                 ) : (
                   <div className="flex justify-between w-full items-center">
                     <h2 className=" text-3xl font-extrabold text-gray-500 font-body">
@@ -264,9 +261,6 @@ function UserLogInForm({
                             </div>
                             <Button
                               type="button"
-                              onClick={() =>
-                                console.log("Manage a profile of accounts")
-                              }
                               context={
                                 <ChevronDownIcon
                                   className="h-6 w-6"
@@ -389,21 +383,22 @@ function UserLogInForm({
                       <div>
                         {email ||
                         (initialState.email && initialState.password) ? (
-                          <Button
+                          <button
                             type="submit"
                             disabled={
                               (!isValid && !dirty) ||
                               !!errors.email ||
                               !!errors.password
                             }
-                            context="Log in"
-                            classNames={
+                            className={
                               (isValid && dirty) ||
                               (initialState.email && initialState.password)
                                 ? "group relative w-full flex justify-center text-white py-2.5 px-4  font-body border border-transparent text-sm font-medium rounded-md  bg-blue-600 leading-5"
                                 : "group relative w-full flex justify-center py-2.5 px-4 font-body border border-transparent text-sm font-medium rounded-md text-gray-500 bg-gray-200 leading-5"
                             }
-                          />
+                          >
+                            Log in
+                          </button>
                         ) : (
                           <Button
                             type="button"

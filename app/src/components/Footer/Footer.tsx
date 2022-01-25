@@ -32,19 +32,19 @@ function Footer() {
             </div>
             <div className="flex items-center ml-20">
               <span className="mr-2">
-                <a href="#">
+                <button type="button">
                   <BsFacebook className="text-gray-700" />
-                </a>
+                </button>
               </span>
               <span className="mr-2">
-                <a href="#">
+                <button type="button">
                   <AiOutlineTwitter className="text-gray-700" />
-                </a>
+                </button>
               </span>
               <span className="">
-                <a href="#">
+                <button type="button">
                   <FaInstagram className="text-gray-700" />
-                </a>
+                </button>
               </span>
             </div>
           </div>

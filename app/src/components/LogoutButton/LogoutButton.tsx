@@ -14,35 +14,31 @@ function LogoutButton({
   handleLogoutPopUpStatus,
 }: LogoutButtonProps) {
   const { logout } = useContext(AuthContext);
-  const userData: any = LocalStorage.getItem(storageName);
+  const userData = LocalStorage.getItem(storageName);
 
   const handleLogout = async () => {
-    try {
-      if (userData) {
-        const payload = userData.token.data.access;
+    if (userData) {
+      const payload = userData.token.data.access;
 
-        const config = {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${payload}`,
-          },
-        };
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${payload}`,
+        },
+      };
 
-        const data = await axios.post(
-          `${process.env.REACT_APP_API_URL}accounts/logout/`,
-          {
-            text: "logout",
-          },
-          config
-        );
+      const data = await axios.post(
+        `${process.env.REACT_APP_API_URL}accounts/logout/`,
+        {
+          text: "logout",
+        },
+        config
+      );
 
-        if (data.data.logout === "access") {
-          logout();
-          handleLogoutPopUpStatus();
-        }
+      if (data.data.logout === "access") {
+        logout();
+        handleLogoutPopUpStatus();
       }
-    } catch (e) {
-      console.error(e);
     }
   };
 
@@ -74,6 +70,7 @@ function LogoutButton({
         </div>
         <div className="w-full mt-6">
           <button
+            type="button"
             className="w-full bg-blue-600 text-white font-body leading-5 text-sm font-medium py-[0.5625rem] shadow-sm rounded-md"
             onClick={handleLogout}
           >

@@ -8,7 +8,14 @@ import "./react-splide.css";
 
 const ApartmentCard: FC = () => {
   const [isLike, setIsLike] = useState<boolean>(false);
-  const pictureList: Array<string> = [img, img, img, img, img];
+  const pictureList = [
+    { img, id: 1 },
+    { img, id: 2 },
+    { img, id: 3 },
+    { img, id: 4 },
+    { img, id: 5 },
+    { img, id: 6 },
+  ];
 
   const handleIsLike = () => {
     setIsLike((prev) => !prev);
@@ -25,8 +32,8 @@ const ApartmentCard: FC = () => {
           }}
         >
           {pictureList.map((item, index) => (
-            <SplideSlide key={index}>
-              <img src={item} alt={`image ${index}`} className="rounded" />
+            <SplideSlide key={item.id}>
+              <img src={item.img} alt={`object${index}`} className="rounded" />
             </SplideSlide>
           ))}
         </Splide>
@@ -36,7 +43,7 @@ const ApartmentCard: FC = () => {
               <h4 className="text-xl font-body text-gray-900">
                 Apartment name
               </h4>
-              <button className="" onClick={handleIsLike}>
+              <button type="button" onClick={handleIsLike}>
                 {isLike ? (
                   <SolidHeartIcon className="w-5 h-5 text-red-500" />
                 ) : (

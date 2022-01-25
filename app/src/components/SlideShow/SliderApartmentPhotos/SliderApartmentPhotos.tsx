@@ -9,7 +9,14 @@ import "../../ApartmentCard/react-splide.css";
 const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({
   setActive,
 }) => {
-  const mokListPictures = [img, img, img, img, img];
+  const mokListPictures = [
+    { img, id: 1 },
+    { img, id: 2 },
+    { img, id: 3 },
+    { img, id: 4 },
+    { img, id: 5 },
+    { img, id: 6 },
+  ];
 
   const closeModal = () => {
     setActive(false);
@@ -37,9 +44,9 @@ const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({
           }}
         >
           {mokListPictures.map((item, index) => (
-            <SplideSlide key={`${item}+${index}`}>
+            <SplideSlide key={item.id}>
               <img
-                src={item}
+                src={item.img}
                 alt={`img-${index}`}
                 className="rounded object-cover w-full h-full max-w-[800px] max-h-[581px]"
               />
