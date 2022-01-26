@@ -48,7 +48,7 @@ function Calendar({
         checkOutDate: `${secondDateYear}-${secondDateMonth}-${secondDateDay}`,
       });
     }
-  }, [date, setUserBookingDate, userBookingDate]);
+  }, [date]);
 
   return (
     <div className="w-56 h-[2.375rem] relative sm:col-span-3">
