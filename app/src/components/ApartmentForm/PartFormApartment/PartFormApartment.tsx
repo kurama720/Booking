@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { MailIcon } from "@heroicons/react/solid";
 import {
   ChevronDownIcon,
@@ -20,7 +20,26 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
     decrementGuests,
     incrementGuests,
     handleChangeShowGuestsWindow,
+    handleOutsideClick,
   } = props;
+  const wrapperRef = useRef(null);
+
+  const useOutsideAlerter = (
+    ref: React.MutableRefObject<HTMLBodyElement | null>
+  ) => {
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          handleOutsideClick();
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  };
+  useOutsideAlerter(wrapperRef);
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex align-center justify-center my-6">
@@ -38,7 +57,7 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
         <div
           className={`flex rounded-md ${
             isShowGuestsWindow ? "border-1 border-blue-600" : "border-gray-300"
-          } border  items-center relative`}
+          } border  items-center`}
         >
           <span className="pl-1.5 ">
             <MailIcon className="h-6 w-5 text-gray-400" />
@@ -50,9 +69,9 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
             onChange={(e) => setNumberOfGuests(Number(e.target.value))}
             name="guests"
             id="guests"
-            className="bg-white appearance-none font-body text-gray-900 text-sm relative w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            className="bg-white appearance-none font-body text-gray-900 text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
           />
-          <span className="absolute left-14 tex-sm font-body text-gray-900">
+          <span className="absolute left-20 tex-sm font-body text-gray-900">
             guests
           </span>
           <span
@@ -67,7 +86,10 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
           </span>
         </div>
         {isShowGuestsWindow && (
-          <div className="shadow rounded-md py-4 px-6 absolute bg-white w-[302px] mt-1">
+          <div
+            className="shadow rounded-md py-4 px-6 absolute bg-white w-[302px] mt-1"
+            ref={wrapperRef}
+          >
             <div className="flex justify-between">
               <div className="flex flex-col">
                 <span className="text-sm font-body font-medium text-gray-900">
@@ -129,10 +151,10 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
           </span>
         </div>
         <button
-          className="group mt-6 relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="group mt-6 w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           type="submit"
         >
-          "Reserve"
+          Reserve
         </button>
       </div>
     </form>

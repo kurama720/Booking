@@ -36,6 +36,10 @@ const ApartmentForm: FC = () => {
     setNumberOfGuests((prev) => prev - 1);
   };
 
+  const handleOutsideClick = (): void => {
+    setIsShowGuestsWindow(false);
+  };
+
   return (
     <div>
       <div className="shadow w-full p-6 max-w-[350px]">
@@ -67,6 +71,7 @@ const ApartmentForm: FC = () => {
           decrementGuests={decrementGuests}
           incrementGuests={incrementGuests}
           handleChangeShowGuestsWindow={handleChangeShowGuestsWindow}
+          handleOutsideClick={handleOutsideClick}
         />
       </div>
     </div>

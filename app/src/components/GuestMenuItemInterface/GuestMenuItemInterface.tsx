@@ -15,7 +15,7 @@ function GuestMenuItemInterface({
       ...userBookingDate,
       numOfPersons: numberOfGuests,
     });
-  }, [numberOfGuests, setUserBookingDate, userBookingDate]);
+  }, [numberOfGuests]);
 
   return (
     <div className="w-full h-full flex justify-between items-center pl-[1.5rem] pr-10">
