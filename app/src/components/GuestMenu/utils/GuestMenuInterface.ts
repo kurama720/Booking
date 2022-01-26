@@ -1,5 +1,7 @@
+import React from "react";
+
 export interface GuestMenuProps {
-  handleMenu(): void
+  handleMenu(): void;
   setCalendarPopUpStatus: React.Dispatch<React.SetStateAction<boolean>>;
   isActiveLocationBox: React.Dispatch<React.SetStateAction<boolean>>;
   activeModel: boolean;

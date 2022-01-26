@@ -1,18 +1,19 @@
-import React from 'react';
+import React from "react";
 import UserLogInForm from "../../components/UserLogInForm/UserLogInForm";
-import {UserLogInFormProps} from "./utils/UserLoginPageInterface";
+import { UserLogInFormProps } from "./utils/UserLoginPageInterface";
 
-const UserLogInPage =
-    ({
-       popUpStatus,
-       handleLogInPopUp,
-       handleSignUpPopUpStatus
-    }: UserLogInFormProps) => (
+function UserLogInPage({
+  popUpStatus,
+  handleLogInPopUp,
+  handleSignUpPopUpStatus,
+}: UserLogInFormProps) {
+  return (
     <UserLogInForm
-        status={popUpStatus}
-        handleLogInPopUp={handleLogInPopUp}
-        handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+      status={popUpStatus}
+      handleLogInPopUp={handleLogInPopUp}
+      handleSignUpPopUpStatus={handleSignUpPopUpStatus}
     />
-)
+  );
+}
 
 export default UserLogInPage;

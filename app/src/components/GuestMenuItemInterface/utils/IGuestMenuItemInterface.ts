@@ -1,4 +1,4 @@
-
+import React from "react";
 
 export interface BookingState {
   city: string;
@@ -13,5 +13,5 @@ export interface GuestMenuProps {
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
   numberOfGuests: number;
-  setNumberOfGuests:  React.Dispatch<React.SetStateAction<number>>;
+  setNumberOfGuests: React.Dispatch<React.SetStateAction<number>>;
 }
