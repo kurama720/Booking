@@ -39,10 +39,15 @@ class ApartmentSerializer(serializers.ModelSerializer):
 
 class BookingSerializer(serializers.ModelSerializer):
     """Serializer to serialize data from booking apartments requests"""
+    apartment = serializers.SlugRelatedField(slug_field="title", read_only=True)
+
     class Meta:
         model = Booking
-        fields = ("num_of_persons", "comment", "check_in_date", "check_out_date",
+        fields = ("apartment", "num_of_persons", "comment", "check_in_date", "check_out_date",
                   "idempotency_key")
+        extra_kwargs = {
+            "idempotency_key": {'write_only': True},
+        }
 
     def validate(self, attrs):
         if attrs['check_in_date'] < datetime.date.today():

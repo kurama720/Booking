@@ -11,7 +11,7 @@ from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
-from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient
+from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient, IsClientOnly
 from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
                                         ReviewsSerializer, PriceAnalyticSerializer)
 from apartments.business_logic import check_files_in_request
@@ -74,7 +74,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 class BookingView(GenericAPIView):
     """View to manage booking apartments requests"""
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsClientOnly, )
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
@@ -162,3 +162,16 @@ class PriceAnalyticView(CreateModelMixin, GenericViewSet):
         flat = serializer.validated_data.get("flat")
         prices = Apartment.get_prices_count_by_location(flat)
         serializer.validated_data.update(prices)
+
+
+class ClientBookingHistoryView(GenericAPIView):
+    """View to provide client booking history"""
+    permission_classes = (IsClientOnly, )
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+    def get(self, request):
+        """Process GET requests"""
+        queryset = Booking.objects.filter(client=request.user)
+        data = self.get_serializer(queryset, many=True).data
+        return Response(data=data)
