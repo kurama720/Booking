@@ -36,7 +36,7 @@ const ApartmentForm: FC = () => {
     setNumberOfGuests((prev) => prev - 1);
   };
 
-  const handleBlur = (): void => {
+  const handleOutsideClick = (): void => {
     setIsShowGuestsWindow(false);
   };
 
@@ -71,7 +71,7 @@ const ApartmentForm: FC = () => {
           decrementGuests={decrementGuests}
           incrementGuests={incrementGuests}
           handleChangeShowGuestsWindow={handleChangeShowGuestsWindow}
-          handleBlur={handleBlur}
+          handleOutsideClick={handleOutsideClick}
         />
       </div>
     </div>

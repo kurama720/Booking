@@ -11,5 +11,5 @@ export interface IPropsFormApartment {
   decrementGuests: () => void;
   incrementGuests: () => void;
   handleChangeShowGuestsWindow: () => void;
-  handleBlur: () => void;
+  handleOutsideClick: () => void;
 }
