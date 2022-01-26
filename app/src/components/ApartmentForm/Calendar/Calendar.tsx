@@ -28,6 +28,7 @@ const Calendar: FC<IPropsCalendar> = ({ valueDate, setValueDate }) => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DateRangePicker
         disablePast
+        inputFormat="dd/MM/yyyy"
         value={valueDate}
         onChange={(newValue) => {
           setValueDate(newValue);
