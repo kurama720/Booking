@@ -7,13 +7,15 @@ function AuthMenu({ activeUserMenu, isActiveUserMenu }: AuthMenuProps) {
     isActiveUserMenu((prev) => !prev);
   };
 
+  const authMenuStyle =
+    "w-[5.25rem] h-[2.375rem] mt-px rounded-3xl shadow-sm flex items-center justify-center border-blue-500";
+
   return (
     <div
-      className={
-        activeUserMenu
-          ? "w-[5.25rem] h-[2.375rem] mt-px rounded-3xl border-2 shadow-sm flex items-center justify-center border-blue-500"
-          : "w-[5.25rem] h-[2.375rem] mt-px rounded-3xl border shadow-sm flex items-center justify-center"
-      }
+      className={`
+        ${authMenuStyle} ${
+        activeUserMenu ? "border-2 border-blue-500" : "border border-gray-300"
+      }`}
     >
       <button onClick={handleMenuStatus} type="button">
         <MenuAlt1Icon

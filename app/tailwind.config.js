@@ -1,6 +1,9 @@
 module.exports = {content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
         extend: {
+            backgroundImage: {
+                background: "url('./assets/img/background.png')",
+            },
             screens: {
                 sm: '480px',
                 md: '768px',

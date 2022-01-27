@@ -8,7 +8,7 @@ interface LocationMenuProps {
 
 function LocationMenu({ cities, getSuggestionData }: LocationMenuProps) {
   return (
-    <div className="w-56 rounded-md  shadow absolute top-10 1.5xl:left-[25.5%] lg:left-[11.2%] 3xl:left-[26.5%] 4xl:left-[30.3%] 5xl:left-[35.2%] xlg:left-[20.5%] mlg:left-[13.2%] 3.5xl:left-[27.5%] 1xl:left-[23.8%] 3.75xl:left-[30.1%] 6xl:left-[36.8%]">
+    <div className="w-56 rounded-md  shadow absolute bg-white rounded-md top-10 1.5xl:left-[23.2%] lg:left-[11.2%] 3xl:left-[24.5%] 4xl:left-[28.8%] 5xl:left-[34.6%] xlg:left-[17.2%] mlg:left-[10.8%] 3.5xl:left-[25.7%] 1xl:left-[21.2%] 3.75xl:left-[28.7%] 6xl:left-[36.3%]">
       {cities.map((city) => {
         return (
           <button
