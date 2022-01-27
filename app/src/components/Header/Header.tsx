@@ -126,6 +126,8 @@ function Header({
               setCalendarPopUpStatus={setCalendarPopUpStatus}
               isActiveLocationBox={isActiveLocationBox}
               activeModel={activeModel}
+              numberOfGuests={numberOfGuests}
+              setNumberOfGuests={setNumberOfGuests}
             />
           </li>
           <li>
