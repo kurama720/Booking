@@ -73,7 +73,7 @@ function Calendar({
         type="button"
         name="calendar"
         id="calendar"
-        className="py-[0.5rem] font-body  outline-none px-[2.56rem] text-gray-400 border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6]  block w-full sm:text-sm "
+        className="py-[0.5rem] font-body  bg-white outline-none px-[2.56rem] text-gray-400 border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6]  block w-full sm:text-sm"
       />
       <div className="absolute bottom-2 left-4">
         <CalendarIcon

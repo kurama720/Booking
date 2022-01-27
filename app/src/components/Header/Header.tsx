@@ -90,9 +90,9 @@ function Header({
   const isAuth = !!token;
 
   return (
-    <div className="w-full flex flex-col mt-[1.5rem] relative">
-      <div className="w-full h-[2.375rem] flex justify-between items-center px-16 2xl:px-16 lg:px-4 xl:px-16 md:px-2">
-        <div className="flex h-[2.375rem] items-center max-w-logo w-logo ">
+    <div className="w-full flex flex-col mt-6 relative bg-gray-50">
+      <div className="w-full h-[38px] flex justify-between items-center">
+        <div className="flex h-[38px] items-center max-w-logo w-logo ">
           <img src={NodicLogo} className="w-8" alt="logo" />
           <p className="ml-[0.68rem] text-blue-700 text-center font-body font-medium text-2xl">
             Nodic

@@ -25,7 +25,7 @@ function GuestMenu({
           handleMenu();
           isActiveLocationBox(false);
         }}
-        className="py-[0.375rem] px-[2.56rem] outline-none border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] block w-full"
+        className="py-1.5 px-[41px] outline-none bg-white border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] block w-full"
       />
       <div className="absolute bottom-2 left-4">
         <UserIcon
