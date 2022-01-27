@@ -1,14 +1,13 @@
-import React, {createContext} from 'react';
+import React, { createContext } from "react";
 
 interface Auth {
-  login: (jwtToken: any, status: any, checked: any) => void,
-  logout: () => void,
-  token: object | null,
-  requestStatus: number | null,
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>,
-  errorMessage: string,
-  check: boolean
-
+  login: (jwtToken: object, status: number | string, checked: boolean) => void;
+  logout: () => void;
+  token: object | null;
+  requestStatus: number | null;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  errorMessage: string;
+  check: boolean;
 }
 
 export const AuthContext = createContext<Auth>({
@@ -17,6 +16,6 @@ export const AuthContext = createContext<Auth>({
   token: {},
   requestStatus: 0,
   setErrorMessage: () => {},
-  errorMessage: '',
-  check: false
-})
+  errorMessage: "",
+  check: false,
+});

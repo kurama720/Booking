@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from rest_framework import generics, status
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -9,12 +9,15 @@ from rest_framework_simplejwt.views import TokenViewBase
 
 from accounts.models import ClientUser
 from accounts.models import BusinessClientUser
-from accounts.api.serializers import RegisterSerializer, CustomTokenObtainSerializer
-from accounts.api.serializers import CustomTokenDestroySerializer
 from accounts.api.tokens import CustomAccessToken
-from accounts.api.serializers import BusinessClientSerializer
-from accounts.api.serializers import BusinessClientRegisterSerializer
-from accounts.api.serializers import BusinessClientSignInSerializer
+from accounts.api.serializers import (RegisterSerializer,
+                                      CustomTokenObtainSerializer,
+                                      CustomTokenDestroySerializer,
+                                      BusinessClientSerializer,
+                                      BusinessClientRegisterSerializer,
+                                      BusinessClientSignInSerializer,
+                                      ClientUserSerializer,
+                                      BusinessClientUserSerializer)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -64,3 +67,25 @@ class BusinessClientRegisterView(generics.CreateAPIView):
 
 class BusinessClientSignInView(TokenViewBase):
     serializer_class = BusinessClientSignInSerializer
+
+
+class UserInfoView(APIView):
+    """
+    View class to representation some clients info
+    """
+    permission_classes = (IsAuthenticated, )
+
+    @extend_schema(
+        responses={200: ClientUserSerializer}
+    )
+    def get(self, request):
+        try:
+            request.user.clientuser.businessclientuser
+        except (ClientUser.businessclientuser.RelatedObjectDoesNotExist,
+                AttributeError):
+            serializer = ClientUserSerializer(
+                instance=request.user.clientuser)
+            return Response(data=serializer.data)
+        serializer = BusinessClientUserSerializer(
+            instance=request.user.clientuser.businessclientuser)
+        return Response(data=serializer.data)

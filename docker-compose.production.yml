@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-node.production
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL}
     container_name: booking_nginx
     ports:
       - "80:80"
@@ -41,7 +43,7 @@ services:
       - booking_production_services
 
   booking_postgres:
-    image: postgres:13
+    image: postgis/postgis
     container_name: booking_postgres
     volumes:
       - postgres_volume:/var/lib/postgresql/data/

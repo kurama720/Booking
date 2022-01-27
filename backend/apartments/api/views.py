@@ -1,16 +1,19 @@
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.mixins import CreateModelMixin
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIView
+from rest_framework.viewsets import GenericViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
-from apartments.api.permissions import IsOwnerOrReadOnly
-from apartments.api.serializers import ApartmentSerializer, BookingSerializer, ReviewsSerializer
+from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient, IsClientOnly
+from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
+                                        ReviewsSerializer, PriceAnalyticSerializer)
 from apartments.business_logic import check_files_in_request
 
 
@@ -20,16 +23,13 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly, )
     http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('lat', 'lon', 'created_at', 'feature',)
+    filter_fields = ('lat', 'lon', 'created_at', 'feature', 'min_price', 'max_price')
     filter_class = ApartmentFilter
     parser_classes = (MultiPartParser, FormParser)
 
-    def retrieve(self, request,  pk: int):
-        """Process GET requests /apartments/{id}
-
-        :param pk: apartment unique id from request path
-        """
-        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+    def retrieve(self, request,  *args, **kwargs):
+        """Process GET requests /apartments/{id}"""
+        apartment = self.get_object()
         apartment_data = self.get_serializer(apartment).data
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
@@ -74,7 +74,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 class BookingView(GenericAPIView):
     """View to manage booking apartments requests"""
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsClientOnly, )
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
@@ -109,9 +109,17 @@ class BookingHistoryView(ListAPIView):
     """View to provide book history"""
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+    permission_classes = (IsBusinessClient, )
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('check_in_date', 'business_client')
+    filter_fields = ('check_in_date', )
     filter_class = BookingHistoryFilter
+
+    def filter_queryset(self, queryset):
+        old_queryset = super().filter_queryset(queryset)
+        queryset = old_queryset.filter(
+            business_client=self.request.user.clientuser.businessclientuser
+        )
+        return queryset
 
 
 class ReviewsView(GenericAPIView):
@@ -144,3 +152,26 @@ class ReviewsView(GenericAPIView):
         rate = serializer.validated_data.get("rate")
         apartment.apartment_review(comment, rate, client)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+
+class PriceAnalyticView(CreateModelMixin, GenericViewSet):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = PriceAnalyticSerializer
+
+    def perform_create(self, serializer):
+        flat = serializer.validated_data.get("flat")
+        prices = Apartment.get_prices_count_by_location(flat)
+        serializer.validated_data.update(prices)
+
+
+class ClientBookingHistoryView(GenericAPIView):
+    """View to provide client booking history"""
+    permission_classes = (IsClientOnly, )
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+    def get(self, request):
+        """Process GET requests"""
+        queryset = Booking.objects.filter(client=request.user)
+        data = self.get_serializer(queryset, many=True).data
+        return Response(data=data)

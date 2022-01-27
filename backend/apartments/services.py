@@ -7,15 +7,20 @@ from apartments.models import Apartment, Booking
 
 
 class ApartmentFilter(django_filters.FilterSet):
-    """Filter hotels by lat, lon, created_at and num_of_bedrooms fields"""
+    """
+    Filter apartments by lat, lon, created_at and feature fields.
+    Filter apartments by min and max price
+    """
     lat = NumberFilter()
     lon = NumberFilter()
     created_at = DateTimeFilter()  # takes date format like YYYY-mm-ddTHH:MM:SS.ffffZ
     feature = django_filters.CharFilter(method='filter_feature')  # takes params format like <beds:2,guests:3>
+    min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
 
     class Meta:
         model = Apartment
-        fields = ('lat', 'lon', 'created_at', 'feature')
+        fields = ('lat', 'lon', 'created_at', 'feature', 'min_price', 'max_price')
         filter_overrides = {
             models.JSONField: {
                 'filter_class': django_filters.CharFilter,
@@ -50,11 +55,10 @@ class DateAscendingDescendingFilter(DateRangeFilter):
 class BookingHistoryFilter(django_filters.FilterSet):
     """Filter books by check_in_date and business_client fields"""
     check_in_date = DateAscendingDescendingFilter()
-    business_client = NumberFilter()
 
     class Meta:
         model = Booking
-        fields = ('check_in_date', 'business_client')
+        fields = ('check_in_date',)
 
     def __init__(self, data, *args, **kwargs):
         data = data.copy()
