@@ -1,7 +1,10 @@
+import datetime
+
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 import django_filters
 from django_filters import NumberFilter, DateTimeFilter, DateRangeFilter
+from django.db.models import Q
 
 from apartments.models import Apartment, Booking
 
@@ -13,14 +16,15 @@ class ApartmentFilter(django_filters.FilterSet):
     """
     lat = NumberFilter()
     lon = NumberFilter()
-    created_at = DateTimeFilter()  # takes date format like YYYY-mm-ddTHH:MM:SS.ffffZ
+    # take date format like YYYY-mm-dd
+    check_availability = django_filters.CharFilter(method='filter_check_in_out')
     feature = django_filters.CharFilter(method='filter_feature')  # takes params format like <beds:2,guests:3>
     min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
 
     class Meta:
         model = Apartment
-        fields = ('lat', 'lon', 'created_at', 'feature', 'min_price', 'max_price')
+        fields = ('lat', 'lon', 'feature', 'min_price', 'max_price')
         filter_overrides = {
             models.JSONField: {
                 'filter_class': django_filters.CharFilter,
@@ -38,6 +42,17 @@ class ApartmentFilter(django_filters.FilterSet):
             f = f.split(':')
             given_filters[f[0]] = int(f[(-1)])
         return queryset.filter(feature__contains=given_filters)
+
+    def filter_check_in_out(self, queryset, name, value: str):
+        """
+        Get dates from param ?check_availability=YYYY-MM-DD,YYYY-MM-DD.
+        Filter by Booking fields check_in_date, check_out_date are not in range of given dates
+        """
+        value: list = value.split(',')
+        check_in: datetime.date = datetime.date.fromisoformat(value[0])
+        check_out: datetime.date = datetime.date.fromisoformat(value[1])
+        return queryset.filter(~Q(bookings__check_in_date__range=(check_in, check_out)) &
+                               ~Q(bookings__check_out_date__range=(check_in, check_out)))
 
 
 class DateAscendingDescendingFilter(DateRangeFilter):

@@ -34,7 +34,7 @@ class ApartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Apartment
         fields = "__all__"
-        read_only_fields = ["created_at", "rating", "business_account"]
+        read_only_fields = ["rating", "business_account"]
 
 
 class BookingSerializer(serializers.ModelSerializer):
