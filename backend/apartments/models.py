@@ -26,7 +26,6 @@ class Apartment(models.Model):
     lon = models.FloatField()
     description = models.TextField()
     rating = models.PositiveIntegerField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     business_account = models.ForeignKey(BusinessClientUser,
                                          related_name='apartments',
                                          on_delete=models.CASCADE,
@@ -186,7 +185,7 @@ class Booking(models.Model):
     comment = models.TextField(blank=True, null=True)
     idempotency_key = models.UUIDField(unique=True)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, related_name='bookings')
     business_client = models.ForeignKey(BusinessClientUser,
                                         related_name='booking',
                                         on_delete=models.CASCADE,

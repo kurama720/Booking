@@ -1,10 +1,12 @@
 import json
+import uuid
 
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from apartments.models import Apartment
+from apartments.models import Apartment, Booking
+from accounts.models import ClientUser, BusinessClientUser
 
 
 class ApartmentsTest(APITestCase):
@@ -18,44 +20,53 @@ class ApartmentsTest(APITestCase):
                                                                                         'beds': 3,
                                                                                         'bathrooms': 1, })
         Apartment.objects.create(title='Test Hotel 2', price=80, lat=30, lon=40,
-                                 description='The second test hotel', rating=4, feature=None)
+                                 description='The second test hotel', rating=4, feature={'guests': 1,
+                                                                                         'bedrooms': 1,
+                                                                                         'beds': 1,
+                                                                                         'bathrooms': 1})
         Apartment.objects.create(title='Test Hotel 3', price=50, lat=40, lon=50,
                                  description='The third test hotel', rating=2, feature={'guests': 2,
                                                                                         'bedrooms': 2,
                                                                                         'beds': 3,
                                                                                         'bathrooms': 1, })
 
+        Booking.objects.create(check_in_date='2022-01-10', check_out_date='2022-01-15', num_of_persons=2,
+                               comment='Test', idempotency_key=uuid.uuid4(),
+                               client=ClientUser.objects.create(email='client@client.com', first_name='Test',
+                                                                last_name='Client', password='Test1234'),
+                               apartment=Apartment.objects.get(title='Test Hotel 1'),
+                               business_client=BusinessClientUser.objects.create(password='Test1234',
+                                                                                 email='bisnes@bisnes.com',
+                                                                                 first_name='Test', last_name='Test',
+                                                                                 organization_name='Test'))
+
     def test_filter_feature(self):
         """Test filter returns two hotels where guests = 2"""
-        url = reverse('apartment-list')
-        data: dict = {'guests': 2}
-        response = self.client.get(url, feature=data, format='json')
-        content: dict = json.loads(response.content)[0]
+        response = self.client.get('http://localhost:8000/apartments/?feature=guests:2,beds:3', format='json')
+        content: dict = json.loads(response.content)
         self.assertTrue(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(content), 2)
-        self.assertTrue(content['feature']['guests'], 2)
+        self.assertEqual(len(content), 2)
+        self.assertEqual(content[0]['feature']['guests'], 2)
 
     def test_filter_location(self):
         """Test filter returns one hotel where latitude = 10, longitude = 20"""
         url = reverse('apartment-list')
         data: dict = {'lat': 10, 'lon': 20}
         response = self.client.get(url, data, format='json')
-        content: dict = json.loads(response.content)[0]
+        content: dict = json.loads(response.content)
         self.assertTrue(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(content), 1)
-        self.assertTrue(content['lat'], 10)
-        self.assertTrue(content['lon'], 20)
+        self.assertEqual(len(content), 1)
+        self.assertEqual(content[0]['lat'], 10)
+        self.assertEqual(content[0]['lon'], 20)
 
-    def test_filter_date(self):
-        """Test filter return one hotel where created_at = 2022-01-31"""
+    def test_filter_check_availability(self):
+        """Test filter return two hotels available for booking"""
         url = reverse('apartment-list')
-        hotel = Apartment.objects.get(title='Test Hotel 1')  # Get an object from db
-        data = {'created_at': hotel.created_at}  # Get object's creation time
+        data: dict = {'check_availability': '2022-01-09,2022-01-15'}
         response = self.client.get(url, data, format='json')
-        content: dict = json.loads(response.content)[0]
+        content: dict = json.loads(response.content)
         self.assertTrue(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(len(content), 1)
-        self.assertTrue(content['created_at'], hotel.created_at)  # Compare result's creation time with object's
+        self.assertEqual(len(content), 2)
 
     def test_price_filter(self):
         """Test apartment price filter"""
