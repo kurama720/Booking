@@ -1,7 +1,13 @@
+from collections import namedtuple
+from os.path import join
+from mimetypes import guess_type
+
 import pandas as pd
+
 
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
@@ -40,7 +46,6 @@ class ApartmentAdmin(admin.ModelAdmin):
                     Apartment(uuid=row['uuid'],
                               title=row['title'],
                               price=row['price'],
-                              img=row['image'],
                               lat=row['coordinates'].split(',')[0],
                               lon=row['coordinates'].split(',')[1],
                               description=row['description'])
@@ -49,6 +54,23 @@ class ApartmentAdmin(admin.ModelAdmin):
                 if not apartments:
                     raise ObjectDoesNotExist
                 Apartment.objects.bulk_create(apartments)  # Adding data to the database
+                row_iter = file_data.iterrows()
+                images = []
+                data_wrapper = namedtuple("data_wrapper", ["type", "content"])
+
+                for apartment, row_data in zip(apartments, row_iter):
+                    data = data_wrapper(*row_data)
+                    with open(join("utils/scraping/images",
+                                   data.content['image']),
+                              "rb") as file:
+
+                        images.append(ApartmentsImage(apartments=apartment,
+                                                      img=SimpleUploadedFile(
+                                                        name=data.content['image'],
+                                                        content=file.read(),
+                                                        content_type=guess_type(file.name))))
+
+                ApartmentsImage.objects.bulk_create(images)
                 self.message_user(request, "Your csv file has been imported")
                 url = reverse('admin:index')
                 return HttpResponseRedirect(url)
