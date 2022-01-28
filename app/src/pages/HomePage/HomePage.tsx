@@ -17,6 +17,8 @@ function HomePage() {
     useState<boolean>(false);
   const [userBookingDate, setUserBookingDate] = useState<BookingState>({
     city: "",
+    lat: 0,
+    lon: 0,
     numOfPersons: 0,
     checkInDate: "",
     checkOutDate: "",

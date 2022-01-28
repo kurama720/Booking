@@ -2,10 +2,14 @@ import React from "react";
 
 export interface Cities {
   name: string;
+  lat: number;
+  lon: number;
 }
 
 export interface BookingState {
   city: string;
+  lat: number;
+  lon: number;
   numOfPersons: number;
   checkInDate: string;
   checkOutDate: string;

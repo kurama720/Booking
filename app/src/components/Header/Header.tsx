@@ -74,9 +74,14 @@ function Header({
   const getSuggestionData = (e: React.MouseEvent) => {
     const suggestionData = e.target as HTMLInputElement;
     setSuggestionCityName(suggestionData.id);
+    const currentObjectOfCities =
+      cities.find((item: Cities) => item.name === suggestionData.id) ||
+      userBookingDate;
     setUserBookingDate({
       ...userBookingDate,
       city: suggestionData.id,
+      lat: currentObjectOfCities.lat,
+      lon: currentObjectOfCities.lon,
     });
 
     if (locationRef.current) {

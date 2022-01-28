@@ -2,7 +2,7 @@ import React from "react";
 import { LocationMarkerIcon } from "@heroicons/react/outline";
 
 interface LocationMenuProps {
-  cities: { name: string }[];
+  cities: { name: string; lat: number; lon: number }[];
   getSuggestionData: React.MouseEventHandler<HTMLButtonElement>;
 }
 
