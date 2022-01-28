@@ -5,6 +5,8 @@ import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Modal from "../../components/Modal/Modal";
 import { BookingState } from "./utils/HomePageInterface";
+import Footer from "../../components/Footer/Footer";
+import MainPageBody from "../../components/MainPageBody/MainPageBody";
 
 function HomePage() {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
@@ -37,45 +39,49 @@ function HomePage() {
   };
 
   return (
-    <div>
-      <Header
-        handleLogInPopUp={handleLogInPopUp}
-        activeLocationBox={activeLocationBox}
-        isActiveLocationBox={isActiveLocationBox}
-        handleSignUpPopUpStatus={handleSignUpPopUpStatus}
-        handleLogoutPopUpStatus={handleLogoutPopUpStatus}
-        calendarPopUpStatus={calendarPopUpStatus}
-        handleCalendarPopUpStatus={handleCalendarPopUpStatus}
-        setCalendarPopUpStatus={setCalendarPopUpStatus}
-        setUserBookingDate={setUserBookingDate}
-        userBookingDate={userBookingDate}
-      />
-      {popUpStatus && (
-        <Modal active={popUpStatus} setActive={handleLogInPopUp}>
-          <UserLogInPage
-            popUpStatus={popUpStatus}
-            handleLogInPopUp={handleLogInPopUp}
-            handleSignUpPopUpStatus={handleSignUpPopUpStatus}
-          />
-        </Modal>
-      )}
-      {signUpPopUpStatus && (
-        <Modal active={signUpPopUpStatus} setActive={handleSignUpPopUpStatus}>
-          <SignUpPage
-            active={signUpPopUpStatus}
-            setActive={handleSignUpPopUpStatus}
-            handleLogInPopUp={handleLogInPopUp}
-          />
-        </Modal>
-      )}
-      {activeLogout && (
-        <Modal active={activeLogout} setActive={handleLogoutPopUpStatus}>
-          <LogoutButton
-            handleLogoutPopUpStatus={handleLogoutPopUpStatus}
-            activeLogout={activeLogout}
-          />
-        </Modal>
-      )}
+    <div className="w-full bg-gray-50">
+      <div className="w-full h-screen px-16 bg-gray-50">
+        <Header
+          handleLogInPopUp={handleLogInPopUp}
+          activeLocationBox={activeLocationBox}
+          isActiveLocationBox={isActiveLocationBox}
+          handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+          handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+          calendarPopUpStatus={calendarPopUpStatus}
+          handleCalendarPopUpStatus={handleCalendarPopUpStatus}
+          setCalendarPopUpStatus={setCalendarPopUpStatus}
+          setUserBookingDate={setUserBookingDate}
+          userBookingDate={userBookingDate}
+        />
+        <MainPageBody />
+        {popUpStatus && (
+          <Modal active={popUpStatus} setActive={handleLogInPopUp}>
+            <UserLogInPage
+              popUpStatus={popUpStatus}
+              handleLogInPopUp={handleLogInPopUp}
+              handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+            />
+          </Modal>
+        )}
+        {signUpPopUpStatus && (
+          <Modal active={signUpPopUpStatus} setActive={handleSignUpPopUpStatus}>
+            <SignUpPage
+              active={signUpPopUpStatus}
+              setActive={handleSignUpPopUpStatus}
+              handleLogInPopUp={handleLogInPopUp}
+            />
+          </Modal>
+        )}
+        {activeLogout && (
+          <Modal active={activeLogout} setActive={handleLogoutPopUpStatus}>
+            <LogoutButton
+              handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+              activeLogout={activeLogout}
+            />
+          </Modal>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import { UserIcon } from "@heroicons/react/solid";
 import { GuestMenuProps } from "./utils/GuestMenuInterface";
 
@@ -7,14 +7,37 @@ function GuestMenu({
   setCalendarPopUpStatus,
   isActiveLocationBox,
   activeModel,
+  numberOfGuests,
+  setNumberOfGuests,
 }: GuestMenuProps) {
+  const [guest, setGuest] = useState("Add guests");
+  const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
+  const firstUpdate = useRef(true);
+
+  const guestMenuStyle =
+    "position absolute font-body text-sm top-2.5 left-[41px]";
+
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+    } else {
+      const suffix = numberOfGuests > 1 ? "s" : "";
+
+      setGuest(`${numberOfGuests} guest${suffix}`);
+      setIsAddGuest(true);
+    }
+  }, [numberOfGuests, setNumberOfGuests]);
+
   return (
-    <div className="w-56 h-[2.375rem] relative sm:col-span-3">
+    <div className="w-56 h-[38px] relative sm:col-span-3">
       <label
         htmlFor="guest-group"
-        className="position absolute text-gray-400 font-body text-sm top-2.5 left-[2.5625rem]"
+        className={`
+          ${guestMenuStyle} 
+          ${!isAddGuest ? "text-gray-400" : "text-gray-900"}
+        `}
       >
-        Add guests
+        {guest}
       </label>
       <input
         type="button"
@@ -25,11 +48,11 @@ function GuestMenu({
           handleMenu();
           isActiveLocationBox(false);
         }}
-        className="py-[0.375rem] px-[2.56rem] outline-none border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] block w-full"
+        className="py-1.5 px-[41px] outline-none bg-white border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] block w-full"
       />
       <div className="absolute bottom-2 left-4">
         <UserIcon
-          className="w-[1.24rem] h-[1.3728rem]"
+          className="w-[20px] h-[22px]"
           fill={activeModel ? "#6B7280" : "rgb(156 163 175)"}
         />
       </div>

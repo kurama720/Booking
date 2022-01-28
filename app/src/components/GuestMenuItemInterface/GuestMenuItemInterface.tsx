@@ -18,7 +18,7 @@ function GuestMenuItemInterface({
   }, [numberOfGuests]);
 
   return (
-    <div className="w-full h-full flex justify-between items-center pl-[1.5rem] pr-10">
+    <div className="w-full h-full flex justify-between items-center pl-6 pr-10 z-10 bg-white rounded-md shadow-sm">
       <div className="flex-col w-34">
         <h1 className="text-body text-gray-900 text-medium text-sm">
           {header}
