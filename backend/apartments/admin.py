@@ -75,11 +75,22 @@ class ApartmentAdmin(admin.ModelAdmin):
                 url = reverse('admin:index')
                 return HttpResponseRedirect(url)
             except ValidationError:
-                self.message_user(request, "The format of the data in the csv file does not fit", level=messages.WARNING)
+                self.message_user(request,
+                                  "The format of the data in the csv file does not fit",
+                                  level=messages.WARNING)
             except ObjectDoesNotExist:
-                self.message_user(request, "All such records already exist in the database", level=messages.WARNING)
+                self.message_user(request,
+                                  "All such records already exist in the database",
+                                  level=messages.WARNING)
             except KeyError:
-                self.message_user(request, "The csv file has no field name header", level=messages.WARNING)
+                self.message_user(request,
+                                  "The csv file has no field name header",
+                                  level=messages.WARNING)
+            except FileNotFoundError:
+                self.message_user(request,
+                                  """Necessary images data for csv upload not exists at server.
+                                  Try to upload file later.""",
+                                  level=messages.WARNING)
 
         form = CsvImportForm()
         data = {'form': form}

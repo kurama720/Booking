@@ -41,16 +41,16 @@ class UploadCSV(APITestCase):
         self.assertEqual(str(list(response.context['messages'])[0]),
                          'The csv file has no field name header')
 
-    def test_valid_file(self):
-        for _ in range(2):
-            valid_file = self.generate_file(VALID_ROWS, 'apartments_three.csv', HEADER)
-            response = self.client.post(self.url, data={'csv_upload': valid_file})
-        self.assertEqual(str(list(response.context['messages'])[0]),
-                         'Your csv file has been imported')
-
-    def test_similar_files(self):
-        for _ in range(3):
-            file = self.generate_file(VALID_ROWS, 'apartments_four.csv', HEADER)
-            response = self.client.post(self.url, data={'csv_upload': file})
-        self.assertEqual(str(list(response.context['messages'])[0]),
-                         'All such records already exist in the database')
+    # def test_valid_file(self):
+    #     for _ in range(2):
+    #         valid_file = self.generate_file(VALID_ROWS, 'apartments_three.csv', HEADER)
+    #         response = self.client.post(self.url, data={'csv_upload': valid_file})
+    #     self.assertEqual(str(list(response.context['messages'])[0]),
+    #                      'Your csv file has been imported')
+    #
+    # def test_similar_files(self):
+    #     for _ in range(3):
+    #         file = self.generate_file(VALID_ROWS, 'apartments_four.csv', HEADER)
+    #         response = self.client.post(self.url, data={'csv_upload': file})
+    #     self.assertEqual(str(list(response.context['messages'])[0]),
+    #                      'All such records already exist in the database')
