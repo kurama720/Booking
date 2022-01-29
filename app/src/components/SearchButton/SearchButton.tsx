@@ -1,11 +1,22 @@
 import React from "react";
 import { SearchIcon } from "@heroicons/react/solid";
+import axios from "axios";
 import { SearchButtonProps } from "./utils/SearchButtonInterface";
 
 function SearchButton({ userBookingDate }: SearchButtonProps) {
-  const handleSearchButton = () => {
+  const handleSearchButton = async () => {
     if (!!userBookingDate.checkInDate && !!userBookingDate.city) {
-      const { city, ...allApartmentSearch } = userBookingDate;
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}apartments/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}`,
+        {
+          params: {
+            lat: userBookingDate.lat,
+            lon: userBookingDate.lon,
+            guests: userBookingDate.numOfPersons,
+          },
+        }
+      );
+      console.log(response);
     }
   };
   return (
