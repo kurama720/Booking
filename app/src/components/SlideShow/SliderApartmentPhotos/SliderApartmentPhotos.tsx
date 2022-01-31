@@ -1,7 +1,11 @@
 import React, { FC } from "react";
 import { XIcon } from "@heroicons/react/solid";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import img from "../../../assets/img/image1.svg";
+import Room from "../../ObjectPageCard/utils/img/image5.svg";
+import Room2 from "../../ObjectPageCard/utils/img/image1.svg";
+import Room3 from "../../ObjectPageCard/utils/img/image2.svg";
+import Room4 from "../../ObjectPageCard/utils/img/image3.svg";
+import Room5 from "../../ObjectPageCard/utils/img/image4.svg";
 import { IPropsSliderApartmentPhotos } from "./IPropsSliderApartmentPhotos";
 import "@splidejs/splide/dist/css/splide.min.css";
 import "../../ApartmentCard/react-splide.css";
@@ -10,12 +14,11 @@ const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({
   setActive,
 }) => {
   const mokListPictures = [
-    { img, id: 1 },
-    { img, id: 2 },
-    { img, id: 3 },
-    { img, id: 4 },
-    { img, id: 5 },
-    { img, id: 6 },
+    { img: Room, id: 1 },
+    { img: Room2, id: 2 },
+    { img: Room3, id: 3 },
+    { img: Room4, id: 4 },
+    { img: Room5, id: 5 },
   ];
 
   const closeModal = () => {
@@ -48,7 +51,7 @@ const SliderApartmentPhotos: FC<IPropsSliderApartmentPhotos> = ({
               <img
                 src={item.img}
                 alt={`img-${index}`}
-                className="rounded object-cover w-full h-full max-w-[800px] max-h-[581px]"
+                className="rounded object-cover w-full h-full max-w-[800px] max-h-[581px] object-cover"
               />
             </SplideSlide>
           ))}

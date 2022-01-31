@@ -1,9 +1,9 @@
 import React from "react";
-import Room from "../utils/img/image1.png";
-import Room2 from "../utils/img/image2.png";
-import Room3 from "../utils/img/image3.png";
-import Room4 from "../utils/img/image4.png";
-import Room5 from "../utils/img/image5.png";
+import Room from "../utils/img/image5.svg";
+import Room2 from "../utils/img/image1.svg";
+import Room3 from "../utils/img/image2.svg";
+import Room4 from "../utils/img/image3.svg";
+import Room5 from "../utils/img/image4.svg";
 import SlideShow from "../../SlideShow/SlideShow";
 
 const ObjectsPageCardPhotos = () => {
