@@ -22,8 +22,8 @@ const position: L.LatLngExpression = [52.43272, 30.999012];
 
 const MapSearchPage = () => {
   return (
-    <div className="flex h-[710px]">
-      <div className="flex flex-col box-border w-1/2 px-6">
+    <div className="flex h-[638px]">
+      <div className="flex flex-col box-border w-[656px] px-6">
         <span className="block py-4 font-body text-xs text-gray-700">
           {mockSearchResults.length} stays in Minsk
         </span>
@@ -34,7 +34,7 @@ const MapSearchPage = () => {
         </ul>
       </div>
       <MapContainer
-        className="h-full w-1/2"
+        className="flex h-full flex-grow"
         center={position}
         zoom={15}
         zoomControl={false}
