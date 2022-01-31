@@ -2,7 +2,7 @@ export const cities = [
   { name: "Minsk" },
   { name: "Grodno" },
   { name: "Mogilev" },
-  { name: "Gomez" },
+  { name: "Gomel" },
   { name: "Brest" },
   { name: "Vitebsk" },
 ];

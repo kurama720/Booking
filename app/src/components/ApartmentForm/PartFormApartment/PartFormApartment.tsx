@@ -64,16 +64,13 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
           </span>
           <input
             disabled
-            type="number"
-            value={numberOfGuests}
+            type="text"
+            value={`${numberOfGuests} guest${numberOfGuests > 1 ? "s" : ""}`}
             onChange={(e) => setNumberOfGuests(Number(e.target.value))}
             name="guests"
             id="guests"
             className="bg-white appearance-none font-body text-gray-900 text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
           />
-          <span className="absolute left-20 tex-sm font-body text-gray-900">
-            guests
-          </span>
           <span
             className="mr-4 inline-block cursor-pointer"
             onClick={handleChangeShowGuestsWindow}
