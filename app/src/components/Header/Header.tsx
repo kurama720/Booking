@@ -32,6 +32,7 @@ function Header({
   setCalendarPopUpStatus,
   setUserBookingDate,
   userBookingDate,
+  setApartments,
 }: AuthMenuItemLogoutProps) {
   const [activeModel, isActiveModel] = useState<boolean>(false);
   const [activeUserMenu, isActiveUserMenu] = useState<boolean>(false);
@@ -136,7 +137,10 @@ function Header({
             />
           </li>
           <li>
-            <SearchButton userBookingDate={userBookingDate} />
+            <SearchButton
+              userBookingDate={userBookingDate}
+              setApartments={setApartments}
+            />
           </li>
         </ul>
         <AuthMenu

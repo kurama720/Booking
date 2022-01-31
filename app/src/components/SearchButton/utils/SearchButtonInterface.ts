@@ -1,3 +1,5 @@
+import React from "react";
+
 interface BookingState {
   city: string;
   lat: number;
@@ -9,4 +11,5 @@ interface BookingState {
 
 export interface SearchButtonProps {
   userBookingDate: BookingState;
+  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
 }

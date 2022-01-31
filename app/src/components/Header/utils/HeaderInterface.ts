@@ -26,4 +26,5 @@ export interface AuthMenuItemLogoutProps {
   setCalendarPopUpStatus: React.Dispatch<React.SetStateAction<boolean>>;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
+  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
 }

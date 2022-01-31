@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { SearchIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import { SearchButtonProps } from "./utils/SearchButtonInterface";
+import Loader from "../Loader/Loader";
 
-function SearchButton({ userBookingDate }: SearchButtonProps) {
+function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSearchButton = async () => {
     if (!!userBookingDate.checkInDate && !!userBookingDate.city) {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}apartments/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}`,
-        {
-          params: {
-            lat: userBookingDate.lat,
-            lon: userBookingDate.lon,
-            guests: userBookingDate.numOfPersons,
-          },
-        }
-      );
-      console.log(response);
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}apartments/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}`,
+          {
+            params: {
+              lat: userBookingDate.lat,
+              lon: userBookingDate.lon,
+              guests: userBookingDate.numOfPersons,
+            },
+          }
+        );
+        console.log(response.data);
+        setApartments(response.data);
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   return (
@@ -32,7 +44,7 @@ function SearchButton({ userBookingDate }: SearchButtonProps) {
           fill="rgba(255, 255, 255, 1)"
         />
       </span>
-      Search
+      {isLoading ? <Loader width="6" height="6" /> : "Search"}
     </button>
   );
 }

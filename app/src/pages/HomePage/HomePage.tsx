@@ -8,7 +8,11 @@ import { BookingState } from "./utils/HomePageInterface";
 import Footer from "../../components/Footer/Footer";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 
-function HomePage() {
+interface IPropsHomePage {
+  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+function HomePage({ setApartments }: IPropsHomePage) {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
@@ -54,6 +58,7 @@ function HomePage() {
           setCalendarPopUpStatus={setCalendarPopUpStatus}
           setUserBookingDate={setUserBookingDate}
           userBookingDate={userBookingDate}
+          setApartments={setApartments}
         />
         <MainPageBody />
         {popUpStatus && (
