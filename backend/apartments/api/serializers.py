@@ -3,6 +3,7 @@ import datetime
 from rest_framework import serializers
 
 from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
+from accounts.models import ClientUser
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):
@@ -82,3 +83,10 @@ class PriceAnalyticSerializer(serializers.Serializer):
                 flat[0][1] > flat[1][1]):
             raise serializers.ValidationError({"flat": ["Invalid coordinates value!"]})
         return super().validate(attrs)
+
+
+class FavoriteApartmentSerializer(serializers.ModelSerializer):
+    """Serializer to return serialized favorite apartments"""
+    class Meta:
+        model = Apartment
+        fields = ('title', 'price', 'lat', 'lon', 'description', 'rating', 'feature')

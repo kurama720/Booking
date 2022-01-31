@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
-from apartments.api.views import ApartmentViewSet
+from apartments.api.views import ApartmentViewSet, FavoriteApartmentView
 from accounts.api.views import BusinessClientViewSet
 
 
