@@ -5,6 +5,7 @@ import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
 import { IObjectPicture } from "../MapApartmentCard/SliderCardMap/IPropsCardMap";
 
 export interface ISearchResultItemProps {
+  id?: number;
   img_content: Array<IObjectPicture>;
   title: string;
   description: string;

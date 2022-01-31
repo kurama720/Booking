@@ -29,7 +29,7 @@ const MapSearchPage = () => {
         </span>
         <ul className="overflow-y-auto flex-grow scrollbar-hide">
           {mockSearchResults.map((result) => (
-            <SearchResultItem {...result} />
+            <SearchResultItem {...result} key={result.id} />
           ))}
         </ul>
       </div>

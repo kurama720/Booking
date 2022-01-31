@@ -3,6 +3,7 @@ import { ISearchResultItemProps } from "../components/SearchResultItem";
 
 const mockSearchResults: Array<ISearchResultItemProps> = [
   {
+    id: 0,
     img_content: [
       {
         id: 0,
@@ -30,6 +31,7 @@ const mockSearchResults: Array<ISearchResultItemProps> = [
     views: 15,
   },
   {
+    id: 1,
     img_content: [
       {
         id: 0,
@@ -57,6 +59,7 @@ const mockSearchResults: Array<ISearchResultItemProps> = [
     views: 15,
   },
   {
+    id: 2,
     img_content: [
       {
         id: 0,
@@ -84,6 +87,7 @@ const mockSearchResults: Array<ISearchResultItemProps> = [
     views: 15,
   },
   {
+    id: 3,
     img_content: [
       {
         id: 0,
@@ -111,6 +115,7 @@ const mockSearchResults: Array<ISearchResultItemProps> = [
     views: 15,
   },
   {
+    id: 4,
     img_content: [
       {
         id: 0,
@@ -138,6 +143,7 @@ const mockSearchResults: Array<ISearchResultItemProps> = [
     views: 15,
   },
   {
+    id: 5,
     img_content: [
       {
         id: 0,
