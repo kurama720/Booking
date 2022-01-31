@@ -1,36 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchIcon } from "@heroicons/react/solid";
-import axios from "axios";
+//import { useNavigate } from "react-router-dom";
 import { SearchButtonProps } from "./utils/SearchButtonInterface";
-import Loader from "../Loader/Loader";
+import { GetApartmentsService } from "../../api/GetApartmentsService";
+//import { Paths } from "../../paths/path";
 
 function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  //const navigate = useNavigate();
   const handleSearchButton = async () => {
     if (!!userBookingDate.checkInDate && !!userBookingDate.city) {
       try {
-        setIsLoading(true);
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}apartments/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}`,
-          {
-            params: {
-              lat: userBookingDate.lat,
-              lon: userBookingDate.lon,
-              guests: userBookingDate.numOfPersons,
-            },
-          }
+        const response = await GetApartmentsService.getApartment(
+          userBookingDate
         );
-        console.log(response.data);
+        console.log(response);
         setApartments(response.data);
-        setIsLoading(false);
+        //navigate(Paths.MAP);
       } catch (e) {
         console.log(e);
-        setIsLoading(false);
-      } finally {
-        setIsLoading(false);
       }
     }
   };
+
   return (
     <button
       type="button"
@@ -44,7 +35,7 @@ function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
           fill="rgba(255, 255, 255, 1)"
         />
       </span>
-      {isLoading ? <Loader width="6" height="6" /> : "Search"}
+      Search
     </button>
   );
 }
