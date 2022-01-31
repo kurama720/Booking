@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import React from "react";
 import { Paths } from "../paths/path";
 import HomePage from "../pages/HomePage/HomePage";
-import MapPage from "../pages/MapPage";
+import MapSearchPage from "../pages/MapSearchPage";
 
 export const useRoutes = (isAuth: boolean) => {
   if (isAuth) {
@@ -15,7 +15,7 @@ export const useRoutes = (isAuth: boolean) => {
   return (
     <Routes>
       <Route path={Paths.HOME} element={<HomePage />} />
-      <Route path={Paths.MAP} element={<MapPage />} />
+      <Route path={Paths.MAP} element={<MapSearchPage />} />
     </Routes>
   );
 };

@@ -20,7 +20,11 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "project": ["./tsconfig.json"],
+        "project": [
+            "./tsconfig.json",
+            "./tailwind.config.js",
+            "./postcss.config.js"
+        ],
         "ecmaVersion": 8,
         "sourceType": "module"
     },

@@ -3,5 +3,5 @@ export enum Paths {
   HOME = "/",
   OBJECT_PAGE = "/object",
   SEARCH_RESULTS = "/search-results",
-  MAP = "/map",
+  MAP = "/map-search",
 }
