@@ -1,11 +1,6 @@
-import React, {
-  useState,
-  createRef,
-  useEffect,
-  useContext,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { DateRange } from "@mui/lab/DateRangePicker";
+import axios from "axios";
 import NodicLogo from "./utils/image/NodicLogo.png";
 import Calendar from "../Calendar/Calendar";
 import Location from "../Location/Location";
@@ -16,10 +11,10 @@ import GuestMenuItem from "../GuestMenuItem/GuestMenuItem";
 import AuthMenuItemLogout from "../AuthMenuItem/AuthMenuItemLogout";
 import AuthMenuItemLogin from "../AuthMenuItem/AuthMenuItemLogin";
 import LocationMenu from "../LocationMenu/LocationMenu";
-import { cities } from "./utils/cities.date";
 import { AuthContext } from "../../context/Context";
 import CalendarMenu from "../Calendar/CalendarMenu/CalendarMenu";
 import { AuthMenuItemLogoutProps, Cities } from "./utils/HeaderInterface";
+import useDebounce from "../../hooks/useDebounce";
 
 function Header({
   handleLogInPopUp,
@@ -35,55 +30,44 @@ function Header({
 }: AuthMenuItemLogoutProps) {
   const [activeModel, isActiveModel] = useState<boolean>(false);
   const [activeUserMenu, isActiveUserMenu] = useState<boolean>(false);
-  const [city, setCity] = useState<Cities[]>([]);
-  const [suggestionCityName, setSuggestionCityName] = useState<string>("");
+  const [cities, setCity] = useState<Cities[]>([]);
   const [date, setDate] = React.useState<DateRange<Date>>([null, null]);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 500);
+
+  const searchOfCity = async (): Promise<void> => {
+    const response = await axios.get<Cities[]>(
+      `${process.env.REACT_APP_API_URL}`,
+      {
+        params: { search: debouncedSearch },
+      }
+    );
+    const data = await response.data;
+    setCity(data);
+  };
+
+  useEffect(() => {
+    if (debouncedSearch) {
+      searchOfCity();
+    } else {
+      setCity([]);
+    }
+  }, [debouncedSearch]);
 
   const handleMenuGuest = () => {
     isActiveModel((prev) => !prev);
   };
 
-  const locationRef = createRef<HTMLInputElement>();
-
-  const handleSearchLocation = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const searchLocationValue = e.target.value;
-      const suggestion = cities.filter((cityName) => {
-        return cityName.name
-          .toLowerCase()
-          .startsWith(searchLocationValue.toLowerCase());
-      });
-      setCity([...suggestion]);
-      isActiveLocationBox(true);
-      setUserBookingDate({
-        ...userBookingDate,
-        city: searchLocationValue,
-      });
-    },
-    [isActiveLocationBox, setUserBookingDate, userBookingDate]
-  );
-
-  useEffect(() => {
-    if (city.length > 5) {
-      const newCities = city.slice(0, 5);
-      setCity([...newCities]);
-    }
-  }, [handleSearchLocation, city]);
-
   const getSuggestionData = (e: React.MouseEvent) => {
     const suggestionData = e.target as HTMLInputElement;
-    setSuggestionCityName(suggestionData.id);
+    setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
       city: suggestionData.id,
     });
-
-    if (locationRef.current) {
-      const input = locationRef.current as HTMLInputElement;
-      input.value = suggestionData.id;
-      isActiveLocationBox(false);
-    }
+    isActiveLocationBox(false);
   };
 
   const { token } = useContext(AuthContext);
@@ -101,12 +85,12 @@ function Header({
         <ul className="flex">
           <li>
             <Location
-              ref={locationRef}
-              suggestionCityName={suggestionCityName}
-              handleSearchLocation={handleSearchLocation}
+              isActiveLocationBox={isActiveLocationBox}
               isActiveModel={isActiveModel}
               setCalendarPopUpStatus={setCalendarPopUpStatus}
               activeLocationBox={activeLocationBox}
+              search={search}
+              setSearch={setSearch}
             />
           </li>
           <li>
@@ -140,7 +124,11 @@ function Header({
         />
       </div>
       {activeLocationBox && (
-        <LocationMenu cities={city} getSuggestionData={getSuggestionData} />
+        <LocationMenu
+          cities={cities}
+          getSuggestionData={getSuggestionData}
+          isActiveLocationBox={isActiveLocationBox}
+        />
       )}
       {activeModel && (
         <GuestMenuItem
