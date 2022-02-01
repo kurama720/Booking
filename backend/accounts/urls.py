@@ -5,7 +5,9 @@ from accounts.api.views import (RegisterView,
                                 LogoutView,
                                 BusinessClientRegisterView,
                                 BusinessClientSignInView,
-                                UserInfoView)
+                                UserInfoView,
+                                VerifyEmailView,
+                                )
 from apartments.api.views import ClientBookingHistoryView
 
 urlpatterns = [
@@ -17,4 +19,5 @@ urlpatterns = [
     path('business/logout/', LogoutView.as_view(), name='business_log_out'),
     path('info/', UserInfoView.as_view(), name='info'),
     path('booking-history/', ClientBookingHistoryView.as_view(), name='client_booking_history'),
+    path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),
 ]

@@ -36,7 +36,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'].capitalize(),  # Assign first name
             last_name=validated_data['last_name'].capitalize(),  # Assign last name
         )
-
+        user.is_active = False
         user.set_password(validated_data['password'])  # Assign password
         user.save()
         return user
@@ -135,3 +135,14 @@ class BusinessClientUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusinessClientUser
         fields = ("first_name", "last_name", "organization_name")
+
+
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for verify email
+    """
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        model = ClientUser
+        fields = ('email',)
