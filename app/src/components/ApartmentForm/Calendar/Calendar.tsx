@@ -40,7 +40,7 @@ const Calendar: FC<IPropsCalendar> = ({ valueDate, setValueDate }) => {
                 htmlFor="check_in"
                 className="text-xs font-body text-gray-700"
               >
-                Check-in
+                Check in
               </label>
               <div className="border border-gray-300 rounded-l-md flex items-center justify-center">
                 <span className="mx-2">
@@ -63,7 +63,7 @@ const Calendar: FC<IPropsCalendar> = ({ valueDate, setValueDate }) => {
                 htmlFor="check_out"
                 className="text-xs font-body text-gray-700"
               >
-                Check-out
+                Check out
               </label>
               <div className="border border-gray-300 rounded-r-md flex items-center justify-center">
                 <span className="mx-2">

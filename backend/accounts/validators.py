@@ -5,24 +5,24 @@ from django.core.exceptions import ValidationError
 
 class PasswordNumberValidator(object):
     def get_help_text(self):
-        return f"The password must contain at least 2 digits."
+        return f"This password is too short. It must contain at least 8 characters."
 
     def validate(self, password, user=None):
-        if not re.findall('(?=(.*\d){2})', password):
+        if not re.findall('(?=(.*\d){1})', password):
             raise ValidationError(
-                "The password must contain at least 2 digits.",
+                "This password is too short. It must contain at least 8 characters.",
                 code='password_no_number',
             )
 
 
 class PasswordLetterValidator(object):
     def get_help_text(self):
-        return f"The password must contain at least 2 letters."
+        return f"This password is too short. It must contain at least 8 characters."
 
     def validate(self, password, user=None):
-        if not re.findall('(?=.*[a-zA-Z]{2})', password):
+        if not re.findall('(?=.*[a-zA-Z]{1})', password):
             raise ValidationError(
-                "The password must contain at least 2 letters.",
+                "This password is too short. It must contain at least 8 characters.",
                 code='password_no_letter',
             )
 
