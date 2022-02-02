@@ -43,13 +43,12 @@ function Header({
 
   const searchOfCity = async () => {
     const response = await axios.get<Cities[]>(
-      `${process.env.REACT_APP_API_URL}`,
+      `${process.env.REACT_APP_API_URL}cities/coordinates`,
       {
         params: { word: debouncedSearch },
       }
     );
-    const data = await response.data;
-    setCity(data);
+    console.log(response);
   };
   useEffect(() => {
     if (debouncedSearch) {
