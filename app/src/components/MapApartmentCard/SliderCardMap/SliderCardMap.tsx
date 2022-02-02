@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { IPropsSliderCardMap } from "./IPropsCardMap";
-import img from "../../../assets/img/image 2.png";
 import "@splidejs/splide/dist/css/splide.min.css";
 import "./slider.css";
 
