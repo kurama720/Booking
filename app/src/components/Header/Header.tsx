@@ -27,6 +27,7 @@ function Header({
   setCalendarPopUpStatus,
   setUserBookingDate,
   userBookingDate,
+  handleBookingHistory,
 }: AuthMenuItemLogoutProps) {
   const [activeModel, isActiveModel] = useState<boolean>(false);
   const [activeUserMenu, isActiveUserMenu] = useState<boolean>(false);
@@ -137,7 +138,10 @@ function Header({
         />
       )}
       {activeUserMenu && isAuth ? (
-        <AuthMenuItemLogin handleLogoutPopUpStatus={handleLogoutPopUpStatus} />
+        <AuthMenuItemLogin
+          handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+          handleBookingHistory={handleBookingHistory}
+        />
       ) : activeUserMenu && !isAuth ? (
         <AuthMenuItemLogout
           handleLogInPopUp={handleLogInPopUp}

@@ -14,7 +14,7 @@ class FavoriteApartmentsTestCase(APITestCase):
     def setUp(self):
         """Set up necessary data in test db"""
         self.user = ClientUser.objects.create_user(email="client@client.com", password="Test1234")
-        Apartment.objects.create(title='Test Hotel 1', price=100, lat=10, lon=20,
+        Apartment.objects.create(id=1, title='Test Hotel 1', price=100, lat=10, lon=20,
                                  description='The first test hotel', rating=5, feature=None)
         Apartment.objects.create(title='Test Hotel 2', price=80, lat=30, lon=40,
                                  description='The second test hotel', rating=4, feature=None)

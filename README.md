@@ -47,6 +47,10 @@ Open [Swagger documentation](https://localhost:3000/swagger/)
 |   `DJANGO_DATABASE_NAME`    |                `Database name`                 |                      `booking`                        |
 |   `DJANGO_DATABASE_USER`    |                `Database user`                 |                      `booking`                        | 
 | `DJANGO_DATABASE_PASSWORD`  |              `Database password`               |                      `booking`                        |
+|      `EMAIL_HOST_USER`      |          `Email address (gmail.com)`           |                  `example@gmail.com`                  |
+|    `EMAIL_HOST_PASSWORD`    |                `Email password`                |                   `examplepassword`                   |
+|       `CELERY_BROKER`       |             `Celery message broker`            |                 `redis://redis:6379/0`                |
+|       `CELERY_BACKEND`      |             `Celery message backend`           |                 `redis://redis:6379/0`                |
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installing Docker and Docker Compose
