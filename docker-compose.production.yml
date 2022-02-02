@@ -60,7 +60,7 @@ services:
   redis:
     image: redis:5-alpine
     networks:
-      - booking_local_services
+      - booking_production_services
 
   celery:
     restart: always
@@ -78,7 +78,7 @@ services:
       - booking_django
       - redis
     networks:
-      - booking_local_services
+      - booking_production_services
 
 volumes:
   postgres_volume:
