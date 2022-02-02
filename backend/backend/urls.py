@@ -14,11 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
+from revproxy.views import ProxyView
 
 from apartments.api.views import ApartmentViewSet, FavoriteApartmentView
 from accounts.api.views import BusinessClientViewSet
@@ -41,6 +42,7 @@ urlpatterns = [
          name='swagger-ui'),
     path('apartments/', include('apartments.urls')),
     path('map/', include('markers.urls')),
+    re_path(r"^(?P<path>flower.*)$", ProxyView.as_view(upstream='http://flower:5555/')),
 ]
 
 if settings.DEBUG:

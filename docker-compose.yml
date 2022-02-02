@@ -66,7 +66,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-django
-        command: celery --app backend flower
+        command: celery --app backend flower --url_prefix=flower
         volumes:
             - "./backend:/app"
         environment:

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'celery',
     'redis',
     'flower',
+    'revproxy',
 ]
 
 MIDDLEWARE = [
