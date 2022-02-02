@@ -27,10 +27,10 @@ class ApartmentAdmin(admin.ModelAdmin):
     def get_urls(self):
         """Adding a new url to load data from a csv file"""
         urls = super().get_urls()
-        new_urls = [path('upload-csv/', self.upload_scv), ]
+        new_urls = [path('upload-csv/', self.upload_csv), ]
         return new_urls + urls
 
-    def upload_scv(self, request):
+    def upload_csv(self, request):
         """Loading data from a csv file into a database"""
         if request.method == 'POST':
             csv_file = request.FILES['csv_upload']  # Opening a file from a request
