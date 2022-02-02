@@ -3,7 +3,7 @@ import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import SearchResultItem from "../../components/SearchResultItem";
 import "leaflet/dist/leaflet.css";
-import mockSearchResults from "../../assets/const";
+import mockSearchResults from "../../assets/stubs";
 
 // the lines below fix the problem of importing icons from the library
 import L from "leaflet";
