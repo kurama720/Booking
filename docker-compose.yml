@@ -66,4 +66,3 @@ networks:
     booking_local_services:
         name: booking_local_services
         driver: bridge
-
