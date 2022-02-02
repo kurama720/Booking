@@ -48,11 +48,13 @@ function Header({
         params: { word: debouncedSearch },
       }
     );
-    console.log(response);
+    setCity(response.data);
   };
   useEffect(() => {
     if (debouncedSearch) {
       searchOfCity();
+    } else {
+      setCity([]);
     }
   }, [debouncedSearch]);
 
@@ -65,9 +67,8 @@ function Header({
     setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
-      city: search,
+      city: suggestionData.id,
     });
-
     isActiveLocationBox(false);
   };
 
