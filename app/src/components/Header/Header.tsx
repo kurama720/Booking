@@ -35,24 +35,24 @@ function Header({
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [search, setSearch] = useState("");
 
+  const { token } = useContext(AuthContext);
+  const isAuth = !!token;
+
   const debouncedSearch = useDebounce(search, 500);
 
-  const searchOfCity = async (): Promise<void> => {
+  const searchOfCity = async () => {
     const response = await axios.get<Cities[]>(
       `${process.env.REACT_APP_API_URL}`,
       {
-        params: { search: debouncedSearch },
+        params: { word: debouncedSearch },
       }
     );
     const data = await response.data;
     setCity(data);
   };
-
   useEffect(() => {
     if (debouncedSearch) {
       searchOfCity();
-    } else {
-      setCity([]);
     }
   }, [debouncedSearch]);
 
@@ -65,13 +65,11 @@ function Header({
     setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
-      city: suggestionData.id,
+      city: search,
     });
+
     isActiveLocationBox(false);
   };
-
-  const { token } = useContext(AuthContext);
-  const isAuth = !!token;
 
   return (
     <div className="w-full flex flex-col mt-6 relative bg-gray-50">

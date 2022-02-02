@@ -10,6 +10,12 @@ const Location: FC<LocationProps> = ({
   setCalendarPopUpStatus,
   isActiveLocationBox,
 }) => {
+  const handleClickSearch = () => {
+    setCalendarPopUpStatus(false);
+    isActiveModel(false);
+    isActiveLocationBox((prev) => !prev);
+  };
+
   return (
     <div className="w-56 h-[2.375rem] relative sm:col-span-3">
       <label
@@ -23,11 +29,7 @@ const Location: FC<LocationProps> = ({
         autoComplete="off"
         value={search}
         id="location"
-        onClick={() => {
-          setCalendarPopUpStatus(false);
-          isActiveModel(false);
-          isActiveLocationBox((prev) => !prev);
-        }}
+        onClick={handleClickSearch}
         onChange={(e) => setSearch(e.target.value)}
         className="font-body rounded-tl-lg rounded-bl-lg outline-none py-[0.50rem] px-[2.46rem] border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] focus: border  block w-full sm:text-sm "
       />
