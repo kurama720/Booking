@@ -47,8 +47,6 @@ Open [Swagger documentation](https://localhost:3000/swagger/)
 |   `DJANGO_DATABASE_NAME`   |                `Database name`                 |                `booking`                 |
 |   `DJANGO_DATABASE_USER`   |                `Database user`                 |                `booking`                 | 
 | `DJANGO_DATABASE_PASSWORD` |              `Database password`               |                `booking`                 |
-|     `EMAIL_HOST_USER`      |          `Email address (gmail.com)`           |            `users@gmail.com`             |
-|   `EMAIL_HOST_PASSWORD `   |                `Email password`                |              `YOHOrest123`               |
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installing Docker and Docker Compose
