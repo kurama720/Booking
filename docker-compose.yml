@@ -62,6 +62,25 @@ services:
         networks:
             - booking_local_services
 
+    flower:
+        build:
+            context: .
+            dockerfile: Dockerfile-django
+        command: celery --app backend flower
+        volumes:
+            - "./backend:/app"
+        environment:
+            - PYTHONUNBUFFERED=1
+        env_file: .env
+        ports:
+            - 5555:5555
+        depends_on:
+            - booking_django
+            - redis
+            - celery
+        networks:
+            - booking_local_services
+
 networks:
     booking_local_services:
         name: booking_local_services

@@ -14,6 +14,7 @@ services:
       - "80:80"
     depends_on:
       - booking_django
+      - flower
     env_file: .env
     volumes:
       - "./app:/usr/src/app"
@@ -79,6 +80,25 @@ services:
       - redis
     networks:
       - booking_production_services
+
+    flower:
+      build:
+        context: .
+        dockerfile: Dockerfile-django
+      command: celery --app backend flower --url-prefix=flower
+      volumes:
+        - "./backend:/app"
+      environment:
+        - PYTHONUNBUFFERED=1
+      env_file: .env
+      ports:
+        - 5555:5555
+      depends_on:
+        - booking_django
+        - redis
+        - celery
+      networks:
+        - booking_production_services
 
 volumes:
   postgres_volume:
