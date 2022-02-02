@@ -20,8 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
-from apartments.api.views import ApartmentViewSet, BookingHistoryView
-
+from apartments.api.views import ApartmentViewSet, FavoriteApartmentView
 from accounts.api.views import BusinessClientViewSet
 
 
@@ -41,7 +40,8 @@ urlpatterns = [
                                         url_name='openapi-schema'),
          name='swagger-ui'),
     path('apartments/', include('apartments.urls')),
-    path('book-history/', BookingHistoryView.as_view(), name="book_history")
+    path('map/', include('markers.urls')),
+    path('cities/', include('cities.urls'))
 ]
 
 if settings.DEBUG:

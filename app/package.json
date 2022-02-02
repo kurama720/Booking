@@ -3,8 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@date-io/date-fns": "^1.3.13",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@heroicons/react": "^1.0.5",
+    "@mui/lab": "^5.0.0-alpha.65",
+    "@mui/material": "^5.3.0",
+    "@mui/x-data-grid": "^5.2.2",
     "@splidejs/react-splide": "^0.6.17",
+    "@splidejs/splide": "^3.6.9",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -13,10 +20,16 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "axios": "^0.24.0",
+    "date-fns": "^2.28.0",
     "formik": "^2.2.9",
+    "install": "^0.13.0",
+    "js-cookie": "^3.0.1",
+    "leaflet": "^1.7.1",
+    "npm": "^8.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-leaflet": "^3.2.5",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "ts-localstorage": "^1.1.0",
@@ -28,7 +41,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "npx eslint ./src --fix",
+    "prettier": "npx prettier --write ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -50,9 +65,24 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/js-cookie": "^3.0.1",
+    "@types/leaflet": "^1.7.9",
     "@types/react-router-dom": "^5.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
     "autoprefixer": "^10.4.0",
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.5",
+    "prettier": "^2.5.1",
     "tailwindcss": "^3.0.7"
   }
 }

@@ -1,16 +1,70 @@
-before_script:
-  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y && apt-get install rsync -y )'
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+stages:
+  - build
+  - test
+  - deploy
+
+.common_services: &common_services
+  services:
+    - docker:18.09.6-dind
+
+.common_rules: &common_rules
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop"
+      changes:
+        - backend/*
+        - backend/**/*
+        - backend/**/**/*
+
+.common_cache: &common_cache
+  cache:
+    key: images-archive-$CI_COMMIT_REF_SLUG
+    paths:
+      - images_archive.zip
+      - .env
+
+.common_image: &common_image
+  image: docker:18.09.6
+
+building:
+  <<: *common_services
+  <<: *common_rules
+  <<: *common_cache
+  <<: *common_image
+  stage: build
+  before_script:
+    - 'apk add --no-cache docker-compose'
+    - 'cat example.env > .env'
+  script:
+    - 'docker-compose -f docker-compose.production.yml build booking_django'
+    - 'docker pull postgis/postgis'
+    - 'docker image save -o=images_archive.zip django postgis/postgis'
+
+testing:
+  <<: *common_services
+  <<: *common_rules
+  <<: *common_cache
+  <<: *common_image
+  stage: test
+  before_script:
+    - 'apk add --no-cache docker-compose'
+  script:
+    - 'docker image load -i=images_archive.zip'
+    - 'docker-compose up -d booking_postgres'
+    - 'docker-compose up -d booking_django'
+    - 'docker exec booking_django python3 manage.py test'
 
 deploy:
   stage: deploy
   environment:
     name: development
     url: https://booking-dev.yoho.by
+  before_script:
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y && apt-get install rsync -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ikapeykin/booking-ci-cd.git
     - chmod +x ./booking-ci-cd/vds-service/deploy.sh

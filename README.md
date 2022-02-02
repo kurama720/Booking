@@ -35,18 +35,22 @@ Open [Swagger documentation](https://localhost:3000/swagger/)
 
 ### Environment variables
 
-|            Name            |                  Description                   |                Ex. value                 |
-|:--------------------------:|:----------------------------------------------:|:----------------------------------------:|
-|          `DEBUG`           | `Status of the application (production false)` |                  `true`                  |
-|    `DJANGO_SECRET_KEY`     |        `Secret key of the application`         |       `12asd%12bihn256!@@451safb`        |
-|   `DJANGO_SILK_ENABLED`    |            `Enable debug with Silk`            |                  `true`                  |
-|  `DJANGO_SENTRY_ENABLED`   |          `Enable logging with sentry`          |                  `true`                  |
-|    `DJANGO_SENTRY_DSN`     |                `Sentry DSN URL`                | `https://dsn.sentry.io/key-12aabceefasd` |
-|   `DJANGO_DATABASE_HOST`   |                `Database host`                 |                `POSTGRES`                |
-|   `DJANGO_DATABASE_PORT`   |                `Database port`                 |                  `5234`                  |
-|   `DJANGO_DATABASE_NAME`   |                `Database name`                 |                `booking`                 |
-|   `DJANGO_DATABASE_USER`   |                `Database user`                 |                `booking`                 | 
-| `DJANGO_DATABASE_PASSWORD` |              `Database password`               |                `booking`                 |
+|            Name             |                  Description                   |                       Ex. value                       |
+|:---------------------------:|:----------------------------------------------:|:-----------------------------------------------------:|
+|           `DEBUG`           | `Status of the application (production false)` |                        `true`                         |
+|     `DJANGO_SECRET_KEY`     |        `Secret key of the application`         |              `12asd%12bihn256!@@451safb`              |
+|    `DJANGO_SILK_ENABLED`    |            `Enable debug with Silk`            |                        `true`                         |
+|   `DJANGO_SENTRY_ENABLED`   |          `Enable logging with sentry`          |                        `true`                         |
+|     `DJANGO_SENTRY_DSN`     |                `Sentry DSN URL`                |       `https://dsn.sentry.io/key-12aabceefasd`        |
+|   `DJANGO_DATABASE_HOST`    |                `Database host`                 |                      `POSTGRES`                       |
+|   `DJANGO_DATABASE_PORT`    |                `Database port`                 |                        `5234`                         |
+|   `DJANGO_DATABASE_NAME`    |                `Database name`                 |                      `booking`                        |
+|   `DJANGO_DATABASE_USER`    |                `Database user`                 |                      `booking`                        | 
+| `DJANGO_DATABASE_PASSWORD`  |              `Database password`               |                      `booking`                        |
+|      `EMAIL_HOST_USER`      |          `Email address (gmail.com)`           |                  `example@gmail.com`                  |
+|    `EMAIL_HOST_PASSWORD`    |                `Email password`                |                   `examplepassword`                   |
+|       `CELERY_BROKER`       |             `Celery message broker`            |                 `redis://redis:6379/0`                |
+|       `CELERY_BACKEND`      |             `Celery message backend`           |                 `redis://redis:6379/0`                |
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installing Docker and Docker Compose

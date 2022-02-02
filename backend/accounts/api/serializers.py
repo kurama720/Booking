@@ -33,7 +33,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'].capitalize(),  # Assign first name
             last_name=validated_data['last_name'].capitalize(),  # Assign last name
         )
-
+        user.is_active = False
         user.set_password(validated_data['password'])  # Assign password
         user.save()
         return user
@@ -88,6 +88,10 @@ class BusinessClientRegisterSerializer(RegisterSerializer):
     def create(self, validated_data):
         validated_data.pop("confirm_password")
         raw_password = validated_data.pop("password")
+        validated_data.update(
+            first_name=validated_data["first_name"].capitalize(),
+            last_name=validated_data["last_name"].capitalize(),
+        )
         business_client = BusinessClientUser.objects.create(**validated_data)
         business_client.set_password(raw_password)
         business_client.save()
@@ -118,3 +122,32 @@ class ResetPasswordEmailRequestSerializer(serializers.Serializer):
 
     class Meta:
         fields = ['email']
+
+
+class ClientUserSerializer(serializers.ModelSerializer):
+    """
+    serializer class for client user model
+    """
+    class Meta:
+        model = ClientUser
+        fields = ("first_name", "last_name")
+
+
+class BusinessClientUserSerializer(serializers.ModelSerializer):
+    """
+    serializer class for business client user model
+    """
+    class Meta:
+        model = BusinessClientUser
+        fields = ("first_name", "last_name", "organization_name")
+
+
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for verify email
+    """
+    email = serializers.EmailField(required=True)
+
+    class Meta:
+        model = ClientUser
+        fields = ('email',)

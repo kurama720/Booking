@@ -1,22 +1,23 @@
-import React, {useState} from 'react';
+import React from "react";
 import UserSignUpForm from "../components/UserSignUpForm/UserSignUpForm";
-import Modal from "../components/Modal/Modal";
 
-const SignUpPage = () => {
-    const [showModalSignUp,setShowModalSignUp] = useState<boolean>(false)
+interface SignUpPageProps {
+  active: boolean;
+  setActive: () => void;
+  handleLogInPopUp: () => void;
+}
 
-    const showModal = () => {
-        setShowModalSignUp(true)
-    }
-
-    return (
-        <>
-            <button onClick={showModal}>Sign up</button>
-            <Modal active={showModalSignUp} setActive={setShowModalSignUp}>
-                <UserSignUpForm setActive={setShowModalSignUp} />
-            </Modal>
-        </>
-    );
-};
+function SignUpPage({ active, setActive, handleLogInPopUp }: SignUpPageProps) {
+  return (
+    <>
+      {active && (
+        <UserSignUpForm
+          setActive={setActive}
+          handleLogInPopUp={handleLogInPopUp}
+        />
+      )}
+    </>
+  );
+}
 
 export default SignUpPage;

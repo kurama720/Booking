@@ -1,10 +1,16 @@
 from django.urls import path
 
-from accounts.api.views import RegisterView, CustomTokenObtainView
-from accounts.api.views import LogoutView
-from accounts.api.views import BusinessClientRegisterView
-from accounts.api.views import BusinessClientSignInView
-from accounts.api.views import RequestPasswordResetView
+from accounts.api.views import (RegisterView,
+                                CustomTokenObtainView,
+                                LogoutView,
+                                BusinessClientRegisterView,
+                                BusinessClientSignInView,
+                                UserInfoView,
+                                VerifyEmailView,
+                                RequestPasswordResetView,
+                                )
+from apartments.api.views import ClientBookingHistoryView
+
 
 urlpatterns = [
     path('signup/', RegisterView.as_view(), name='sign_up'),
@@ -14,4 +20,7 @@ urlpatterns = [
     path('business/signin/', BusinessClientSignInView.as_view(), name='business_sign_in'),
     path('business/logout/', LogoutView.as_view(), name='business_log_out'),
     path('password-reset-email/', RequestPasswordResetView.as_view(), name='password_reset_email'),
+    path('info/', UserInfoView.as_view(), name='info'),
+    path('booking-history/', ClientBookingHistoryView.as_view(), name='client_booking_history'),
+    path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),
 ]

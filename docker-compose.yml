@@ -20,12 +20,13 @@ services:
         env_file: .env
         depends_on:
             - booking_postgres
+            - redis
         container_name: booking_django
         networks:
             - booking_local_services
 
     booking_postgres:
-        image: postgres:13
+        image: postgis/postgis
         volumes:
             - ".data/postgres:/var/lib/postgresql/data"
         environment:
@@ -38,6 +39,28 @@ services:
         networks:
             - booking_local_services
 
+    redis:
+        image: redis:5-alpine
+        networks:
+            - booking_local_services
+
+    celery:
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile-django
+        command: celery --app backend worker --loglevel=info
+        volumes:
+            - "./backend:/app"
+        environment:
+            - PYTHONUNBUFFERED=1
+        env_file: .env
+        depends_on:
+            - booking_postgres
+            - booking_django
+            - redis
+        networks:
+            - booking_local_services
 
 networks:
     booking_local_services:
