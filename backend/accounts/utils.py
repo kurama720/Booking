@@ -1,3 +1,4 @@
+from django.core.mail import EmailMessage
 from django.urls import reverse
 from django.utils.encoding import smart_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -5,6 +6,15 @@ from django.utils.http import urlsafe_base64_encode
 from accounts.models import ClientUser
 from accounts.api.tokens import account_activation_token
 
+
+class Util:
+    """Class for send message"""
+    @staticmethod
+    def send_mail(data):
+        email = EmailMessage(
+            subject=data['email_subject'], body=data['email_body'], to=[data['to_email']]
+        )
+        email.send()
 
 def create_verify_mail_data(user_data: dict, current_site: str,
                             user: ClientUser = None) -> dict:
