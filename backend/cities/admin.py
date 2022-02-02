@@ -31,7 +31,7 @@ class CityAdmin(ApartmentAdmin):
                                       level=messages.WARNING)
                     return HttpResponseRedirect(request.path_info)
                 try:
-                    file_data = pd.read_csv(csv_file, sep=";")
+                    file_data = pd.read_csv(csv_file, sep=",")
                 except EmptyDataError:
                     self.message_user(
                         request,
@@ -43,10 +43,11 @@ class CityAdmin(ApartmentAdmin):
                 try:
                     cities = [
                         City(name=row["name"],
-                             location=Point(int(row["lon"]),
-                                            int(row["lat"])))
+                             location=Point(float(row["lon"]),
+                                            float(row["lat"])))
                         for _, row in row_iter
                     ]
+
                     if not cities:
                         raise KeyError
                     City.objects.bulk_create(cities)

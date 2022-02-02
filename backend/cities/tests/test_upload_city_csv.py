@@ -23,11 +23,11 @@ class UploadCityListFileCSV(APITestCase):
         self.upload_results_messages_and_data_examples = {
             "success": {"message": "Csv file has been imported",
                         "data": dict(name="test_upload.csv",
-                                     content=b"name;lat;lon\nMinsk;10;10"
+                                     content=b"name,lat,lon\nMinsk,10,10"
                                      )},
             "wrong_type": {"message": "You try to upload wrong file type",
                            "data": dict(name="test_upload.txt",
-                                        content=b"name;lat;lon\nMinsk;10;10"
+                                        content=b"name,lat,lon\nMinsk,10,10"
                                         )},
             "empty_file": {"message": "You try to upload empty file!",
                            "data": dict(name="test_upload.csv",
@@ -35,15 +35,15 @@ class UploadCityListFileCSV(APITestCase):
                                         )},
             "invalid_file_data": {"message": "Csv file data format doesn't fit",
                                   "data": dict(name="test_upload.csv",
-                                               content=b"name;lat;lon\nMinsk;Grodno;Borisov"
+                                               content=b"name,lat,lon\nMinsk,Grodno,Borisov"
                                                )},
             "duplicates": {"message": "You try to upload duplicates data in db!",
                            "data": dict(name="test_upload.csv",
-                                        content=b"name;lat;lon\nMinsk;10;10"
+                                        content=b"name,lat,lon\nMinsk,10,10"
                                         )},
             "no_headers": {"message": "Csv file has no field name header",
                            "data": dict(name="test_upload.csv",
-                                        content=b"Minsk;10;10"
+                                        content=b"Minsk,10,10"
                                         )}
         }
 
