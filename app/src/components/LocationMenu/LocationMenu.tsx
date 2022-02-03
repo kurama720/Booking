@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { LocationMarkerIcon } from "@heroicons/react/outline";
 import { Cities } from "../Header/utils/HeaderInterface";
+import { useOutside } from "../../hooks/useClickOutside";
 
 interface LocationMenuProps {
   cities: Array<Cities>;
@@ -15,20 +16,7 @@ function LocationMenu({
 }: LocationMenuProps) {
   const wrapper = useRef(null);
 
-  const useOutside = (ref: React.MutableRefObject<HTMLBodyElement | null>) => {
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          isActiveLocationBox(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  };
-  useOutside(wrapper);
+  useOutside(wrapper, isActiveLocationBox);
 
   return (
     <>

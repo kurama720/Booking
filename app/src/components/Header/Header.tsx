@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { DateRange } from "@mui/lab/DateRangePicker";
-import axios from "axios";
 import NodicLogo from "./utils/image/NodicLogo.png";
 import Calendar from "../Calendar/Calendar";
 import Location from "../Location/Location";
@@ -15,6 +14,7 @@ import { AuthContext } from "../../context/Context";
 import CalendarMenu from "../Calendar/CalendarMenu/CalendarMenu";
 import { AuthMenuItemLogoutProps, Cities } from "./utils/HeaderInterface";
 import useDebounce from "../../hooks/useDebounce";
+import SearchService from "../../api/SearchService";
 
 function Header({
   handleLogInPopUp,
@@ -42,14 +42,10 @@ function Header({
   const debouncedSearch = useDebounce(search, 500);
 
   const searchOfCity = async () => {
-    const response = await axios.get<Cities[]>(
-      `${process.env.REACT_APP_API_URL}cities/coordinates`,
-      {
-        params: { word: debouncedSearch },
-      }
-    );
+    const response = await SearchService.searchOfCities(debouncedSearch);
     setCity(response.data);
   };
+
   useEffect(() => {
     if (debouncedSearch) {
       searchOfCity();
