@@ -19,7 +19,7 @@ const SliderCardMap: FC<IPropsSliderCardMap> = ({ listPictures }) => {
             <img
               src={item.img}
               alt={`object ${index}`}
-              className="w-full min-h-full max-w-[240px] max-h-[144px] rounded-t-md"
+              className="w-full min-h-full max-w-[240px] max-h-[144px]"
             />
           </SplideSlide>
         ))}
