@@ -8,7 +8,6 @@ from rest_framework.generics import GenericAPIView, get_object_or_404, ListAPIVi
 from rest_framework.viewsets import GenericViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework.views import APIView
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
@@ -196,9 +195,10 @@ class FavoriteApartmentView(viewsets.ViewSet):
         Save request user id in m2m field user of the apartment with given id
         :param pk: apartment unique id from request path
         """
-        apartment = Apartment.objects.get(id=pk)
-        apartment.user.add(request.user.id)
-        apartment.save()
-        return Response(status=status.HTTP_201_CREATED)
-
-
+        try:
+            apartment = Apartment.objects.get(id=pk)
+            apartment.user.add(request.user.id)
+            apartment.save()
+            return Response(status=status.HTTP_201_CREATED)
+        except Apartment.DoesNotExist:
+            return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)

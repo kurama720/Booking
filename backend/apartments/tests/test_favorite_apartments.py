@@ -14,7 +14,7 @@ class FavoriteApartmentsTestCase(APITestCase):
     def setUp(self):
         """Set up necessary data in test db"""
         self.user = ClientUser.objects.create_user(email="client@client.com", password="Test1234")
-        Apartment.objects.create(id=1, title='Test Hotel 1', price=100, lat=10, lon=20,
+        Apartment.objects.create(title='Test Hotel 1', price=100, lat=10, lon=20,
                                  description='The first test hotel', rating=5, feature=None)
         Apartment.objects.create(title='Test Hotel 2', price=80, lat=30, lon=40,
                                  description='The second test hotel', rating=4, feature=None)
@@ -22,7 +22,8 @@ class FavoriteApartmentsTestCase(APITestCase):
     def test_favorites_created_and_returned(self):
         """Post first apartment providing its id for the user. Then get it on another endpoint of the same user"""
         token = str(AccessToken().for_user(self.user))  # Token for imitating authentication
-        response = self.client.post('http://localhost:8000/apartments/favorite/1/save',
+        ap_id = Apartment.objects.get(title='Test Hotel 1').id
+        response = self.client.post(f'http://localhost:8000/apartments/favorite/{ap_id}/save',
                                     HTTP_AUTHORIZATION=f"Bearer {token}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
