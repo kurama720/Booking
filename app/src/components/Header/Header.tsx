@@ -34,7 +34,7 @@ function Header({
   const [cities, setCity] = useState<Cities[]>([]);
   const [date, setDate] = React.useState<DateRange<Date>>([null, null]);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
 
   const { token } = useContext(AuthContext);
   const isAuth = !!token;
