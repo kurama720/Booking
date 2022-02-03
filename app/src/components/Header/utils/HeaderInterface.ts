@@ -27,4 +27,5 @@ export interface AuthMenuItemLogoutProps {
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
   setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+  handleBookingHistory: () => void;
 }

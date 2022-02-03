@@ -13,8 +13,9 @@ from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
 from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient, IsClientOnly
 from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
-                                        ReviewsSerializer, PriceAnalyticSerializer)
+                                        ReviewsSerializer, PriceAnalyticSerializer, FavoriteApartmentSerializer)
 from apartments.business_logic import check_files_in_request
+from accounts.models import ClientUser
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -175,3 +176,29 @@ class ClientBookingHistoryView(GenericAPIView):
         queryset = Booking.objects.filter(client=request.user)
         data = self.get_serializer(queryset, many=True).data
         return Response(data=data)
+
+
+class FavoriteApartmentView(viewsets.ViewSet):
+    """View to return favorite apartments of the user"""
+    permission_classes = (IsClientOnly,)
+
+    def list(self, request):
+        """
+        Return apartments with related name.
+        """
+        queryset = ClientUser.objects.get(id=request.user.id).favorite_apartments
+        serializer = FavoriteApartmentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, pk):
+        """
+        Save request user id in m2m field user of the apartment with given id
+        :param pk: apartment unique id from request path
+        """
+        try:
+            apartment = Apartment.objects.get(id=pk)
+            apartment.user.add(request.user.id)
+            apartment.save()
+            return Response(status=status.HTTP_201_CREATED)
+        except Apartment.DoesNotExist:
+            return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)

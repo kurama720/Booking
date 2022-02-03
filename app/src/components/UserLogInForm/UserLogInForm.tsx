@@ -298,12 +298,12 @@ function UserLogInForm({
                               onClick={handleVisiblePasswordStatus}
                               context={
                                 visiblePassword ? (
+                                  <EyeIcon className="h-6 w-5" fill="#9CA3AF" />
+                                ) : (
                                   <EyeOffIcon
                                     className="h-6 w-5"
                                     fill="#9CA3AF"
                                   />
-                                ) : (
-                                  <EyeIcon className="h-6 w-5" fill="#9CA3AF" />
                                 )
                               }
                               classNames="absolute left-icon  z-10 top-8 flex items-center pointer-event-none"

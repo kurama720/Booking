@@ -55,7 +55,7 @@ class ApartmentSerializerTestCase(TestCase):
             description="some description",
             feature=dict(),
             rating=None,
-            created_at=test_apartment.created_at.isoformat().replace("+00:00", "Z"),
-            business_account=test_business_client.id
+            business_account=test_business_client.id,
+            user=[],
         )
         self.assertEqual(test_data, expected_data)

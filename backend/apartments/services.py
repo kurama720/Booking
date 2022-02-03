@@ -48,11 +48,17 @@ class ApartmentFilter(django_filters.FilterSet):
         Get dates from param ?check_availability=YYYY-MM-DD,YYYY-MM-DD.
         Filter by Booking fields check_in_date, check_out_date are not in range of given dates
         """
-        value: list = value.split(',')
-        check_in: datetime.date = datetime.date.fromisoformat(value[0])
-        check_out: datetime.date = datetime.date.fromisoformat(value[1])
+        date_range = value.split(',')
+        # Add one day to check in and subtract one day from check out
+        # So client could check in on check out date of another client
+        check_in: datetime.date = datetime.date.fromisoformat(date_range[0]) + datetime.timedelta(days=1)
+        check_out: datetime.date = datetime.date.fromisoformat(date_range[1]) - datetime.timedelta(days=1)
         return queryset.filter(~Q(bookings__check_in_date__range=(check_in, check_out)) &
-                               ~Q(bookings__check_out_date__range=(check_in, check_out)))
+                               ~Q(bookings__check_out_date__range=(check_in, check_out)) &
+                               ~Q(bookings__check_in_date__lt=check_in,
+                                  bookings__check_out_date__gt=check_in) &
+                               ~Q(bookings__check_in_date__lt=check_out,
+                                  bookings__check_out_date__gt=check_out))
 
 
 class DateAscendingDescendingFilter(DateRangeFilter):

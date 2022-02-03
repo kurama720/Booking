@@ -1,8 +1,8 @@
-interface IObjectPictures {
+export interface IObjectPicture {
   id: number;
   img: string;
 }
 
 export interface IPropsSliderCardMap {
-  listPictures: Array<IObjectPictures>;
+  listPictures: Array<IObjectPicture>;
 }

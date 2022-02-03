@@ -31,6 +31,7 @@ class Apartment(models.Model):
                                          on_delete=models.CASCADE,
                                          null=True)
     feature = models.JSONField(validators=[JSONSchemaValidator(limit_value=SCHEMA)], blank=True, null=True)
+    user = models.ManyToManyField(ClientUser, related_name='favorite_apartments', blank=True)
 
     def check_apartment_booking(self, client_check_in_date: datetime.date,
                                 client_check_out_date: datetime.date) -> int:

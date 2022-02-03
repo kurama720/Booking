@@ -41,7 +41,7 @@ const ApartmentForm: FC = () => {
   };
 
   return (
-    <div>
+    <div className="4xl:ml-[6%] 5xl:ml-[11%] 6xl:ml-[14%] 3.75xl:ml-[6%] 3.5xl:ml-[5%] 3xl:ml-[5%] 1.5xl:ml-[6%] 1xl:ml-[6%] xlg:ml-[6%] mlg:ml-[4%]">
       <div className="shadow w-full p-6 max-w-[350px]">
         <div className="flex justify-between items-center">
           <div>

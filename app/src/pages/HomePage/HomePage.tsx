@@ -7,6 +7,7 @@ import Modal from "../../components/Modal/Modal";
 import { BookingState } from "./utils/HomePageInterface";
 import Footer from "../../components/Footer/Footer";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
+import BookingHistory from "../../components/BookingHistory";
 
 interface IPropsHomePage {
   setApartments: React.Dispatch<React.SetStateAction<any[]>>;
@@ -16,6 +17,8 @@ function HomePage({ setApartments }: IPropsHomePage) {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
+  const [isActiveBookingHistory, setActiveBookingHistory] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -44,6 +47,10 @@ function HomePage({ setApartments }: IPropsHomePage) {
     setCalendarPopUpStatus((prev) => !prev);
   };
 
+  const handleBookingHistory = () => {
+    setActiveBookingHistory((prev) => !prev);
+  };
+
   return (
     <div className="w-full bg-gray-50">
       <div className="w-full h-screen px-16 bg-gray-50">
@@ -59,6 +66,7 @@ function HomePage({ setApartments }: IPropsHomePage) {
           setUserBookingDate={setUserBookingDate}
           userBookingDate={userBookingDate}
           setApartments={setApartments}
+          handleBookingHistory={handleBookingHistory}
         />
         <MainPageBody />
         {popUpStatus && (
@@ -85,6 +93,14 @@ function HomePage({ setApartments }: IPropsHomePage) {
               handleLogoutPopUpStatus={handleLogoutPopUpStatus}
               activeLogout={activeLogout}
             />
+          </Modal>
+        )}
+        {isActiveBookingHistory && (
+          <Modal
+            active={isActiveBookingHistory}
+            setActive={handleBookingHistory}
+          >
+            <BookingHistory handleBookingHistory={handleBookingHistory} />
           </Modal>
         )}
       </div>
