@@ -63,15 +63,8 @@ services:
             - booking_local_services
 
     flower:
-        build:
-            context: .
-            dockerfile: Dockerfile-django
-        command: celery --app backend flower --url_prefix=flower
-        volumes:
-            - "./backend:/app"
-        environment:
-            - PYTHONUNBUFFERED=1
-        env_file: .env
+        image: mher/flower
+        command: celery --broker=redis://redis:6379/0 flower --url_prefix=flower
         ports:
             - 5555:5555
         depends_on:
