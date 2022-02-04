@@ -7,4 +7,8 @@ export interface GuestMenuProps {
   activeModel: boolean;
   numberOfGuests: number;
   setNumberOfGuests: React.Dispatch<React.SetStateAction<number>>;
+  guest: string;
+  setGuest: React.Dispatch<React.SetStateAction<string>>;
+  isAddGuest: boolean;
+  setIsAddGuest: React.Dispatch<React.SetStateAction<boolean>>;
 }

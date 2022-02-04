@@ -10,6 +10,10 @@ import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
 
 function HomePage({ setApartments }: IPropsHomePage) {
+  const [guest, setGuest] = useState("Add guests");
+  const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [activeModel, isActiveModel] = useState<boolean>(false);
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
@@ -63,6 +67,15 @@ function HomePage({ setApartments }: IPropsHomePage) {
           userBookingDate={userBookingDate}
           setApartments={setApartments}
           handleBookingHistory={handleBookingHistory}
+          isActiveSearchMenu
+          isActiveModel={isActiveModel}
+          activeModel={activeModel}
+          numberOfGuests={numberOfGuests}
+          setNumberOfGuests={setNumberOfGuests}
+          guest={guest}
+          setGuest={setGuest}
+          isAddGuest={isAddGuest}
+          setIsAddGuest={setIsAddGuest}
         />
         <MainPageBody />
         {popUpStatus && (

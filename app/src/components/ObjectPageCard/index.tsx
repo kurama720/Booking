@@ -4,23 +4,46 @@ import ObjectsPagePhotos from "./ObjectPageCardPhotos";
 import ObjectsPageDescription from "./ObjectPageCardDescription";
 import ApartmentForm from "../ApartmentForm/ApartmentForm";
 import Footer from "../Footer/Footer";
+import { IObjectPageCardProps } from "./IObjectPageCardProps";
+import ObjectPageModel from "../ObjectPageModel";
 
-const Index = () => {
+const ObjectPageCard = ({
+  isActiveSearchMenu,
+  setActiveSearchMenu,
+  setCalendarPopUpStatus,
+  isActiveLocationBox,
+  isActiveModel,
+  setSideEffect,
+  sideEffect,
+  handleSearchMenu,
+}: IObjectPageCardProps) => {
   return (
-    <div className="w-full">
+    <ObjectPageModel
+      sideEffect={sideEffect}
+      setSideEffect={setSideEffect}
+      isActiveSearchMenu={isActiveSearchMenu}
+      setActiveSearchMenu={setActiveSearchMenu}
+      setCalendarPopUpStatus={setCalendarPopUpStatus}
+      isActiveLocationBox={isActiveLocationBox}
+      isActiveModel={isActiveModel}
+    >
       <div className="w-full px-16">
         <div className="w-full">
-          <ObjectsPageTop />
-          <ObjectsPagePhotos />
+          <ObjectsPageTop sideEffect={sideEffect} />
+          <ObjectsPagePhotos
+            setSideEffect={setSideEffect}
+            handleSearchMenu={handleSearchMenu}
+            sideEffect={sideEffect}
+          />
         </div>
         <div className="w-full mt-6 flex">
-          <ObjectsPageDescription />
-          <ApartmentForm />
+          <ObjectsPageDescription sideEffect={sideEffect} />
+          <ApartmentForm sideEffect={sideEffect} />
         </div>
       </div>
-      <Footer />
-    </div>
+      <Footer sideEffect={sideEffect} />
+    </ObjectPageModel>
   );
 };
 
-export default Index;
+export default ObjectPageCard;

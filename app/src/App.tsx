@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { LocalKey, LocalStorage } from "ts-localstorage";
 import { useAuth } from "./hooks/auth.hook";
 import { useRoutes } from "./hooks/routes.hook";
 import { AuthContext } from "./context/Context";
-import Footer from "./components/Footer/Footer";
+import { JWT } from "./hooks/auth.hook.interface";
 
 function App() {
   const {
@@ -15,7 +16,9 @@ function App() {
     errorMessage,
     check,
   } = useAuth();
-  const isAuth = !!token;
+  const storageName = "userData" as LocalKey<JWT>;
+  const data = LocalStorage.getItem(storageName);
+  const isAuth = !!data;
   const routes = useRoutes(isAuth);
   const ctx = useMemo(
     () => ({

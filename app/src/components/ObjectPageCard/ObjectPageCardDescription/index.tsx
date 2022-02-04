@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import Avatar from "../utils/img/Avatar.png";
 import { getFullText } from "../utils/helpers";
 import ObjectsPageCardIntroduce from "../ObjectPageCardIntroduce";
+import { ObjectsPageCardDescriptionProps } from "./IObjectsPageCardDescriptionProps";
 
 const text =
   "Lovely large Private EnSuite room in a shared 2 bed flat (with me as the only other resident) in Paddington which is a thriving hub of restaurants, shops and green spaces just a short walk from central London and the Hyde Park. The flat is spacious and homey. The flat is a 4 min walk to Paddington underground station and 7 minutes to the central line at LancasterGate!Please note that the flat is on the 2nd floor and there is no lift, the kitchen is vegetarian Lovely large Private EnSuite room in a shared 2 bed flat (with me as the only other resident) in Paddington which is a thriving hub of restaurants, shops and green spaces just a short walk from central London and the Hyde Park. The flat is spacious and homey. The flat is a 4 min walk to Paddington underground station and 7 minutes to the central line at LancasterGate!Please note that the flat is on the 2nd floor and there is no lift, the kitchen is vegetarian";
 
-const ObjectsPageCardDescription = () => {
+const ObjectsPageCardDescription = ({
+  sideEffect,
+}: ObjectsPageCardDescriptionProps) => {
   const [isFullText, setFullText] = useState<boolean>(false);
 
   const handleFullText = () => {
@@ -38,10 +41,11 @@ const ObjectsPageCardDescription = () => {
       <div className="w-full">
         <p className="text-base font-body">{getFullText(text, isFullText)}</p>
         <button
+          disabled={sideEffect}
           onClick={handleFullText}
           className="font-body text-sm font-medium text-blue-600 mt-1.5"
         >
-          Show more
+          {!isFullText ? "Show more" : "Hide"}
         </button>
         <hr className="my-7" />
       </div>

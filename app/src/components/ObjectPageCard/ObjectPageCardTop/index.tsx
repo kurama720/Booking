@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { HeartIcon as HeartActiveIcon, StarIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
+import { IObjectPageCardProps } from "./IObjectPageCardTopProps";
 
-const ObjectsPageCardTop = () => {
+const ObjectsPageCardTop = ({ sideEffect }: IObjectPageCardProps) => {
   const [isLike, setLike] = useState<boolean>(false);
 
   const handleLike = () => {
@@ -24,8 +25,8 @@ const ObjectsPageCardTop = () => {
           <li className="font-body text-sm font-normal text-gray-900 mx-1.5">
             4,3
           </li>
-          <li className="flex items-center mx-1.5">·</li>
-          <li className="font-body text-sm font-medium text-blue-600 mx-1.5">
+          <li className="flex items-center">·</li>
+          <li className="font-body text-sm font-medium text-blue-600 ml-1.5">
             15 reviews
           </li>
           <li className="flex items-center mx-1.5">·</li>
@@ -34,14 +35,19 @@ const ObjectsPageCardTop = () => {
           </li>
         </ul>
         <div className="flex items-center">
-          <button onClick={handleLike}>
+          <button disabled={sideEffect} onClick={handleLike}>
             {isLike ? (
               <HeartActiveIcon className="h-5 w-5 text-red-500" />
             ) : (
               <HeartIcon className="h-5 w-5" />
             )}
           </button>
-          <button className="ml-[7.7px] text-sm font-body">Save</button>
+          <button
+            disabled={sideEffect}
+            className="ml-[7.7px] text-sm font-body"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
