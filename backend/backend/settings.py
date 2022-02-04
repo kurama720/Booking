@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'rest_framework_gis',
     'markers',
+    'social_django',
+    'cities',
     'celery',
     'redis',
     'flower',
@@ -170,6 +172,24 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", None)
+
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv("SOCIAL_AUTH_FACEBOOK_KEY", None)
+SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv("SOCIAL_AUTH_FACEBOOK_SECRET", None)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
