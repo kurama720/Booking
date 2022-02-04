@@ -5,8 +5,13 @@ import Room3 from "../utils/img/image2.svg";
 import Room4 from "../utils/img/image3.svg";
 import Room5 from "../utils/img/image4.svg";
 import SlideShow from "../../SlideShow/SlideShow";
+import { IObjectsPageCardPhotosProps } from "./IObjectsPageCardPhotosProps";
 
-const ObjectsPageCardPhotos = () => {
+const ObjectsPageCardPhotos = ({
+  setSideEffect,
+  handleSearchMenu,
+  sideEffect,
+}: IObjectsPageCardPhotosProps) => {
   return (
     <div className="w-full  flex justify-center">
       <div className="w-2/4 object-contain mr-2">
@@ -14,7 +19,11 @@ const ObjectsPageCardPhotos = () => {
       </div>
       <div className="w-2/4 relative">
         <div className="w-full flex">
-          <SlideShow />
+          <SlideShow
+            setSideEffect={setSideEffect}
+            handleSearchMenu={handleSearchMenu}
+            sideEffect={sideEffect}
+          />
           <div className="object-contain w-2/4 mr-2 mb-2">
             <img src={Room2} className="w-full" alt="room" />
           </div>

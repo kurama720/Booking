@@ -8,3 +8,7 @@ export interface IGuest {
 }
 
 export type dataForApartmentForm = IFormApartment | IGuest;
+
+export interface IFormApartmentProps {
+  sideEffect: boolean;
+}

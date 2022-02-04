@@ -3,10 +3,15 @@ import { GlobeAltIcon, CurrencyDollarIcon } from "@heroicons/react/solid";
 import { BsFacebook } from "react-icons/bs";
 import { AiOutlineTwitter } from "react-icons/ai";
 import { FaInstagram } from "react-icons/fa";
+import { IFooterProps } from "./IFooterProps";
 
-function Footer() {
+function Footer({ sideEffect }: IFooterProps) {
   return (
-    <footer className="w-full bg-gray-50 mt-[22px]">
+    <footer
+      className={`w-full ${
+        sideEffect ? "bg-[#bfbfbf]" : "bg-gray-50"
+      } mt-[22px]`}
+    >
       <div className="w-full max-w-screen-xl my-0 mx-auto">
         <div className="h-px bg-gray-300 mt-2" />
         <div className="flex items-center justify-between py-8">

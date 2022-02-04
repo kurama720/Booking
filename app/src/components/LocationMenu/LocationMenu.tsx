@@ -23,7 +23,7 @@ function LocationMenu({
       {cities.length > 0 ? (
         <div
           ref={wrapper}
-          className="w-56 rounded-md shadow absolute bg-white rounded-md top-10 1.5xl:left-[23.2%] lg:left-[11.2%] 3xl:left-[24.5%] 4xl:left-[28.8%] 5xl:left-[34.6%] xlg:left-[17.2%] mlg:left-[10.8%] 3.5xl:left-[25.7%] 1xl:left-[21.2%] 3.75xl:left-[28.7%] 6xl:left-[36.3%]"
+          className="w-56 rounded-md shadow absolute z-10 bg-white rounded-md top-[60px] 1.5xl:left-[23.2%] lg:left-[11.2%] 3xl:left-[24.5%] 4xl:left-[28.8%] 5xl:left-[34.6%] xlg:left-[17.2%] mlg:left-[10.8%] 3.5xl:left-[25.7%] 1xl:left-[21.2%] 3.75xl:left-[28.7%] 6xl:left-[36.3%]"
         >
           {cities.map((city) => {
             return (
