@@ -80,6 +80,19 @@ services:
     networks:
       - booking_production_services
 
+  flower:
+    image: mher/flower
+    command: celery --broker=$CELERY_BROKER flower
+    ports:
+      - 5555:5555
+    env_file: .env
+    depends_on:
+      - booking_django
+      - redis
+      - celery
+    networks:
+      - booking_production_services
+
 volumes:
   postgres_volume:
 
