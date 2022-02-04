@@ -9,9 +9,11 @@ function GuestMenu({
   activeModel,
   numberOfGuests,
   setNumberOfGuests,
+  guest,
+  setGuest,
+  isAddGuest,
+  setIsAddGuest,
 }: GuestMenuProps) {
-  const [guest, setGuest] = useState("Add guests");
-  const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
   const firstUpdate = useRef(true);
 
   const guestMenuStyle =

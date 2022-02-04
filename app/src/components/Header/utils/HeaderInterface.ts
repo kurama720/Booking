@@ -24,5 +24,15 @@ export interface AuthMenuItemLogoutProps {
   setCalendarPopUpStatus: React.Dispatch<React.SetStateAction<boolean>>;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
+  handleSearchMenu?: () => void;
+  isActiveSearchMenu?: boolean;
   handleBookingHistory: () => void;
+  isActiveModel: React.Dispatch<React.SetStateAction<boolean>>;
+  activeModel: boolean;
+  numberOfGuests: number;
+  setNumberOfGuests: React.Dispatch<React.SetStateAction<number>>;
+  guest: string;
+  setGuest: React.Dispatch<React.SetStateAction<string>>;
+  isAddGuest: boolean;
+  setIsAddGuest: React.Dispatch<React.SetStateAction<boolean>>;
 }

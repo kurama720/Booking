@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { DateRange } from "@mui/lab/DateRangePicker";
-import { dataForApartmentForm } from "./IFormApartment";
+import { dataForApartmentForm, IFormApartmentProps } from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
 import { parseDate } from "../../models/parseDate";
 
-const ApartmentForm: FC = () => {
+const ApartmentForm = ({ sideEffect }: IFormApartmentProps) => {
   const [valueDate, setValueDate] = React.useState<DateRange<Date>>([
     null,
     null,
@@ -62,6 +62,7 @@ const ApartmentForm: FC = () => {
           </div>
         </div>
         <PartFormApartment
+          sideEffect={sideEffect}
           valueDate={valueDate}
           setValueDate={setValueDate}
           setNumberOfGuests={setNumberOfGuests}
