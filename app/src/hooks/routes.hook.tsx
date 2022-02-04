@@ -29,7 +29,10 @@ export const useRoutes = (isAuth: boolean) => {
             />
           }
         />
-        <Route path={Paths.MAP} element={<MapSearchPage />} />
+        <Route
+          path={Paths.MAP}
+          element={<MapSearchPage apartments={apartments} />}
+        />
         <Route
           path={`${Paths.OBJECT_PAGE}/:id`}
           element={
@@ -55,7 +58,10 @@ export const useRoutes = (isAuth: boolean) => {
           />
         }
       />
-      <Route path={Paths.MAP} element={<MapSearchPage />} />
+      <Route
+        path={Paths.MAP}
+        element={<MapSearchPage apartments={apartments} />}
+      />
       <Route
         path={`${Paths.OBJECT_PAGE}/:id`}
         element={

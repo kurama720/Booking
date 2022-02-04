@@ -1,5 +1,5 @@
 /* eslint-disable import/order */
-import React from "react";
+import React, { FC } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import SearchResultItem from "../../components/SearchResultItem";
 import "leaflet/dist/leaflet.css";
@@ -20,7 +20,11 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const position: L.LatLngExpression = [52.43272, 30.999012];
 
-const MapSearchPage = () => {
+interface IPropsMapSearch {
+  apartments: Array<any>;
+}
+
+const MapSearchPage: FC<IPropsMapSearch> = ({ apartments }) => {
   return (
     <div className="flex h-[638px]">
       <div className="flex flex-col box-border w-[656px] px-6">
