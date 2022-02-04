@@ -9,7 +9,11 @@ import Footer from "../../components/Footer/Footer";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
 
-function HomePage({ setApartments }: IPropsHomePage) {
+function HomePage({
+  setApartments,
+  userBookingDate,
+  setUserBookingDate,
+}: IPropsHomePage) {
   const [guest, setGuest] = useState("Add guests");
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
@@ -22,14 +26,6 @@ function HomePage({ setApartments }: IPropsHomePage) {
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
-  const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    lat: 0,
-    lon: 0,
-    numOfPersons: 0,
-    checkInDate: "",
-    checkOutDate: "",
-    radius: 15000,
-  });
 
   const handleLogInPopUp = () => {
     setPopUpStatus((prev) => !prev);

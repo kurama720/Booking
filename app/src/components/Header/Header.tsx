@@ -130,7 +130,10 @@ function Header({
               />
             </li>
             <li>
-              <SearchButton userBookingDate={userBookingDate} />
+              <SearchButton
+                userBookingDate={userBookingDate}
+                setApartments={setApartments}
+              />
             </li>
           </ul>
         ) : (

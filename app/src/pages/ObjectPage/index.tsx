@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, FC } from "react";
 import ObjectPageCard from "../../components/ObjectPageCard";
 import { BookingState } from "../HomePage/utils/HomePageInterface";
 import Header from "../../components/Header/Header";
@@ -8,7 +8,17 @@ import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 
-const ObjectPage = () => {
+interface IPropsObjectPage {
+  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+  userBookingDate: BookingState;
+  setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
+}
+
+const ObjectPage: FC<IPropsObjectPage> = ({
+  setApartments,
+  userBookingDate,
+  setUserBookingDate,
+}) => {
   const [guest, setGuest] = useState("Add guests");
   const [sideEffect, setSideEffect] = useState<boolean>(false);
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
@@ -23,12 +33,6 @@ const ObjectPage = () => {
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
-  const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    city: "",
-    numOfPersons: 0,
-    checkInDate: "",
-    checkOutDate: "",
-  });
 
   const handleLogInPopUp = () => {
     setPopUpStatus((prev) => !prev);
@@ -81,6 +85,7 @@ const ObjectPage = () => {
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            setApartments={setApartments}
           />
         ) : (
           <Header
@@ -105,6 +110,7 @@ const ObjectPage = () => {
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            setApartments={setApartments}
           />
         )}
       </div>
