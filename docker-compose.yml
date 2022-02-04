@@ -64,9 +64,10 @@ services:
 
     flower:
         image: mher/flower
-        command: celery --broker=redis://redis:6379/0 flower
+        command: celery --broker=$CELERY_BROKER flower
         ports:
             - 5555:5555
+        env_file: .env
         depends_on:
             - booking_django
             - redis
