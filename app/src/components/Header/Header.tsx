@@ -66,7 +66,6 @@ function Header({
     setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
-      city: suggestionData.id,
       lat: currentCity.lat,
       lon: currentCity.lon,
     });

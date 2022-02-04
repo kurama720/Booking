@@ -1,13 +1,5 @@
 import React from "react";
-
-interface BookingState {
-  city: string;
-  lat: number;
-  lon: number;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
-}
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface SearchButtonProps {
   userBookingDate: BookingState;

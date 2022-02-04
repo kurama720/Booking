@@ -1,11 +1,29 @@
 import React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "@heroicons/react/solid";
 import { SearchButtonProps } from "./utils/SearchButtonInterface";
+import { ApartmentsService } from "../../api/ApartmentsService";
+import { Paths } from "../../paths/path";
 
 function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
+  const navigate = useNavigate();
   const handleSearchButton = async () => {
-    if (!!userBookingDate.checkInDate && !!userBookingDate.city) {
-      alert(JSON.stringify(userBookingDate));
+    if (
+      !!userBookingDate.checkInDate &&
+      !!userBookingDate.lat &&
+      !!userBookingDate.lon
+    ) {
+      try {
+        const response = await ApartmentsService.getApartment(userBookingDate);
+        console.log(response.data);
+        setApartments(response.data);
+        navigate(Paths.MAP);
+      } catch (e: unknown) {
+        if (axios.isAxiosError(e)) {
+          alert(e.message);
+        }
+      }
     }
   };
   return (

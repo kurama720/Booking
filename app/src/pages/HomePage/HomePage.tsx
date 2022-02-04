@@ -19,12 +19,12 @@ function HomePage({ setApartments }: IPropsHomePage) {
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
   const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    city: "",
     lat: 0,
     lon: 0,
     numOfPersons: 0,
     checkInDate: "",
     checkOutDate: "",
+    radius: 15000,
   });
 
   const handleLogInPopUp = () => {
