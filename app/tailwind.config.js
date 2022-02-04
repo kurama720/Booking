@@ -1,4 +1,7 @@
-module.exports = {content: ["./src/**/*.{js,jsx,ts,tsx}"],
+const plugin = require('tailwindcss/plugin');
+
+module.exports = {
+    content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
         extend: {
             backgroundImage: {
@@ -21,6 +24,23 @@ module.exports = {content: ["./src/**/*.{js,jsx,ts,tsx}"],
             }, fontFamily: {body: ["Inter"],}, width: {body: "28.5rem",}, spacing: {icon: "21rem", logo: "6.75rem",},
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(function ({ addUtilities }) {
+            addUtilities({
+                '.scrollbar-hide': {
+                    /* IE and Edge */
+                    '-ms-overflow-style': 'none',
+        
+                    /* Firefox */
+                    'scrollbar-width': 'none',
+        
+                    /* Safari and Chrome */
+                    '&::-webkit-scrollbar': {
+                    display: 'none'
+                    }
+                }
+            })
+        })
+    ],
 };
 

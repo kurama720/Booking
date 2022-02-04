@@ -5,7 +5,7 @@ import { SearchButtonProps } from "./utils/SearchButtonInterface";
 function SearchButton({ userBookingDate }: SearchButtonProps) {
   const handleSearchButton = () => {
     if (!!userBookingDate.checkInDate && !!userBookingDate.city) {
-      // alert(JSON.stringify(userBookingDate));
+      alert(JSON.stringify(userBookingDate));
     }
   };
   return (

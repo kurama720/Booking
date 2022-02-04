@@ -51,6 +51,10 @@ Open [Swagger documentation](https://localhost:3000/swagger/)
 |    `EMAIL_HOST_PASSWORD`    |                `Email password`                |                   `examplepassword`                   |
 |       `CELERY_BROKER`       |             `Celery message broker`            |                 `redis://redis:6379/0`                |
 |       `CELERY_BACKEND`      |             `Celery message backend`           |                 `redis://redis:6379/0`                |
+|  `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY`   |           `Client ID on Google app`            |          `34jt5lerjekjq3h4rklk`          |
+| `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |           `Secret key on Google app`           |          `FLJGLKAJG4tw43trjio`           |
+|     `SOCIAL_AUTH_FACEBOOK_KEY`     |          `Client ID on Facebook app`           |            `2345432456343245`            |
+|   `SOCIAL_AUTH_FACEBOOK_SECRET`    |          `Secret key on Facebook app`          |       `fgdjrlkw4jlrkfnl423423qj3r`       |
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installing Docker and Docker Compose
