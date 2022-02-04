@@ -91,7 +91,7 @@ services:
       - redis
       - celery
     networks:
-      - booking_local_services
+      - booking_production_services
 
 volumes:
   postgres_volume:
