@@ -4,14 +4,10 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Modal from "../../components/Modal/Modal";
-import { BookingState } from "./utils/HomePageInterface";
+import { BookingState, IPropsHomePage } from "./utils/HomePageInterface";
 import Footer from "../../components/Footer/Footer";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
-
-interface IPropsHomePage {
-  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
-}
 
 function HomePage({ setApartments }: IPropsHomePage) {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);

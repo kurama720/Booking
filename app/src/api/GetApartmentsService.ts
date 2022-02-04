@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
-import { BookingState } from "../components/Header/utils/HeaderInterface";
+import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
 
-export class GetApartmentsService {
+export class ApartmentsService {
   static async getApartment(
     userBookingDate: BookingState
   ): Promise<AxiosResponse> {

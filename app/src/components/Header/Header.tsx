@@ -61,12 +61,14 @@ function Header({
 
   const getSuggestionData = (e: React.MouseEvent) => {
     const suggestionData = e.target as HTMLInputElement;
+    const currentCity =
+      cities.find((item) => item.name === suggestionData.id) || userBookingDate;
     setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
       city: suggestionData.id,
-      lat: 0,
-      lon: 0
+      lat: currentCity.lat,
+      lon: currentCity.lon,
     });
     isActiveLocationBox(false);
   };

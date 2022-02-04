@@ -1,18 +1,10 @@
 import React from "react";
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface Cities {
   name: string;
   lat: number;
   lon: number;
-}
-
-export interface BookingState {
-  city: string;
-  lat: number;
-  lon: number;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
 }
 
 export interface AuthMenuItemLogoutProps {
