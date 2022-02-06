@@ -34,8 +34,6 @@ function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
     ) {
       try {
         const response = await ApartmentsService.getApartment(userBookingDate);
-        alert(userBookingDate);
-        console.log(response.data);
         setApartments(response.data);
         navigate(Paths.MAP);
       } catch (e: unknown) {

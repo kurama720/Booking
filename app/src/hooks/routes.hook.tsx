@@ -11,7 +11,6 @@ export const useRoutes = (isAuth: boolean) => {
   const [userBookingDate, setUserBookingDate] = useState<BookingState>({
     lat: 0,
     lon: 0,
-    radius: 16000,
     numOfPersons: 0,
     checkInDate: "",
     checkOutDate: "",
