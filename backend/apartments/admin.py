@@ -51,9 +51,7 @@ class ApartmentAdmin(admin.ModelAdmin):
                               description=row['description'])
                     for _, row in row_iter if not Apartment.objects.filter(uuid=row['uuid']).exists()
                 ]
-                if not apartments:
-                    raise ObjectDoesNotExist
-                Apartment.objects.bulk_create(apartments)  # Adding data to the database
+
                 row_iter = file_data.iterrows()
                 images = []
                 data_wrapper = namedtuple("data_wrapper", ["type", "content"])
@@ -69,6 +67,9 @@ class ApartmentAdmin(admin.ModelAdmin):
                                                         name=data.content['image'],
                                                         content=file.read(),
                                                         content_type=guess_type(file.name))))
+                if not apartments:
+                    raise ObjectDoesNotExist
+                Apartment.objects.bulk_create(apartments)  # Adding data to the database
 
                 ApartmentsImage.objects.bulk_create(images)
                 self.message_user(request, "Your csv file has been imported")
