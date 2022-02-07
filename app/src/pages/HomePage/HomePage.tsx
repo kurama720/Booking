@@ -8,6 +8,7 @@ import { BookingState } from "./utils/HomePageInterface";
 import Footer from "../../components/Footer/Footer";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 
 function HomePage() {
   const [guest, setGuest] = useState("Add guests");
@@ -19,6 +20,8 @@ function HomePage() {
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
   const [isActiveBookingHistory, setActiveBookingHistory] =
     useState<boolean>(false);
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -29,25 +32,19 @@ function HomePage() {
     checkOutDate: "",
   });
 
-  const handleLogInPopUp = () => {
-    setPopUpStatus((prev) => !prev);
-  };
+  const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
-  const handleSignUpPopUpStatus = () => {
-    setSignUpPopUpStatus((prev) => !prev);
-  };
+  const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
-  const handleLogoutPopUpStatus = () => {
-    isActiveLogout((prev) => !prev);
-  };
+  const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
-  const handleCalendarPopUpStatus = () => {
+  const handleCalendarPopUpStatus = () =>
     setCalendarPopUpStatus((prev) => !prev);
-  };
 
-  const handleBookingHistory = () => {
-    setActiveBookingHistory((prev) => !prev);
-  };
+  const handleBookingHistory = () => setActiveBookingHistory((prev) => !prev);
+
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
 
   return (
     <div className="w-full bg-gray-50">
@@ -73,6 +70,7 @@ function HomePage() {
           setGuest={setGuest}
           isAddGuest={isAddGuest}
           setIsAddGuest={setIsAddGuest}
+          handleFavouriteApartmentsList={handleFavouriteApartmentsList}
         />
         <MainPageBody />
         {popUpStatus && (
@@ -107,6 +105,16 @@ function HomePage() {
             setActive={handleBookingHistory}
           >
             <BookingHistory handleBookingHistory={handleBookingHistory} />
+          </Modal>
+        )}
+        {isActiveFavouriteApartmentList && (
+          <Modal
+            active={isActiveFavouriteApartmentList}
+            setActive={handleFavouriteApartmentsList}
+          >
+            <DisplayFavouriteApartments
+              handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            />
           </Modal>
         )}
       </div>

@@ -7,8 +7,11 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 
 const ObjectPage = () => {
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+    useState<boolean>(false);
   const [guest, setGuest] = useState("Add guests");
   const [sideEffect, setSideEffect] = useState<boolean>(false);
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
@@ -30,30 +33,24 @@ const ObjectPage = () => {
     checkOutDate: "",
   });
 
-  const handleLogInPopUp = () => {
-    setPopUpStatus((prev) => !prev);
-  };
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
 
-  const handleSignUpPopUpStatus = () => {
-    setSignUpPopUpStatus((prev) => !prev);
-  };
+  const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
-  const handleLogoutPopUpStatus = () => {
-    isActiveLogout((prev) => !prev);
-  };
+  const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
-  const handleCalendarPopUpStatus = () => {
+  const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
+
+  const handleCalendarPopUpStatus = () =>
     setCalendarPopUpStatus((prev) => !prev);
-  };
 
   const handleSearchMenu = () => {
     setActiveSearchMenu((prev) => !prev);
     setSideEffect((prev) => !prev);
   };
 
-  const handleBookingHistory = () => {
-    setActiveBookingHistory((prev) => !prev);
-  };
+  const handleBookingHistory = () => setActiveBookingHistory((prev) => !prev);
 
   return (
     <div className="bg-gray-50">
@@ -81,6 +78,7 @@ const ObjectPage = () => {
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
           />
         ) : (
           <Header
@@ -105,6 +103,7 @@ const ObjectPage = () => {
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
           />
         )}
       </div>
@@ -147,6 +146,16 @@ const ObjectPage = () => {
       {isActiveBookingHistory && (
         <Modal active={isActiveBookingHistory} setActive={handleBookingHistory}>
           <BookingHistory handleBookingHistory={handleBookingHistory} />
+        </Modal>
+      )}
+      {isActiveFavouriteApartmentList && (
+        <Modal
+          active={isActiveFavouriteApartmentList}
+          setActive={handleFavouriteApartmentsList}
+        >
+          <DisplayFavouriteApartments
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
         </Modal>
       )}
     </div>

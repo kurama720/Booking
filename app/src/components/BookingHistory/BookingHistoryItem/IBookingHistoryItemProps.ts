@@ -4,4 +4,5 @@ export interface IBookingHistoryProps {
   description: string;
   checkIn: string;
   checkOut: string;
+  key?: string;
 }
