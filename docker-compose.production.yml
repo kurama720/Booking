@@ -14,6 +14,7 @@ services:
       - "80:80"
     depends_on:
       - booking_django
+      - flower
     env_file: .env
     volumes:
       - "./app:/usr/src/app"
