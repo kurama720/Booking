@@ -27,7 +27,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
         "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
         "Station and Central Market. After the bus station, behind the tracks,\n" +
         "the old town begins.",
-      checkIn: "2022-01-31",
+      checkIn: "2022-01-26",
       checkOut: "2023-01-31",
     },
     {
@@ -37,7 +37,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
         "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
         "Station and Central Market. After the bus station, behind the tracks,\n" +
         "the old town begins.",
-      checkIn: "2022-01-31",
+      checkIn: "2022-01-27",
       checkOut: "2023-01-31",
     },
     {
@@ -47,7 +47,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
         "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
         "Station and Central Market. After the bus station, behind the tracks,\n" +
         "the old town begins.",
-      checkIn: "2022-01-31",
+      checkIn: "2022-01-28",
       checkOut: "2023-01-31",
     },
     {
@@ -57,7 +57,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
         "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
         "Station and Central Market. After the bus station, behind the tracks,\n" +
         "the old town begins.",
-      checkIn: "2022-01-31",
+      checkIn: "2022-01-29",
       checkOut: "2023-01-31",
     },
     {
@@ -67,7 +67,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
         "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
         "Station and Central Market. After the bus station, behind the tracks,\n" +
         "the old town begins.",
-      checkIn: "2022-01-31",
+      checkIn: "2022-01-30",
       checkOut: "2023-01-31",
     },
   ];
@@ -96,7 +96,10 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
   }, []);
 
   return (
-    <div className="h-full flex items-center">
+    <div
+      className="h-full flex items-center"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="bg-white max-w-lg shadow rounded-md">
         <div className="w-full px-4 py-4">
           <div className="flex w-full justify-between mb-4">
@@ -120,6 +123,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
             {bookingData.map((elem) => {
               return (
                 <BookingHistoryItem
+                  key={elem.checkIn}
                   apartment={elem.apartment}
                   persons={elem.persons}
                   description={elem.description}
