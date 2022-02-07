@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'cities',
     'celery',
     'redis',
+    'search',
     'flower',
 ]
 
