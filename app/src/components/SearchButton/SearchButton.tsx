@@ -1,29 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import { SearchIcon, XIcon } from "@heroicons/react/solid";
+import { SearchIcon } from "@heroicons/react/solid";
 import { SearchButtonProps } from "./utils/SearchButtonInterface";
 import { ApartmentsService } from "../../api/ApartmentsService";
 import { Paths } from "../../paths/path";
 
 function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
-  const [open, setOpen] = useState<boolean>(false);
   const [errorSearch, serErrorSearch] = useState<string>("");
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const navigate = useNavigate();
   const handleSearchButton = async () => {
@@ -39,7 +23,6 @@ function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
       } catch (e: unknown) {
         if (axios.isAxiosError(e)) {
           serErrorSearch(e.message);
-          handleClickOpen();
         }
       }
     }
@@ -60,30 +43,9 @@ function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
         </span>
         Search
       </button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle
-          id="alert-dialog-title"
-          sx={{ display: "flex", justifyContent: "space-between" }}
-        >
-          Search Error...{" "}
-          <Button onClick={handleClose}>
-            <XIcon className="text-gray-500 w-6 h-6 hover:text-gray-700" />
-          </Button>
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {errorSearch}
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-description">
-            Try again!
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
+      {errorSearch && (
+        <span className="text-xs font-body text-red-400">{errorSearch}</span>
+      )}
     </>
   );
 }
