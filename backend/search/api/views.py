@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
@@ -6,7 +7,12 @@ from search.api.serializers import ApartmentGeoWrapperSerializer
 from search.models import ApartmentGeoWrapper
 from search.services import ApartmentGeoWrapperSearchFilter, CustomPagination
 
+from apartments.api.serializers import ApartmentSerializer
 
+
+@extend_schema(
+    responses={200: ApartmentSerializer}
+)
 class ApartmentSearchView(ListAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = ApartmentGeoWrapperSerializer
