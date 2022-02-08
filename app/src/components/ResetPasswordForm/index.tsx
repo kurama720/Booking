@@ -1,13 +1,17 @@
-import React, { FC } from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { BsExclamationCircleFill } from 'react-icons/bs';
-import { MailIcon, XIcon } from '@heroicons/react/solid';
+import React, { FC } from "react";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { BsExclamationCircleFill } from "react-icons/bs";
+import { MailIcon, XIcon } from "@heroicons/react/solid";
 
 interface IResetPasswordFormProps {
   setActive: () => void;
   handleSignUpPopUp: () => void;
 }
+
+// regular expression for email input field
+const EmailRegExp =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
   setActive,
@@ -16,15 +20,12 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
   const validationSchema = yup.object().shape({
     email: yup
       .string()
-      .matches(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        'Enter a valid email.'
-      )
-      .required('Email is required.'),
+      .matches(EmailRegExp, "Enter a valid email.")
+      .required("Email is required."),
   });
 
   const initialValues = {
-    email: '',
+    email: "",
   };
 
   const redirectToSignUp = () => {
@@ -70,7 +71,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
           <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor={'email'}
+                htmlFor={"email"}
                 className="block text-xs text-gray-700 font-body"
               >
                 Email
@@ -78,26 +79,26 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
               <div
                 className={`flex rounded-md border ${
                   errors.email && touched.email
-                    ? 'border-red-500'
-                    : 'border-gray-300'
+                    ? "border-red-500"
+                    : "border-gray-300"
                 } items-center`}
               >
                 <span className="pl-1.5 ">
                   <MailIcon
                     className={`h-6 w-5 ${
                       errors.email && touched.email
-                        ? 'text-red-400'
-                        : 'text-gray-400'
+                        ? "text-red-400"
+                        : "text-gray-400"
                     }`}
                   />
                 </span>
                 <input
-                  id={'email'}
-                  name={'email'}
-                  type={'email'}
+                  id={"email"}
+                  name={"email"}
+                  type={"email"}
                   autoComplete="off"
                   className={`appearance-none font-body text-gray-900 text-sm relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                  placeholder={'name@example.com'}
+                  placeholder={"name@example.com"}
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -122,8 +123,8 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
                 disabled={!(isValid && dirty)}
                 className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${
                   !(isValid && dirty)
-                    ? 'bg-gray-200 text-gray-700'
-                    : 'bg-blue-600 text-white'
+                    ? "bg-gray-200 text-gray-700"
+                    : "bg-blue-600 text-white"
                 }   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
               >
                 Send a link
