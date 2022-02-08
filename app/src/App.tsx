@@ -5,6 +5,7 @@ import { useAuth } from "./hooks/auth.hook";
 import { useRoutes } from "./hooks/routes.hook";
 import { AuthContext } from "./context/Context";
 import { JWT } from "./hooks/auth.hook.interface";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const {
@@ -37,6 +38,7 @@ function App() {
     <AuthContext.Provider value={ctx}>
       <div className="App flex flex-col min-h-screen h-full">
         <Router>{routes}</Router>
+        <Footer />
       </div>
     </AuthContext.Provider>
   );

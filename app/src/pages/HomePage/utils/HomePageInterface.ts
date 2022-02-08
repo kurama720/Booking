@@ -12,4 +12,5 @@ export interface BookingState {
   numOfPersons: number;
   checkInDate: string;
   checkOutDate: string;
+  city: string;
 }

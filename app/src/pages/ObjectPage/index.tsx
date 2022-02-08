@@ -7,9 +7,10 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
+import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 
 interface IPropsObjectPage {
-  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+  setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
   userBookingDate: BookingState;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
 }

@@ -75,6 +75,7 @@ function Header({
       ...userBookingDate,
       lat: currentCity.lat,
       lon: currentCity.lon,
+      city: suggestionData.id,
     });
     isActiveLocationBox(false);
   };

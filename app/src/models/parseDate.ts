@@ -13,3 +13,9 @@ export const parseDate = (date: Date) => {
 
   return `${dateYear}-${dateMonth}-${dateDay}`;
 };
+
+export const parseDateReserve = (checkIn: string, checkOut: string) => {
+  const dateFirst = new Date(checkIn).getTime();
+  const dateSecond = new Date(checkOut).getTime();
+  return (dateSecond - dateFirst) / (1000 * 60 * 60 * 24);
+};

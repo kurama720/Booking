@@ -4,8 +4,7 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Modal from "../../components/Modal/Modal";
-import { BookingState, IPropsHomePage } from "./utils/HomePageInterface";
-import Footer from "../../components/Footer/Footer";
+import { IPropsHomePage } from "./utils/HomePageInterface";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
 
@@ -109,7 +108,6 @@ function HomePage({
           </Modal>
         )}
       </div>
-      <Footer />
     </div>
   );
 }

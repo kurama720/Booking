@@ -53,7 +53,7 @@ function Calendar({
   }, [date]);
 
   return (
-    <div className="w-56 h-[2.375rem] relative sm:col-span-3">
+    <div className="w-56 h-[2.375rem] relative sm:col-span-3 z-1000">
       <label
         htmlFor="calendar"
         className={

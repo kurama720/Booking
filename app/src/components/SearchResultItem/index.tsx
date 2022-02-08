@@ -2,33 +2,32 @@ import React, { FC, useState } from "react";
 import { StarIcon, HeartIcon as HeartActiveIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
-import { IObjectPicture } from "../MapApartmentCard/SliderCardMap/IPropsCardMap";
+import { BookingState } from "../../pages/HomePage/utils/HomePageInterface";
+import { parseDateReserve } from "../../models/parseDate";
 
-export interface ISearchResultItemProps {
-  id?: number;
-  img_content: Array<IObjectPicture>;
+interface IPropsSearchItem {
+  userBookingDate: BookingState;
   title: string;
-  description: string;
-  guestsAndBeds: [number, number];
-  pricePerNight: number;
-  totalPrice: number;
-  rating: number;
-  views: number;
+  img_content: Array<string>;
+  price: number;
+  rating: null | number;
 }
 
-const SearchResultItem: FC<ISearchResultItemProps> = ({
+const SearchResultItem: FC<IPropsSearchItem> = ({
   img_content,
   title,
-  description,
-  guestsAndBeds,
-  pricePerNight,
-  totalPrice,
+  price,
   rating,
-  views,
+  userBookingDate,
 }) => {
   const [isFavourite, setFavourite] = useState(false);
 
   const handleClick = () => setFavourite((prev) => !prev);
+
+  const numberOfNights = parseDateReserve(
+    userBookingDate.checkInDate,
+    userBookingDate.checkOutDate
+  );
 
   return (
     <li className="flex py-4 first:pt-0 last:pb-0 border-b last:border-b-0 border-gray-200">
@@ -47,23 +46,20 @@ const SearchResultItem: FC<ISearchResultItemProps> = ({
               )}
             </button>
           </div>
-          <span className="text-sm text-gray-600">{description}</span>
-          <span className="text-xs text-gray-500">
-            {guestsAndBeds[0]} guests · {guestsAndBeds[1]} beds
-          </span>
+          <span className="text-xs text-gray-500">1 guests · 1 beds</span>
         </div>
         <div className="mt-auto">
           <div className="text-sm text-right">
-            <span className="font-medium text-gray-900">${pricePerNight}</span>
+            <span className="font-medium text-gray-900">${price}</span>
             <span className="font-normal text-gray-500"> / night</span>
           </div>
           <div className="mt-2 flex justify-between text-xs text-gray-500">
             <div className="flex items-center">
               <StarIcon className="text-blue-500 w-4 h-4" />
               <span className="mx-[2px] text-gray-900">{rating}</span>
-              <span>({views} reviews)</span>
+              <span>(15 reviews)</span>
             </div>
-            <span>Total ${totalPrice}</span>
+            <span>Total ${price * numberOfNights}</span>
           </div>
         </div>
       </div>
