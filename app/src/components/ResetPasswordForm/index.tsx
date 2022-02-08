@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import axios from "axios";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { BsExclamationCircleFill } from "react-icons/bs";
@@ -8,6 +9,10 @@ interface IResetPasswordFormProps {
   setActive: () => void;
   handleSignUpPopUp: () => void;
 }
+
+type FormikInitialState = {
+  email: string;
+};
 
 // regular expression for email input field
 const EmailRegExp =
@@ -24,7 +29,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
       .required("Email is required."),
   });
 
-  const initialValues = {
+  const initialValues: FormikInitialState = {
     email: "",
   };
 
@@ -37,7 +42,13 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
     setActive();
   };
 
-  const onSubmit = async () => {};
+  const onSubmit = async (values: FormikInitialState) => {
+    await axios.post(
+      `${process.env.REACT_APP_API_URL}accounts/password-reset-email/`,
+      values
+    );
+    setActive();
+  };
 
   return (
     <Formik

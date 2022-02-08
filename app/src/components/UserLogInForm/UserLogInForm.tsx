@@ -12,9 +12,7 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
-import { Paths } from "../../paths/path";
 import { AuthContext } from "../../context/Context";
 import { UserLogin } from "./utils/interfaces/interfaces";
 
@@ -40,8 +38,6 @@ const UserLogInForm = ({
     email: "",
     password: "",
   });
-
-  const history = useNavigate();
 
   const submitUserInformation = async (values: UserLogin) => {
     try {
