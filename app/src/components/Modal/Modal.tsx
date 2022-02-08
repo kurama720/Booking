@@ -9,7 +9,7 @@ const Modal: FC<IPropsModal> = ({ active, children, setActive }) => {
   return (
     <>
       {active && (
-        <div className="h-screen w-screen bg-[rgba(0,0,0,0.4)] fixed top-0 left-0 z-50">
+        <div className="h-screen w-screen bg-[rgba(0,0,0,0.4)] fixed top-0 left-0 z-[1000]">
           <div
             className="flex justify-center items-center h-full"
             onClick={closeModalDarkPlace}

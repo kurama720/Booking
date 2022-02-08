@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { StarIcon, HeartIcon as HeartActiveIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
@@ -6,6 +7,7 @@ import { BookingState } from "../../pages/HomePage/utils/HomePageInterface";
 import { parseDateReserve } from "../../models/parseDate";
 
 interface IPropsSearchItem {
+  id: number;
   userBookingDate: BookingState;
   title: string;
   img_content: Array<string>;
@@ -14,6 +16,7 @@ interface IPropsSearchItem {
 }
 
 const SearchResultItem: FC<IPropsSearchItem> = ({
+  id,
   img_content,
   title,
   price,
@@ -37,7 +40,12 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
       <div className="flex flex-col justify-between flex-grow pl-4 font-body">
         <div className="flex flex-col space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xl font-medium text-gray-900">{title}</span>
+            <NavLink
+              className="text-xl font-medium text-gray-900"
+              to={`/apartments/${id}`}
+            >
+              {title}
+            </NavLink>
             <button onClick={handleClick}>
               {isFavourite ? (
                 <HeartActiveIcon className="text-blue-500 w-6 h-6" />
