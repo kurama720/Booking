@@ -8,6 +8,7 @@ import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 
 interface IPropsObjectPage {
   setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
@@ -20,6 +21,8 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   userBookingDate,
   setUserBookingDate,
 }) => {
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+      useState<boolean>(false);
   const [guest, setGuest] = useState("Add guests");
   const [sideEffect, setSideEffect] = useState<boolean>(false);
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
@@ -35,30 +38,23 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
 
-  const handleLogInPopUp = () => {
-    setPopUpStatus((prev) => !prev);
-  };
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
 
-  const handleSignUpPopUpStatus = () => {
-    setSignUpPopUpStatus((prev) => !prev);
-  };
+  const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
-  const handleLogoutPopUpStatus = () => {
-    isActiveLogout((prev) => !prev);
-  };
+  const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
-  const handleCalendarPopUpStatus = () => {
-    setCalendarPopUpStatus((prev) => !prev);
-  };
+  const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
+
+  const handleCalendarPopUpStatus = () => setCalendarPopUpStatus((prev) => !prev);
 
   const handleSearchMenu = () => {
     setActiveSearchMenu((prev) => !prev);
     setSideEffect((prev) => !prev);
   };
 
-  const handleBookingHistory = () => {
-    setActiveBookingHistory((prev) => !prev);
-  };
+  const handleBookingHistory = () => setActiveBookingHistory((prev) => !prev);
 
   return (
     <div className="bg-gray-50">
@@ -86,6 +82,7 @@ const ObjectPage: FC<IPropsObjectPage> = ({
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
             setApartments={setApartments}
           />
         ) : (
@@ -111,6 +108,7 @@ const ObjectPage: FC<IPropsObjectPage> = ({
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
             setApartments={setApartments}
           />
         )}
@@ -154,6 +152,16 @@ const ObjectPage: FC<IPropsObjectPage> = ({
       {isActiveBookingHistory && (
         <Modal active={isActiveBookingHistory} setActive={handleBookingHistory}>
           <BookingHistory handleBookingHistory={handleBookingHistory} />
+        </Modal>
+      )}
+      {isActiveFavouriteApartmentList && (
+        <Modal
+          active={isActiveFavouriteApartmentList}
+          setActive={handleFavouriteApartmentsList}
+        >
+          <DisplayFavouriteApartments
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
         </Modal>
       )}
     </div>

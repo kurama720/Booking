@@ -30,4 +30,5 @@ export interface AuthMenuItemLogoutProps {
   setGuest: React.Dispatch<React.SetStateAction<string>>;
   isAddGuest: boolean;
   setIsAddGuest: React.Dispatch<React.SetStateAction<boolean>>;
+  handleFavouriteApartmentsList: () => void;
 }

@@ -7,6 +7,7 @@ import Modal from "../../components/Modal/Modal";
 import { IPropsHomePage } from "./utils/HomePageInterface";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 import Footer from "../../components/Footer/Footer";
 
 function HomePage({
@@ -23,29 +24,25 @@ function HomePage({
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
   const [isActiveBookingHistory, setActiveBookingHistory] =
     useState<boolean>(false);
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
 
-  const handleLogInPopUp = () => {
-    setPopUpStatus((prev) => !prev);
-  };
+  const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
-  const handleSignUpPopUpStatus = () => {
-    setSignUpPopUpStatus((prev) => !prev);
-  };
+  const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
-  const handleLogoutPopUpStatus = () => {
-    isActiveLogout((prev) => !prev);
-  };
+  const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
-  const handleCalendarPopUpStatus = () => {
+  const handleCalendarPopUpStatus = () =>
     setCalendarPopUpStatus((prev) => !prev);
-  };
 
-  const handleBookingHistory = () => {
-    setActiveBookingHistory((prev) => !prev);
-  };
+  const handleBookingHistory = () => setActiveBookingHistory((prev) => !prev);
+
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
 
   return (
     <>
@@ -73,6 +70,7 @@ function HomePage({
             setGuest={setGuest}
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
           />
           <MainPageBody />
           {popUpStatus && (
@@ -113,6 +111,16 @@ function HomePage({
             </Modal>
           )}
         </div>
+        {isActiveFavouriteApartmentList && (
+          <Modal
+            active={isActiveFavouriteApartmentList}
+            setActive={handleFavouriteApartmentsList}
+          >
+            <DisplayFavouriteApartments
+              handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            />
+          </Modal>
+        )}
       </div>
       <Footer />
     </>

@@ -31,6 +31,7 @@ function Header({
   userBookingDate,
   handleBookingHistory,
   setApartments,
+  handleFavouriteApartmentsList,
   handleSearchMenu,
   isActiveSearchMenu,
   isActiveModel,
@@ -168,6 +169,7 @@ function Header({
         <AuthMenuItemLogin
           handleLogoutPopUpStatus={handleLogoutPopUpStatus}
           handleBookingHistory={handleBookingHistory}
+          handleFavouriteApartmentsList={handleFavouriteApartmentsList}
         />
       ) : activeUserMenu && !isAuth ? (
         <AuthMenuItemLogout

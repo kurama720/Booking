@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { DateRange } from "@mui/lab/DateRangePicker";
 import { dataForApartmentForm, IFormApartmentProps } from "./IFormApartment";

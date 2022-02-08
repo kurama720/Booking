@@ -5,8 +5,9 @@ import { StarIcon, HeartIcon as SolidHeartIcon } from "@heroicons/react/solid";
 import "@splidejs/splide/dist/css/splide.min.css";
 import img from "../../assets/img/image1.svg";
 import "./react-splide.css";
+import { IApartmentCardProps } from "./IApartmentFormProps";
 
-const ApartmentCard: FC = () => {
+const ApartmentCard = ({ title, price, rating }: IApartmentCardProps) => {
   const [isLike, setIsLike] = useState<boolean>(false);
   const pictureList = [
     { img, id: 1 },
@@ -40,9 +41,7 @@ const ApartmentCard: FC = () => {
         <div className="w-full pl-3 flex justify-between flex-col">
           <div>
             <div className="flex justify-between items-center">
-              <h4 className="text-xl font-body text-gray-900">
-                Apartment name
-              </h4>
+              <h4 className="text-xl font-body text-gray-900">{title}</h4>
               <button type="button" onClick={handleIsLike}>
                 {isLike ? (
                   <SolidHeartIcon className="w-5 h-5 text-red-500" />
@@ -62,7 +61,7 @@ const ApartmentCard: FC = () => {
               <span>
                 <StarIcon className="w-4 h-4 text-blue-600" />
               </span>
-              <span className="text-xs font-body text-gray-900">4,3</span>
+              <span className="text-xs font-body text-gray-900">{rating}</span>
               <span className="text-xs font-body text-gray-500">
                 (15 reviews)
               </span>
@@ -70,7 +69,7 @@ const ApartmentCard: FC = () => {
             <div className="flex flex-col">
               <div>
                 <span className="text-xs font-body text-gray-900 font-medium">
-                  $93
+                  ${price}
                 </span>
                 <span className="text-xs font-body text-gray-500 mx-0.5">
                   /
