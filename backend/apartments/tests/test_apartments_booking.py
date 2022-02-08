@@ -16,7 +16,6 @@ class BookingViewApiTestCase(APITestCase):
             uuid="e60aced9666b11ec8b03744ca19f6795",
             title="title",
             price=111,
-            img=None,
             lat=111,
             lon=111,
             description="description",

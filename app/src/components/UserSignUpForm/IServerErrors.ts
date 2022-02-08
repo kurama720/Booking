@@ -1,4 +1,4 @@
-export interface IServerErrors{
-    email?: string
-    password?: string
+export interface IServerErrors {
+  email?: string;
+  password?: string;
 }

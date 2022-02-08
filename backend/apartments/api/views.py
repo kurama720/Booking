@@ -11,10 +11,11 @@ from drf_spectacular.utils import extend_schema
 
 from apartments.services import ApartmentFilter, BookingHistoryFilter
 from apartments.models import Booking, Apartment, ApartmentReview, ApartmentsImage
-from apartments.api.permissions import IsOwnerOrReadOnly
+from apartments.api.permissions import IsOwnerOrReadOnly, IsBusinessClient, IsClientOnly
 from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
-                                        ReviewsSerializer, PriceAnalyticSerializer)
+                                        ReviewsSerializer, PriceAnalyticSerializer, FavoriteApartmentSerializer)
 from apartments.business_logic import check_files_in_request
+from accounts.models import ClientUser
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -23,16 +24,13 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly, )
     http_method_names = ('get', 'post', 'put', 'delete', 'head', 'options', 'trace')
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('lat', 'lon', 'created_at', 'feature',)
+    filter_fields = ('lat', 'lon', 'feature', 'min_price', 'max_price')
     filter_class = ApartmentFilter
     parser_classes = (MultiPartParser, FormParser)
 
-    def retrieve(self, request,  pk: int):
-        """Process GET requests /apartments/{id}
-
-        :param pk: apartment unique id from request path
-        """
-        apartment = get_object_or_404(Apartment.objects.all(), pk=pk)
+    def retrieve(self, request,  *args, **kwargs):
+        """Process GET requests /apartments/{id}"""
+        apartment = self.get_object()
         apartment_data = self.get_serializer(apartment).data
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
@@ -77,7 +75,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 class BookingView(GenericAPIView):
     """View to manage booking apartments requests"""
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsClientOnly, )
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
@@ -112,9 +110,17 @@ class BookingHistoryView(ListAPIView):
     """View to provide book history"""
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+    permission_classes = (IsBusinessClient, )
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('check_in_date', 'business_client')
+    filter_fields = ('check_in_date', )
     filter_class = BookingHistoryFilter
+
+    def filter_queryset(self, queryset):
+        old_queryset = super().filter_queryset(queryset)
+        queryset = old_queryset.filter(
+            business_client=self.request.user.clientuser.businessclientuser
+        )
+        return queryset
 
 
 class ReviewsView(GenericAPIView):
@@ -157,3 +163,42 @@ class PriceAnalyticView(CreateModelMixin, GenericViewSet):
         flat = serializer.validated_data.get("flat")
         prices = Apartment.get_prices_count_by_location(flat)
         serializer.validated_data.update(prices)
+
+
+class ClientBookingHistoryView(GenericAPIView):
+    """View to provide client booking history"""
+    permission_classes = (IsClientOnly, )
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+    def get(self, request):
+        """Process GET requests"""
+        queryset = Booking.objects.filter(client=request.user)
+        data = self.get_serializer(queryset, many=True).data
+        return Response(data=data)
+
+
+class FavoriteApartmentView(viewsets.ViewSet):
+    """View to return favorite apartments of the user"""
+    permission_classes = (IsClientOnly,)
+
+    def list(self, request):
+        """
+        Return apartments with related name.
+        """
+        queryset = ClientUser.objects.get(id=request.user.id).favorite_apartments
+        serializer = FavoriteApartmentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, pk):
+        """
+        Save request user id in m2m field user of the apartment with given id
+        :param pk: apartment unique id from request path
+        """
+        try:
+            apartment = Apartment.objects.get(id=pk)
+            apartment.user.add(request.user.id)
+            apartment.save()
+            return Response(status=status.HTTP_201_CREATED)
+        except Apartment.DoesNotExist:
+            return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)

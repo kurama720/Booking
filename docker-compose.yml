@@ -20,6 +20,7 @@ services:
         env_file: .env
         depends_on:
             - booking_postgres
+            - redis
         container_name: booking_django
         networks:
             - booking_local_services
@@ -38,6 +39,41 @@ services:
         networks:
             - booking_local_services
 
+    redis:
+        image: redis:5-alpine
+        networks:
+            - booking_local_services
+
+    celery:
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile-django
+        command: celery --app backend worker --loglevel=info
+        volumes:
+            - "./backend:/app"
+        environment:
+            - PYTHONUNBUFFERED=1
+        env_file: .env
+        depends_on:
+            - booking_postgres
+            - booking_django
+            - redis
+        networks:
+            - booking_local_services
+
+    flower:
+        image: mher/flower
+        command: celery --broker=redis://redis:6379/0 flower
+        ports:
+            - 5555:5555
+        env_file: .env
+        depends_on:
+            - booking_django
+            - redis
+            - celery
+        networks:
+            - booking_local_services
 
 networks:
     booking_local_services:

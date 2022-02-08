@@ -61,7 +61,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">
+            <h2 className="text-3xl font-extrabold text-gray-500 font-body">
               Reset password
             </h2>
             <button onClick={closeModal}>
@@ -71,7 +71,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
           <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor={"email"}
+                htmlFor="email"
                 className="block text-xs text-gray-700 font-body"
               >
                 Email
@@ -93,12 +93,12 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
                   />
                 </span>
                 <input
-                  id={"email"}
-                  name={"email"}
-                  type={"email"}
+                  id="email"
+                  name="email"
+                  type="email"
                   autoComplete="off"
-                  className={`appearance-none font-body text-gray-900 text-sm relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                  placeholder={"name@example.com"}
+                  className="appearance-none font-body text-sm relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  placeholder="name@example.com"
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -121,7 +121,7 @@ const ResetPasswordForm: FC<IResetPasswordFormProps> = ({
               <button
                 type="submit"
                 disabled={!(isValid && dirty)}
-                className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${
+                className={`group relative w-full font-body flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${
                   !(isValid && dirty)
                     ? "bg-gray-200 text-gray-700"
                     : "bg-blue-600 text-white"

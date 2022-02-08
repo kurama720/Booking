@@ -1,0 +1,70 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "airbnb",
+        "airbnb-typescript",
+        "plugin:prettier/recommended",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "project": ["./tsconfig.json"],
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "react/function-component-definition": "off",
+        "import/prefer-default-export": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "no-nested-ternary": "off",
+        "react/no-unescaped-entities": 0,
+        "jsx-a11y/label-has-associated-control": "off",
+        "react/prop-types": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/button-has-type": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "default",
+                "format": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                ],
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
+            }
+        ]
+    }
+}

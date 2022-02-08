@@ -1,11 +1,5 @@
-
-
-export interface BookingState {
-  city: string;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
-}
+import React from "react";
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface GuestMenuProps {
   description: string;
@@ -13,5 +7,5 @@ export interface GuestMenuProps {
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
   userBookingDate: BookingState;
   numberOfGuests: number;
-  setNumberOfGuests:  React.Dispatch<React.SetStateAction<number>>;
+  setNumberOfGuests: React.Dispatch<React.SetStateAction<number>>;
 }

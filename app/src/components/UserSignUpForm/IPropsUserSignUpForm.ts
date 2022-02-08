@@ -1,6 +1,4 @@
-import React from "react";
-
-export interface IPropsUserSignUpForm{
-    setActive: () => void
-    handleLogInPopUp: () => void
+export interface IPropsUserSignUpForm {
+  setActive: () => void;
+  handleLogInPopUp: () => void;
 }

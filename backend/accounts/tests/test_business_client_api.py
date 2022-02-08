@@ -29,8 +29,8 @@ class BusinessClientRegisterViewApiTestCase(APITestCase):
             email="test@email.cim",
             password="test123password",
             confirm_password="test123password",
-            first_name="testfirst",
-            last_name="testsecond"
+            first_name="Testfirst",
+            last_name="Testsecond"
         )
 
         resp_data = test_data.copy()

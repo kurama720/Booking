@@ -1,49 +1,61 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
-import ResetPasswordForm from '../../components/ResetPasswordForm';
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
-import Modal from '../../components/Modal/Modal'
-import {BookingState} from "./utils/HomePageInterface";
+import Modal from "../../components/Modal/Modal";
+import { IPropsHomePage } from "./utils/HomePageInterface";
+import MainPageBody from "../../components/MainPageBody/MainPageBody";
+import BookingHistory from "../../components/BookingHistory";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
+import Footer from "../../components/Footer/Footer";
 
-const HomePage = () => {
+function HomePage({
+  setApartments,
+  userBookingDate,
+  setUserBookingDate,
+}: IPropsHomePage) {
+  const [guest, setGuest] = useState("Add guests");
+  const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [activeModel, isActiveModel] = useState<boolean>(false);
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
-  const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false)
-  const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false)
-  const [activeLogout, isActiveLogout] = useState<boolean>(false)
-  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] = useState<boolean>(false)
-  const [calendarPopUpStatus, setCalendarPopUpStatus] = useState<boolean>(false)
-  const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    city: '',
-    numOfPersons: 0,
-    checkInDate: "",
-    checkOutDate: "",
-  })
+  const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
+  const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
+  const [isActiveBookingHistory, setActiveBookingHistory] =
+    useState<boolean>(false);
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+    useState<boolean>(false);
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] =
+    useState<boolean>(false);
+  const [activeLogout, isActiveLogout] = useState<boolean>(false);
+  const [calendarPopUpStatus, setCalendarPopUpStatus] =
+    useState<boolean>(false);
 
-  const handleLogInPopUp = () => {
-    setPopUpStatus((prev) => !prev);
-  };
+  const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
-  const handleSignUpPopUpStatus = () => {
-    setSignUpPopUpStatus((prev) => !prev)
-  }
+  const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
-  const handleLogoutPopUpStatus = () => {
-    isActiveLogout((prev) => !prev)
-  }
+  const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
   const handleResetPasswordPopUpStatus = () => {
-    setResetPasswordPopUpStatus((prev) => !prev)
-  }
+    setResetPasswordPopUpStatus((prev) => !prev);
+  };
 
-  const handleCalendarPopUpStatus = () => {
-    setCalendarPopUpStatus((prev) => !prev)
-  }
+  const handleCalendarPopUpStatus = () =>
+    setCalendarPopUpStatus((prev) => !prev);
+
+  const handleBookingHistory = () => setActiveBookingHistory((prev) => !prev);
+
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
 
   return (
-      <div>
-        <Header
+    <>
+      <div className="w-full bg-gray-50">
+        <div className="w-full h-screen px-16 bg-gray-50">
+          <Header
             handleLogInPopUp={handleLogInPopUp}
             activeLocationBox={activeLocationBox}
             isActiveLocationBox={isActiveLocationBox}
@@ -54,59 +66,84 @@ const HomePage = () => {
             setCalendarPopUpStatus={setCalendarPopUpStatus}
             setUserBookingDate={setUserBookingDate}
             userBookingDate={userBookingDate}
-        />
-        {
-            popUpStatus && (
-                <Modal active={popUpStatus} setActive={handleLogInPopUp}>
-                  <UserLogInPage
-                      popUpStatus={popUpStatus}
-                      handleLogInPopUp={handleLogInPopUp}
-                      handleSignUpPopUpStatus={handleSignUpPopUpStatus}
-                      handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
-                  />
-                </Modal>
-            )
-        }
-        {
-            signUpPopUpStatus && (
-                <Modal
-                    active={signUpPopUpStatus}
-                    setActive={handleSignUpPopUpStatus}
-                >
-                  <SignUpPage
-                      active={signUpPopUpStatus}
-                      setActive={handleSignUpPopUpStatus}
-                      handleLogInPopUp={handleLogInPopUp}
-                  />
-                </Modal>
-            )
-        }
-        {activeLogout && (
-            <Modal
-                active={activeLogout}
-                setActive={handleLogoutPopUpStatus}
-            >
-              <LogoutButton
-                  handleLogoutPopUpStatus={handleLogoutPopUpStatus}
-                  activeLogout={activeLogout}
+            setApartments={setApartments}
+            handleBookingHistory={handleBookingHistory}
+            isActiveSearchMenu
+            isActiveModel={isActiveModel}
+            activeModel={activeModel}
+            numberOfGuests={numberOfGuests}
+            setNumberOfGuests={setNumberOfGuests}
+            guest={guest}
+            setGuest={setGuest}
+            isAddGuest={isAddGuest}
+            setIsAddGuest={setIsAddGuest}
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
+          <MainPageBody />
+          {popUpStatus && (
+            <Modal active={popUpStatus} setActive={handleLogInPopUp}>
+              <UserLogInPage
+                popUpStatus={popUpStatus}
+                handleLogInPopUp={handleLogInPopUp}
+                handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+                handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
               />
             </Modal>
+          )}
+          {signUpPopUpStatus && (
+            <Modal
+              active={signUpPopUpStatus}
+              setActive={handleSignUpPopUpStatus}
+            >
+              <SignUpPage
+                active={signUpPopUpStatus}
+                setActive={handleSignUpPopUpStatus}
+                handleLogInPopUp={handleLogInPopUp}
+              />
+            </Modal>
+          )}
+          {activeLogout && (
+            <Modal active={activeLogout} setActive={handleLogoutPopUpStatus}>
+              <LogoutButton
+                handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+                activeLogout={activeLogout}
+              />
+            </Modal>
+          )}
+          {isActiveBookingHistory && (
+            <Modal
+              active={isActiveBookingHistory}
+              setActive={handleBookingHistory}
+            >
+              <BookingHistory handleBookingHistory={handleBookingHistory} />
+            </Modal>
+          )}
+        </div>
+        {isActiveFavouriteApartmentList && (
+          <Modal
+            active={isActiveFavouriteApartmentList}
+            setActive={handleFavouriteApartmentsList}
+          >
+            <DisplayFavouriteApartments
+              handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            />
+          </Modal>
         )}
-        {
-            resetPasswordPopUpStatus && (
-                <Modal
-                    active={resetPasswordPopUpStatus}
-                    setActive={handleResetPasswordPopUpStatus}
-                >
-                  <ResetPasswordForm
-                      setActive={handleResetPasswordPopUpStatus}
-                      handleSignUpPopUp={handleSignUpPopUpStatus}
-                  />
-                </Modal>
-            )
-        }
+        {resetPasswordPopUpStatus && (
+          <Modal
+            active={resetPasswordPopUpStatus}
+            setActive={handleResetPasswordPopUpStatus}
+          >
+            <ResetPasswordForm
+              setActive={handleResetPasswordPopUpStatus}
+              handleSignUpPopUp={handleSignUpPopUpStatus}
+            />
+          </Modal>
+        )}
       </div>
+      <Footer />
+    </>
   );
-};
+}
 
 export default HomePage;

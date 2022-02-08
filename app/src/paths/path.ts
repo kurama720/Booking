@@ -1,7 +1,7 @@
 export enum Paths {
-  LOG_IN = "/login",
-  SIGN_UP = "/signup",
   RESET_PASSWORD = "/reset-password",
   HOME = "/",
-  LOG_OUT = '/logout'
+  OBJECT_PAGE = "/apartments",
+  SEARCH_RESULTS = "/search-results",
+  MAP = "/map-search",
 }

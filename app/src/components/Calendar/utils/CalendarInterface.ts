@@ -1,14 +1,9 @@
-import {DateRange} from "@mui/lab/DateRangePicker";
-
-interface BookingState {
-  city: string;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
-}
+import React from "react";
+import { DateRange } from "@mui/lab/DateRangePicker";
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface CalendarMenuProps {
-  handleCalendarPopUpStatus: () => void
+  handleCalendarPopUpStatus: () => void;
   isActiveLocationBox: React.Dispatch<React.SetStateAction<boolean>>;
   isActiveModel: React.Dispatch<React.SetStateAction<boolean>>;
   date: DateRange<Date>;
@@ -16,4 +11,3 @@ export interface CalendarMenuProps {
   userBookingDate: BookingState;
   calendarPopUpStatus: boolean;
 }
-

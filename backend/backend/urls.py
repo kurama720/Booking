@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
-from apartments.api.views import ApartmentViewSet
+from apartments.api.views import ApartmentViewSet, FavoriteApartmentView
 from accounts.api.views import BusinessClientViewSet
 
 
@@ -41,6 +41,8 @@ urlpatterns = [
          name='swagger-ui'),
     path('apartments/', include('apartments.urls')),
     path('map/', include('markers.urls')),
+    path('cities/', include('cities.urls')),
+    path('search/', include('search.urls'))
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,13 @@
+from collections import namedtuple
+from os.path import join
+from mimetypes import guess_type
+
 import pandas as pd
+
 
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 from django.shortcuts import render
@@ -21,10 +27,10 @@ class ApartmentAdmin(admin.ModelAdmin):
     def get_urls(self):
         """Adding a new url to load data from a csv file"""
         urls = super().get_urls()
-        new_urls = [path('upload-csv/', self.upload_scv), ]
+        new_urls = [path('upload-csv/', self.upload_csv), ]
         return new_urls + urls
 
-    def upload_scv(self, request):
+    def upload_csv(self, request):
         """Loading data from a csv file into a database"""
         if request.method == 'POST':
             csv_file = request.FILES['csv_upload']  # Opening a file from a request
@@ -40,24 +46,59 @@ class ApartmentAdmin(admin.ModelAdmin):
                     Apartment(uuid=row['uuid'],
                               title=row['title'],
                               price=row['price'],
-                              img=row['image'],
                               lat=row['coordinates'].split(',')[0],
                               lon=row['coordinates'].split(',')[1],
-                              description=row['description'])
+                              description=row['description'],
+                              feature={
+                                  "guests": row['guests'],
+                                  "bedrooms": row['bedrooms'],
+                                  "beds": row['beds'],
+                                  "bathrooms": row['bathrooms'],
+                              })
                     for _, row in row_iter if not Apartment.objects.filter(uuid=row['uuid']).exists()
                 ]
+
                 if not apartments:
                     raise ObjectDoesNotExist
                 Apartment.objects.bulk_create(apartments)  # Adding data to the database
+
+                row_iter = file_data.iterrows()
+                images = []
+                data_wrapper = namedtuple("data_wrapper", ["type", "content"])
+
+                for apartment, row_data in zip(apartments, row_iter):
+                    data = data_wrapper(*row_data)
+                    try:
+                        with open(join("utils/scraping/images",
+                                       data.content['image']),
+                                  "rb") as file:
+                            images.append(ApartmentsImage(apartments=apartment,
+                                                          img=SimpleUploadedFile(
+                                                            name=data.content['image'],
+                                                            content=file.read(),
+                                                            content_type=guess_type(file.name))))
+                    except FileNotFoundError:
+                        self.message_user(request,
+                                          """Some necessary images data for csv upload not exists at server.
+                                          Try to upload this files later.""",
+                                          level=messages.WARNING)
+
+                ApartmentsImage.objects.bulk_create(images)
                 self.message_user(request, "Your csv file has been imported")
                 url = reverse('admin:index')
                 return HttpResponseRedirect(url)
             except ValidationError:
-                self.message_user(request, "The format of the data in the csv file does not fit", level=messages.WARNING)
+                self.message_user(request,
+                                  "The format of the data in the csv file does not fit",
+                                  level=messages.WARNING)
             except ObjectDoesNotExist:
-                self.message_user(request, "All such records already exist in the database", level=messages.WARNING)
+                self.message_user(request,
+                                  "All such records already exist in the database",
+                                  level=messages.WARNING)
             except KeyError:
-                self.message_user(request, "The csv file has no field name header", level=messages.WARNING)
+                self.message_user(request,
+                                  "The csv file has no field name header",
+                                  level=messages.WARNING)
 
         form = CsvImportForm()
         data = {'form': form}

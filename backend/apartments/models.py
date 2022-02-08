@@ -26,12 +26,12 @@ class Apartment(models.Model):
     lon = models.FloatField()
     description = models.TextField()
     rating = models.PositiveIntegerField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     business_account = models.ForeignKey(BusinessClientUser,
                                          related_name='apartments',
                                          on_delete=models.CASCADE,
                                          null=True)
     feature = models.JSONField(validators=[JSONSchemaValidator(limit_value=SCHEMA)], blank=True, null=True)
+    user = models.ManyToManyField(ClientUser, related_name='favorite_apartments', blank=True)
 
     def check_apartment_booking(self, client_check_in_date: datetime.date,
                                 client_check_out_date: datetime.date) -> int:
@@ -186,7 +186,7 @@ class Booking(models.Model):
     comment = models.TextField(blank=True, null=True)
     idempotency_key = models.UUIDField(unique=True)
     client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE)
+    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, related_name='bookings')
     business_client = models.ForeignKey(BusinessClientUser,
                                         related_name='booking',
                                         on_delete=models.CASCADE,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import UserSignUpForm from "../components/UserSignUpForm/UserSignUpForm";
 
 interface SignUpPageProps {
@@ -7,20 +7,17 @@ interface SignUpPageProps {
   handleLogInPopUp: () => void;
 }
 
-const SignUpPage =
-    ({
-       active,
-       setActive,
-       handleLogInPopUp
-     }: SignUpPageProps) => (
-        <>
-          {active && (
-              <UserSignUpForm
-                  setActive={setActive}
-                  handleLogInPopUp={handleLogInPopUp}
-              />
-          )}
-        </>
-    );
+function SignUpPage({ active, setActive, handleLogInPopUp }: SignUpPageProps) {
+  return (
+    <>
+      {active && (
+        <UserSignUpForm
+          setActive={setActive}
+          handleLogInPopUp={handleLogInPopUp}
+        />
+      )}
+    </>
+  );
+}
 
 export default SignUpPage;

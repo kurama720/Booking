@@ -3,6 +3,7 @@ import datetime
 from rest_framework import serializers
 
 from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
+from accounts.models import ClientUser
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):
@@ -34,15 +35,20 @@ class ApartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Apartment
         fields = "__all__"
-        read_only_fields = ["created_at", "rating", "business_account"]
+        read_only_fields = ["rating", "business_account", "user"]
 
 
 class BookingSerializer(serializers.ModelSerializer):
     """Serializer to serialize data from booking apartments requests"""
+    apartment = serializers.SlugRelatedField(slug_field="title", read_only=True)
+
     class Meta:
         model = Booking
-        fields = ("num_of_persons", "comment", "check_in_date", "check_out_date",
+        fields = ("apartment", "num_of_persons", "comment", "check_in_date", "check_out_date",
                   "idempotency_key")
+        extra_kwargs = {
+            "idempotency_key": {'write_only': True},
+        }
 
     def validate(self, attrs):
         if attrs['check_in_date'] < datetime.date.today():
@@ -77,3 +83,10 @@ class PriceAnalyticSerializer(serializers.Serializer):
                 flat[0][1] > flat[1][1]):
             raise serializers.ValidationError({"flat": ["Invalid coordinates value!"]})
         return super().validate(attrs)
+
+
+class FavoriteApartmentSerializer(serializers.ModelSerializer):
+    """Serializer to return serialized favorite apartments"""
+    class Meta:
+        model = Apartment
+        fields = ('id', 'title', 'price', 'lat', 'lon', 'description', 'rating', 'feature')

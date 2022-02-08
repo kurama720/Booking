@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-node.production
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL}
     container_name: booking_nginx
     ports:
       - "80:80"
@@ -37,6 +39,7 @@ services:
     env_file: .env
     depends_on:
       - booking_postgres
+      - redis
     networks:
       - booking_production_services
 
@@ -51,6 +54,42 @@ services:
       POSTGRES_PASSWORD: booking
     ports:
       - "5432:5432"
+    networks:
+      - booking_production_services
+
+  redis:
+    image: redis:5-alpine
+    networks:
+      - booking_production_services
+
+  celery:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-django.production
+    command: celery --app backend worker --loglevel=info
+    volumes:
+      - "./backend:/app"
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file: .env
+    depends_on:
+      - booking_postgres
+      - booking_django
+      - redis
+    networks:
+      - booking_production_services
+
+  flower:
+    image: mher/flower
+    command: celery --broker=$CELERY_BROKER flower
+    ports:
+      - 5555:5555
+    env_file: .env
+    depends_on:
+      - booking_django
+      - redis
+      - celery
     networks:
       - booking_production_services
 
