@@ -30,6 +30,7 @@ function Header({
   setUserBookingDate,
   userBookingDate,
   handleBookingHistory,
+  setApartments,
   handleFavouriteApartmentsList,
   handleSearchMenu,
   isActiveSearchMenu,
@@ -68,9 +69,13 @@ function Header({
 
   const getSuggestionData = (e: React.MouseEvent) => {
     const suggestionData = e.target as HTMLInputElement;
+    const currentCity =
+      cities.find((item) => item.name === suggestionData.id) || userBookingDate;
     setSearch(suggestionData.id);
     setUserBookingDate({
       ...userBookingDate,
+      lat: currentCity.lat,
+      lon: currentCity.lon,
       city: suggestionData.id,
     });
     isActiveLocationBox(false);
@@ -127,7 +132,10 @@ function Header({
               />
             </li>
             <li>
-              <SearchButton userBookingDate={userBookingDate} />
+              <SearchButton
+                userBookingDate={userBookingDate}
+                setApartments={setApartments}
+              />
             </li>
           </ul>
         ) : (

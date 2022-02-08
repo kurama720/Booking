@@ -7,7 +7,7 @@ function MainPageBody() {
   const history = useNavigate();
 
   const handleCheckAvailiability = () => {
-    history(Paths.SEARCH_RESULTS);
+    history(Paths.MAP);
   };
 
   return (

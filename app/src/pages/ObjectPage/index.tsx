@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, FC } from "react";
 import ObjectPageCard from "../../components/ObjectPageCard";
 import { BookingState } from "../HomePage/utils/HomePageInterface";
 import Header from "../../components/Header/Header";
@@ -7,9 +7,20 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
+import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 
-const ObjectPage = () => {
+interface IPropsObjectPage {
+  setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
+  userBookingDate: BookingState;
+  setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
+}
+
+const ObjectPage: FC<IPropsObjectPage> = ({
+  setApartments,
+  userBookingDate,
+  setUserBookingDate,
+}) => {
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
     useState<boolean>(false);
   const [guest, setGuest] = useState("Add guests");
@@ -26,12 +37,6 @@ const ObjectPage = () => {
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
-  const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    city: "",
-    numOfPersons: 0,
-    checkInDate: "",
-    checkOutDate: "",
-  });
 
   const handleFavouriteApartmentsList = () =>
     setActiveFavouriteApartmentList((prev) => !prev);
@@ -79,6 +84,7 @@ const ObjectPage = () => {
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            setApartments={setApartments}
           />
         ) : (
           <Header
@@ -104,6 +110,7 @@ const ObjectPage = () => {
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            setApartments={setApartments}
           />
         )}
       </div>

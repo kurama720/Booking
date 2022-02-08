@@ -1,16 +1,10 @@
 import React from "react";
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface Cities {
   name: string;
   lat: number;
   lon: number;
-}
-
-export interface BookingState {
-  city: string;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
 }
 
 export interface AuthMenuItemLogoutProps {
@@ -26,6 +20,7 @@ export interface AuthMenuItemLogoutProps {
   userBookingDate: BookingState;
   handleSearchMenu?: () => void;
   isActiveSearchMenu?: boolean;
+  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
   handleBookingHistory: () => void;
   isActiveModel: React.Dispatch<React.SetStateAction<boolean>>;
   activeModel: boolean;

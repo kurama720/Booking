@@ -8,9 +8,7 @@ import { IFooterProps } from "./IFooterProps";
 function Footer({ sideEffect }: IFooterProps) {
   return (
     <footer
-      className={`w-full ${
-        sideEffect ? "bg-[#bfbfbf]" : "bg-gray-50"
-      } mt-[22px]`}
+      className={`w-full mt-auto ${sideEffect ? "bg-[#bfbfbf]" : "bg-gray-50"}`}
     >
       <div className="w-full max-w-screen-xl my-0 mx-auto">
         <div className="h-px bg-gray-300 mt-2" />
