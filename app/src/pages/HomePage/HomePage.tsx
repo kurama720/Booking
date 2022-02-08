@@ -7,6 +7,7 @@ import Modal from "../../components/Modal/Modal";
 import { IPropsHomePage } from "./utils/HomePageInterface";
 import MainPageBody from "../../components/MainPageBody/MainPageBody";
 import BookingHistory from "../../components/BookingHistory";
+import Footer from "../../components/Footer/Footer";
 
 function HomePage({
   setApartments,
@@ -47,68 +48,74 @@ function HomePage({
   };
 
   return (
-    <div className="w-full bg-gray-50">
-      <div className="w-full h-screen px-16 bg-gray-50">
-        <Header
-          handleLogInPopUp={handleLogInPopUp}
-          activeLocationBox={activeLocationBox}
-          isActiveLocationBox={isActiveLocationBox}
-          handleSignUpPopUpStatus={handleSignUpPopUpStatus}
-          handleLogoutPopUpStatus={handleLogoutPopUpStatus}
-          calendarPopUpStatus={calendarPopUpStatus}
-          handleCalendarPopUpStatus={handleCalendarPopUpStatus}
-          setCalendarPopUpStatus={setCalendarPopUpStatus}
-          setUserBookingDate={setUserBookingDate}
-          userBookingDate={userBookingDate}
-          setApartments={setApartments}
-          handleBookingHistory={handleBookingHistory}
-          isActiveSearchMenu
-          isActiveModel={isActiveModel}
-          activeModel={activeModel}
-          numberOfGuests={numberOfGuests}
-          setNumberOfGuests={setNumberOfGuests}
-          guest={guest}
-          setGuest={setGuest}
-          isAddGuest={isAddGuest}
-          setIsAddGuest={setIsAddGuest}
-        />
-        <MainPageBody />
-        {popUpStatus && (
-          <Modal active={popUpStatus} setActive={handleLogInPopUp}>
-            <UserLogInPage
-              popUpStatus={popUpStatus}
-              handleLogInPopUp={handleLogInPopUp}
-              handleSignUpPopUpStatus={handleSignUpPopUpStatus}
-            />
-          </Modal>
-        )}
-        {signUpPopUpStatus && (
-          <Modal active={signUpPopUpStatus} setActive={handleSignUpPopUpStatus}>
-            <SignUpPage
+    <>
+      <div className="w-full bg-gray-50">
+        <div className="w-full h-screen px-16 bg-gray-50">
+          <Header
+            handleLogInPopUp={handleLogInPopUp}
+            activeLocationBox={activeLocationBox}
+            isActiveLocationBox={isActiveLocationBox}
+            handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+            handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+            calendarPopUpStatus={calendarPopUpStatus}
+            handleCalendarPopUpStatus={handleCalendarPopUpStatus}
+            setCalendarPopUpStatus={setCalendarPopUpStatus}
+            setUserBookingDate={setUserBookingDate}
+            userBookingDate={userBookingDate}
+            setApartments={setApartments}
+            handleBookingHistory={handleBookingHistory}
+            isActiveSearchMenu
+            isActiveModel={isActiveModel}
+            activeModel={activeModel}
+            numberOfGuests={numberOfGuests}
+            setNumberOfGuests={setNumberOfGuests}
+            guest={guest}
+            setGuest={setGuest}
+            isAddGuest={isAddGuest}
+            setIsAddGuest={setIsAddGuest}
+          />
+          <MainPageBody />
+          {popUpStatus && (
+            <Modal active={popUpStatus} setActive={handleLogInPopUp}>
+              <UserLogInPage
+                popUpStatus={popUpStatus}
+                handleLogInPopUp={handleLogInPopUp}
+                handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+              />
+            </Modal>
+          )}
+          {signUpPopUpStatus && (
+            <Modal
               active={signUpPopUpStatus}
               setActive={handleSignUpPopUpStatus}
-              handleLogInPopUp={handleLogInPopUp}
-            />
-          </Modal>
-        )}
-        {activeLogout && (
-          <Modal active={activeLogout} setActive={handleLogoutPopUpStatus}>
-            <LogoutButton
-              handleLogoutPopUpStatus={handleLogoutPopUpStatus}
-              activeLogout={activeLogout}
-            />
-          </Modal>
-        )}
-        {isActiveBookingHistory && (
-          <Modal
-            active={isActiveBookingHistory}
-            setActive={handleBookingHistory}
-          >
-            <BookingHistory handleBookingHistory={handleBookingHistory} />
-          </Modal>
-        )}
+            >
+              <SignUpPage
+                active={signUpPopUpStatus}
+                setActive={handleSignUpPopUpStatus}
+                handleLogInPopUp={handleLogInPopUp}
+              />
+            </Modal>
+          )}
+          {activeLogout && (
+            <Modal active={activeLogout} setActive={handleLogoutPopUpStatus}>
+              <LogoutButton
+                handleLogoutPopUpStatus={handleLogoutPopUpStatus}
+                activeLogout={activeLogout}
+              />
+            </Modal>
+          )}
+          {isActiveBookingHistory && (
+            <Modal
+              active={isActiveBookingHistory}
+              setActive={handleBookingHistory}
+            >
+              <BookingHistory handleBookingHistory={handleBookingHistory} />
+            </Modal>
+          )}
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

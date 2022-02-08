@@ -17,6 +17,7 @@ import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 import "./mapPage.css";
+import Footer from "../../components/Footer/Footer";
 
 const DefaultIcon = L.icon({
   iconUrl: icon,
@@ -109,7 +110,6 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
               ? `stays in ${userBookingDate.city}`
               : `stays`}
           </span>
-
           {apartments.length === 0 ? (
             <div className="flex flex-col justify-start items-start">
               <span className="text-2xl font-body font-medium text-gray-900">
@@ -175,6 +175,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
           <BookingHistory handleBookingHistory={handleBookingHistory} />
         </Modal>
       )}
+      <Footer />
     </>
   );
 };
