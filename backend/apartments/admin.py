@@ -48,9 +48,19 @@ class ApartmentAdmin(admin.ModelAdmin):
                               price=row['price'],
                               lat=row['coordinates'].split(',')[0],
                               lon=row['coordinates'].split(',')[1],
-                              description=row['description'])
+                              description=row['description'],
+                              feature={
+                                  "guests": row['guests'],
+                                  "bedrooms": row['bedrooms'],
+                                  "beds": row['beds'],
+                                  "bathrooms": row['bathrooms'],
+                              })
                     for _, row in row_iter if not Apartment.objects.filter(uuid=row['uuid']).exists()
                 ]
+
+                if not apartments:
+                    raise ObjectDoesNotExist
+                Apartment.objects.bulk_create(apartments)  # Adding data to the database
 
                 row_iter = file_data.iterrows()
                 images = []
@@ -58,18 +68,20 @@ class ApartmentAdmin(admin.ModelAdmin):
 
                 for apartment, row_data in zip(apartments, row_iter):
                     data = data_wrapper(*row_data)
-                    with open(join("utils/scraping/images",
-                                   data.content['image']),
-                              "rb") as file:
-
-                        images.append(ApartmentsImage(apartments=apartment,
-                                                      img=SimpleUploadedFile(
-                                                        name=data.content['image'],
-                                                        content=file.read(),
-                                                        content_type=guess_type(file.name))))
-                if not apartments:
-                    raise ObjectDoesNotExist
-                Apartment.objects.bulk_create(apartments)  # Adding data to the database
+                    try:
+                        with open(join("utils/scraping/images",
+                                       data.content['image']),
+                                  "rb") as file:
+                            images.append(ApartmentsImage(apartments=apartment,
+                                                          img=SimpleUploadedFile(
+                                                            name=data.content['image'],
+                                                            content=file.read(),
+                                                            content_type=guess_type(file.name))))
+                    except FileNotFoundError:
+                        self.message_user(request,
+                                          """Some necessary images data for csv upload not exists at server.
+                                          Try to upload this files later.""",
+                                          level=messages.WARNING)
 
                 ApartmentsImage.objects.bulk_create(images)
                 self.message_user(request, "Your csv file has been imported")
@@ -86,11 +98,6 @@ class ApartmentAdmin(admin.ModelAdmin):
             except KeyError:
                 self.message_user(request,
                                   "The csv file has no field name header",
-                                  level=messages.WARNING)
-            except FileNotFoundError:
-                self.message_user(request,
-                                  """Necessary images data for csv upload not exists at server.
-                                  Try to upload file later.""",
                                   level=messages.WARNING)
 
         form = CsvImportForm()
