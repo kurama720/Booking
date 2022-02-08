@@ -7,11 +7,11 @@ function MainPageBody() {
   const history = useNavigate();
 
   const handleCheckAvailiability = () => {
-    history(Paths.SEARCH_RESULTS);
+    history(Paths.MAP);
   };
 
   return (
-    <div className="w-full flex-col  radius-md  mt-6 bg-background h-[93%] bg-no-repeat bg-cover rounded-md bg-gray-50">
+    <div className="w-full flex-col  radius-md bg-background h-[93%] bg-no-repeat bg-cover rounded-md bg-gray-50">
       <div className="flex w-full pt-7 pl-7">
         <OfficeBuildingIcon className="w-4 h-4" />
         <p className="font-body text-xs text-cyan-900 ml-[6.4px]">

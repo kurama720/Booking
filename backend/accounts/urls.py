@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from accounts.api.views import (RegisterView,
                                 CustomTokenObtainView,
@@ -13,6 +13,7 @@ from apartments.api.views import ClientBookingHistoryView
 
 
 urlpatterns = [
+    path('social/', include('social_django.urls', namespace='social')),
     path('signup/', RegisterView.as_view(), name='sign_up'),
     path('signin/', CustomTokenObtainView.as_view(), name='sign_in'),
     path('logout/', LogoutView.as_view(), name='log_out'),

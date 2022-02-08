@@ -21,6 +21,7 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
     incrementGuests,
     handleChangeShowGuestsWindow,
     handleOutsideClick,
+    sideEffect,
   } = props;
   const wrapperRef = useRef(null);
 
@@ -69,18 +70,24 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
             onChange={(e) => setNumberOfGuests(Number(e.target.value))}
             name="guests"
             id="guests"
-            className="bg-white appearance-none font-body text-gray-900 text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+            className={`${
+              sideEffect ? "bg-[#bfbfbf]" : ""
+            } appearance-none font-body text-gray-900 text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
           />
-          <span
-            className="mr-4 inline-block cursor-pointer"
-            onClick={handleChangeShowGuestsWindow}
+          <button
+            disabled={sideEffect}
+            className="mr-4 inline-block"
+            onMouseDown={(e) => {
+              e.stopPropagation();
+              handleChangeShowGuestsWindow();
+            }}
           >
             {isShowGuestsWindow ? (
               <ChevronUpIcon className="w-4 h-4 text-blue-600" />
             ) : (
               <ChevronDownIcon className="w-4 h-4 text-gray-400" />
             )}
-          </span>
+          </button>
         </div>
         {isShowGuestsWindow && (
           <div
@@ -150,6 +157,7 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
         <button
           className="group mt-6 w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           type="submit"
+          disabled={sideEffect}
         >
           Reserve
         </button>

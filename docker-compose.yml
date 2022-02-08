@@ -62,6 +62,19 @@ services:
         networks:
             - booking_local_services
 
+    flower:
+        image: mher/flower
+        command: celery --broker=redis://redis:6379/0 flower
+        ports:
+            - 5555:5555
+        env_file: .env
+        depends_on:
+            - booking_django
+            - redis
+            - celery
+        networks:
+            - booking_local_services
+
 networks:
     booking_local_services:
         name: booking_local_services

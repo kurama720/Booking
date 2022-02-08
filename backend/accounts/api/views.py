@@ -6,11 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.views import TokenViewBase
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 from rest_framework.generics import get_object_or_404
 
 
@@ -27,7 +25,7 @@ from accounts.api.serializers import (RegisterSerializer,
                                       EmailVerificationSerializer,
                                       ResetPasswordEmailRequestSerializer,
                                       )
-from accounts.utils import Util, create_verify_mail_data
+from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
 
 
@@ -144,17 +142,13 @@ class RequestPasswordResetView(generics.GenericAPIView):
     serializer_class = ResetPasswordEmailRequestSerializer
 
     def post(self, request):
-        email = request.data.get('email')
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data.get('email')
         if ClientUser.objects.filter(email=email).exists():
-            user = ClientUser.objects.get(email=email)
-            uid64 = urlsafe_base64_encode(smart_bytes(user.id))
-            token = PasswordResetTokenGenerator().make_token(user)
             current_site = get_current_site(request=request).domain
-            relative_link = f"password-reset/{uid64}/{token}"
-            absurl = f"http://{current_site}{relative_link}"
-            email_body = f"Hello {user.email}. Use link below to reset your password \n' {absurl}"
-            data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Resset your password'}
-            Util.send_mail(data)
+            mail_data = create_mail_for_reset_password(email, current_site)
+            send_mail(mail_data)
         return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
 
 

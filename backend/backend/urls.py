@@ -41,7 +41,8 @@ urlpatterns = [
          name='swagger-ui'),
     path('apartments/', include('apartments.urls')),
     path('map/', include('markers.urls')),
-    path('cities/', include('cities.urls'))
+    path('cities/', include('cities.urls')),
+    path('search/', include('search.urls'))
 ]
 
 if settings.DEBUG:

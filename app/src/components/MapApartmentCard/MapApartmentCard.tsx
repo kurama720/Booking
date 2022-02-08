@@ -6,13 +6,7 @@ import img from "../../assets/img/image1.svg";
 
 const MapApartmentCard = () => {
   const [isLikeCard, setIsLikeCard] = useState<boolean>(false);
-  const mokListPicture = [
-    { id: 1, img },
-    { id: 2, img },
-    { id: 3, img },
-    { id: 4, img },
-    { id: 5, img },
-  ];
+  const mokListPicture = [img, img, img, img, img];
 
   const handleIsLikeCard = () => {
     setIsLikeCard((prev) => !prev);
