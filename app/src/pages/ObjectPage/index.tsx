@@ -22,7 +22,7 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   setUserBookingDate,
 }) => {
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
-      useState<boolean>(false);
+    useState<boolean>(false);
   const [guest, setGuest] = useState("Add guests");
   const [sideEffect, setSideEffect] = useState<boolean>(false);
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
@@ -47,7 +47,8 @@ const ObjectPage: FC<IPropsObjectPage> = ({
 
   const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
-  const handleCalendarPopUpStatus = () => setCalendarPopUpStatus((prev) => !prev);
+  const handleCalendarPopUpStatus = () =>
+    setCalendarPopUpStatus((prev) => !prev);
 
   const handleSearchMenu = () => {
     setActiveSearchMenu((prev) => !prev);

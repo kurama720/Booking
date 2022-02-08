@@ -18,6 +18,7 @@ import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 import "./mapPage.css";
 import Footer from "../../components/Footer/Footer";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 
 const DefaultIcon = L.icon({
   iconUrl: icon,
@@ -51,6 +52,8 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
   const [isActiveBookingHistory, setActiveBookingHistory] =
     useState<boolean>(false);
+  const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -75,10 +78,14 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
     setActiveBookingHistory((prev) => !prev);
   };
 
+  const handleFavouriteApartmentsList = () =>
+    setActiveFavouriteApartmentList((prev) => !prev);
+
   return (
     <>
       <div className="px-[27px]">
         <Header
+          handleFavouriteApartmentsList={handleFavouriteApartmentsList}
           handleLogInPopUp={handleLogInPopUp}
           activeLocationBox={activeLocationBox}
           isActiveLocationBox={isActiveLocationBox}
@@ -173,6 +180,16 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
       {isActiveBookingHistory && (
         <Modal active={isActiveBookingHistory} setActive={handleBookingHistory}>
           <BookingHistory handleBookingHistory={handleBookingHistory} />
+        </Modal>
+      )}
+      {isActiveFavouriteApartmentList && (
+        <Modal
+          active={isActiveFavouriteApartmentList}
+          setActive={handleFavouriteApartmentsList}
+        >
+          <DisplayFavouriteApartments
+            handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
         </Modal>
       )}
       <Footer />
