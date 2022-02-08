@@ -89,4 +89,4 @@ class FavoriteApartmentSerializer(serializers.ModelSerializer):
     """Serializer to return serialized favorite apartments"""
     class Meta:
         model = Apartment
-        fields = ('title', 'price', 'lat', 'lon', 'description', 'rating', 'feature')
+        fields = ('id', 'title', 'price', 'lat', 'lon', 'description', 'rating', 'feature')
