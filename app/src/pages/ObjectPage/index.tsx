@@ -9,6 +9,7 @@ import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 
 interface IPropsObjectPage {
   setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
@@ -34,6 +35,8 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -44,6 +47,10 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
   const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
+
+  const handleResetPasswordPopUpStatus = () => {
+    setResetPasswordPopUpStatus((prev) => !prev);
+  };
 
   const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
@@ -130,6 +137,7 @@ const ObjectPage: FC<IPropsObjectPage> = ({
             popUpStatus={popUpStatus}
             handleLogInPopUp={handleLogInPopUp}
             handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+            handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
           />
         </Modal>
       )}
@@ -162,6 +170,17 @@ const ObjectPage: FC<IPropsObjectPage> = ({
         >
           <DisplayFavouriteApartments
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
+        </Modal>
+      )}
+      {resetPasswordPopUpStatus && (
+        <Modal
+          active={resetPasswordPopUpStatus}
+          setActive={handleResetPasswordPopUpStatus}
+        >
+          <ResetPasswordForm
+            setActive={handleResetPasswordPopUpStatus}
+            handleSignUpPopUp={handleSignUpPopUpStatus}
           />
         </Modal>
       )}

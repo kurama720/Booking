@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../../components/Header/Header";
 import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import Modal from "../../components/Modal/Modal";
 import { IPropsHomePage } from "./utils/HomePageInterface";
@@ -26,6 +27,8 @@ function HomePage({
     useState<boolean>(false);
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
     useState<boolean>(false);
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -35,6 +38,10 @@ function HomePage({
   const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
 
   const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
+
+  const handleResetPasswordPopUpStatus = () => {
+    setResetPasswordPopUpStatus((prev) => !prev);
+  };
 
   const handleCalendarPopUpStatus = () =>
     setCalendarPopUpStatus((prev) => !prev);
@@ -79,6 +86,7 @@ function HomePage({
                 popUpStatus={popUpStatus}
                 handleLogInPopUp={handleLogInPopUp}
                 handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+                handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
               />
             </Modal>
           )}
@@ -118,6 +126,17 @@ function HomePage({
           >
             <DisplayFavouriteApartments
               handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            />
+          </Modal>
+        )}
+        {resetPasswordPopUpStatus && (
+          <Modal
+            active={resetPasswordPopUpStatus}
+            setActive={handleResetPasswordPopUpStatus}
+          >
+            <ResetPasswordForm
+              setActive={handleResetPasswordPopUpStatus}
+              handleSignUpPopUp={handleSignUpPopUpStatus}
             />
           </Modal>
         )}

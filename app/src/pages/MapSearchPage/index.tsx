@@ -17,8 +17,9 @@ import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
 import Footer from "../../components/Footer/Footer";
-import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 import "./styles.css";
+import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 
 const position: L.LatLngExpression = [52.43272, 30.999012];
 
@@ -58,6 +59,8 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
     useState<boolean>(false);
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
     useState<boolean>(false);
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
@@ -79,6 +82,10 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
 
   const handleLogoutPopUpStatus = () => {
     isActiveLogout((prev) => !prev);
+  };
+
+  const handleResetPasswordPopUpStatus = () => {
+    setResetPasswordPopUpStatus((prev) => !prev);
   };
 
   const handleCalendarPopUpStatus = () => {
@@ -203,6 +210,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
             popUpStatus={popUpStatus}
             handleLogInPopUp={handleLogInPopUp}
             handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+            handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
           />
         </Modal>
       )}
@@ -241,6 +249,17 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
       {isFilterVisible && (
         <Modal active={isFilterVisible} setActive={setFilterVisible}>
           <FilterForm onClose={handleFilterVisible} />
+        </Modal>
+      )}
+      {resetPasswordPopUpStatus && (
+        <Modal
+          active={resetPasswordPopUpStatus}
+          setActive={handleResetPasswordPopUpStatus}
+        >
+          <ResetPasswordForm
+            setActive={handleResetPasswordPopUpStatus}
+            handleSignUpPopUp={handleSignUpPopUpStatus}
+          />
         </Modal>
       )}
       <Footer />

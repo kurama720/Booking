@@ -12,9 +12,7 @@ import {
   XIcon,
 } from "@heroicons/react/solid";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
-import { Paths } from "../../paths/path";
 import { AuthContext } from "../../context/Context";
 import { UserLogin } from "./utils/interfaces/interfaces";
 
@@ -22,13 +20,15 @@ interface UserLogInFormProps {
   status: boolean;
   handleLogInPopUp: () => void;
   handleSignUpPopUpStatus: () => void;
+  handleResetPasswordPopUpStatus: () => void;
 }
 
-function UserLogInForm({
+const UserLogInForm = ({
   status,
   handleLogInPopUp,
   handleSignUpPopUpStatus,
-}: UserLogInFormProps) {
+  handleResetPasswordPopUpStatus,
+}: UserLogInFormProps) => {
   const { login, setErrorMessage, errorMessage } = useContext(AuthContext);
   const [checked, setChecked] = useState<boolean>(false);
   const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
@@ -38,8 +38,6 @@ function UserLogInForm({
     email: "",
     password: "",
   });
-
-  const history = useNavigate();
 
   const submitUserInformation = async (values: UserLogin) => {
     try {
@@ -374,7 +372,10 @@ function UserLogInForm({
                         <div className="text-sm">
                           <Button
                             type="button"
-                            onClick={() => history(Paths.RESET_PASSWORD)}
+                            onClick={() => {
+                              handleLogInPopUp();
+                              handleResetPasswordPopUpStatus();
+                            }}
                             classNames="font-medium text-blue-600 hover:text-blue-700 font-body"
                             context="Forgot your password?"
                           />
@@ -441,6 +442,6 @@ function UserLogInForm({
       </Formik>
     </div>
   );
-}
+};
 
 export default UserLogInForm;
