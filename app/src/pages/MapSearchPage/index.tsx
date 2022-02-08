@@ -1,6 +1,6 @@
 /* eslint-disable import/order */
 import React, { FC, useState } from "react";
-import L, { map } from "leaflet";
+import L from "leaflet";
 import ReactDOMServer from "react-dom/server";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { AdjustmentsIcon, ChevronLeftIcon } from "@heroicons/react/solid";

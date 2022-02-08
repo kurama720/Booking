@@ -62,7 +62,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 }
                 onClick={() => setBedsCount((prev: number) => prev - 1)}
               >
-                <MinusIcon className="w-[0.929375rem]" />
+                <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
                 {bedsCount}
@@ -72,7 +72,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 onClick={() => setBedsCount((prev: number) => prev + 1)}
               >
-                <PlusIcon className="w-[0.929375rem] h-[0.929375rem]" />
+                <PlusIcon className="w-5" />
               </button>
             </div>
           </div>
@@ -89,7 +89,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 }
                 onClick={() => setBedroomsCount((prev: number) => prev - 1)}
               >
-                <MinusIcon className="w-[0.929375rem]" />
+                <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
                 {bedroomsCount}
@@ -99,7 +99,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 onClick={() => setBedroomsCount((prev: number) => prev + 1)}
               >
-                <PlusIcon className="w-[0.929375rem] h-[0.929375rem]" />
+                <PlusIcon className="w-5" />
               </button>
             </div>
           </div>
@@ -116,7 +116,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 }
                 onClick={() => setBathroomsCount((prev: number) => prev - 1)}
               >
-                <MinusIcon className="w-[0.929375rem]" />
+                <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
                 {bathroomsCount}
@@ -126,7 +126,7 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 onClick={() => setBathroomsCount((prev: number) => prev + 1)}
               >
-                <PlusIcon className="w-[0.929375rem] h-[0.929375rem]" />
+                <PlusIcon className="w-5" />
               </button>
             </div>
           </div>

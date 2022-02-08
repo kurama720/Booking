@@ -1,11 +1,12 @@
 import React, { FC, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { StarIcon, HeartIcon as HeartActiveIcon } from "@heroicons/react/solid";
 import { HeartIcon } from "@heroicons/react/outline";
 import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
 import { IObjectPicture } from "../MapApartmentCard/SliderCardMap/IPropsCardMap";
 
 export interface ISearchResultItemProps {
-  id?: number;
+  id: number;
   img_content: Array<IObjectPicture>;
   title: string;
   description: string;
@@ -17,6 +18,7 @@ export interface ISearchResultItemProps {
 }
 
 const SearchResultItem: FC<ISearchResultItemProps> = ({
+  id,
   img_content,
   title,
   description,
@@ -38,7 +40,12 @@ const SearchResultItem: FC<ISearchResultItemProps> = ({
       <div className="flex flex-col justify-between flex-grow pl-4 font-body">
         <div className="flex flex-col space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-xl font-medium text-gray-900">{title}</span>
+            <NavLink
+              className="text-xl font-medium text-gray-900"
+              to={`/apartments/${id}`}
+            >
+              {title}
+            </NavLink>
             <button onClick={handleClick}>
               {isFavourite ? (
                 <HeartActiveIcon className="text-blue-500 w-6 h-6" />
