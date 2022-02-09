@@ -202,3 +202,12 @@ class FavoriteApartmentView(viewsets.ViewSet):
             return Response(status=status.HTTP_201_CREATED)
         except Apartment.DoesNotExist:
             return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)
+
+    def destroy(self, request, pk=None):
+        try:
+            apartment = Apartment.objects.get(id=pk)
+            apartment.user.remove(request.user.id)
+            apartment.save()
+            return Response(status=status.HTTP_200_OK)
+        except Apartment.DoesNotExist:
+            return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)
