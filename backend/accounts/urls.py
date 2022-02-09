@@ -8,6 +8,8 @@ from accounts.api.views import (RegisterView,
                                 UserInfoView,
                                 VerifyEmailView,
                                 RequestPasswordResetView,
+                                SetNewPasswordApiView,
+                                PasswordTokenCheckApi
                                 )
 from apartments.api.views import ClientBookingHistoryView
 
@@ -20,7 +22,9 @@ urlpatterns = [
     path('business/signup/', BusinessClientRegisterView.as_view(), name='business_sign_up'),
     path('business/signin/', BusinessClientSignInView.as_view(), name='business_sign_in'),
     path('business/logout/', LogoutView.as_view(), name='business_log_out'),
+    path('password-reset/<uid64>/<token>/', PasswordTokenCheckApi.as_view(), name='password-reset-confirm'),
     path('password-reset-email/', RequestPasswordResetView.as_view(), name='password_reset_email'),
+    path('password-reset-complete/', SetNewPasswordApiView.as_view(), name='password-reset-complete'),
     path('info/', UserInfoView.as_view(), name='info'),
     path('booking-history/', ClientBookingHistoryView.as_view(), name='client_booking_history'),
     path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),

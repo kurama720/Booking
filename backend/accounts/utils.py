@@ -8,12 +8,12 @@ from accounts.models import ClientUser
 from accounts.api.tokens import account_activation_token
 
 
-def create_mail_for_reset_password(email: str, current_site: str) -> dict:
+def create_mail_for_reset_password(email: str) -> dict:
     user = ClientUser.objects.get(email=email)
     uid64 = urlsafe_base64_encode(smart_bytes(user.id))
     token = PasswordResetTokenGenerator().make_token(user)
-    relative_link = f"password-reset/{uid64}/{token}"
-    abs_url = f"https://{current_site}/{relative_link}"
+    relative_link = reverse('password-reset-confirm', kwargs={'uid64': uid64, 'token': token})
+    abs_url = f"https://yoho.by{relative_link}"
     email_body = f"Hello {user.email}. Use link below to reset your password \n {abs_url}"
     data = {'email_body': email_body, 'to_email': email, 'email_subject': 'Reset your password'}
     return data

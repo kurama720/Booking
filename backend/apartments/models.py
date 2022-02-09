@@ -6,8 +6,6 @@ from django.db.models import Q, F, Avg, Count
 from django.shortcuts import get_object_or_404
 from django.core.validators import MaxValueValidator
 
-from rest_framework.exceptions import ValidationError
-
 from accounts.models import ClientUser, BusinessClientUser
 from apartments.utils import Round
 from apartments.validators import SCHEMA, JSONSchemaValidator
