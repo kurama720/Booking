@@ -1,6 +1,5 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point, fromstr
-from django.contrib.gis.db.models.functions import Distance as DistanceFunction
 from django.contrib.gis.measure import Distance
 from django.db.models import QuerySet
 
@@ -10,10 +9,11 @@ from apartments.models import Apartment
 class ApartmentGeoWrapper(models.Model):
     hotel = models.OneToOneField(Apartment, on_delete=models.CASCADE)
     location = models.PointField(geography=True,
-                                 unique=True,
                                  blank=True,
-                                 null=True,
-                                 db_index=True)
+                                 null=True)
+
+    class Meta:
+        indexes = [models.Index(fields=("location", ))]
 
     def save(self, *args, **kwargs):
         self.location = Point(self.hotel.lon, self.hotel.lat)
