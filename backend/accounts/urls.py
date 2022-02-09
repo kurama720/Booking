@@ -8,6 +8,7 @@ from accounts.api.views import (RegisterView,
                                 UserInfoView,
                                 VerifyEmailView,
                                 RequestPasswordResetView,
+                                UserDetailViewSet,
                                 )
 from apartments.api.views import ClientBookingHistoryView
 
@@ -24,4 +25,5 @@ urlpatterns = [
     path('info/', UserInfoView.as_view(), name='info'),
     path('booking-history/', ClientBookingHistoryView.as_view(), name='client_booking_history'),
     path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),
+    path('me/', UserDetailViewSet.as_view({'get': 'list', 'post': 'update'}), name='client_info'),
 ]

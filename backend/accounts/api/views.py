@@ -1,15 +1,16 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
-from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework_simplejwt.views import TokenViewBase
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, GenericAPIView
+from django.core.exceptions import ValidationError
 
 
 from accounts.models import ClientUser, BusinessClientUser
@@ -24,9 +25,12 @@ from accounts.api.serializers import (RegisterSerializer,
                                       BusinessClientUserSerializer,
                                       EmailVerificationSerializer,
                                       ResetPasswordEmailRequestSerializer,
+                                      ClientUserInfoSerializer,
                                       )
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
+from apartments.api.permissions import IsClientOnly
+from backend.settings import MEDIA_ROOT
 
 
 class RegisterView(generics.GenericAPIView):
@@ -172,3 +176,27 @@ class UserInfoView(APIView):
         serializer = BusinessClientUserSerializer(
             instance=request.user.clientuser.businessclientuser)
         return Response(data=serializer.data)
+
+
+class UserDetailViewSet(ViewSet):
+    """View to show client's personal info and path to his avatar"""
+    serializer_class = ClientUserInfoSerializer
+    permission_classes = (IsClientOnly, )
+
+    def list(self, request):
+        client = ClientUser.objects.get(id=request.user.id)
+        client_data = self.serializer_class(client).data
+        return Response(data=client_data)
+
+    def update(self, request):
+        client = ClientUser.objects.get(id=request.user.id)
+        if request.data.get('avatar'):
+            client.set_avatar(request.data['avatar'])  # Set new avatar for user
+            client.save()
+            request.data.pop('avatar')
+        data_to_update = self.serializer_class(client, request.data)
+        if data_to_update.is_valid(raise_exception=True):
+            data_to_update.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

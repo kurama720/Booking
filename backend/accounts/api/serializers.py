@@ -5,9 +5,9 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from accounts.models import ClientUser, BusinessClientUser
-
+from accounts.models import ClientUser, BusinessClientUser, Avatar
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer
+from accounts.validators import first_name_validator, last_name_validator
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -151,3 +151,40 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientUser
         fields = ('email',)
+
+
+class ApartmentsImageSerializer(serializers.ModelSerializer):
+    """
+    Serializer class for models.Avatar
+    """
+    class Meta:
+        model = Avatar
+        fields = ("local_url", )
+
+    def to_representation(self, value):
+        try:
+            url = value.local_url.url
+        except AttributeError:
+            return None
+        request = self.context.get('request', None)
+        if request is not None:
+            return request.build_absolute_uri(url)
+        return url
+
+
+class ClientUserInfoSerializer(serializers.ModelSerializer):
+    """Serializer class for models.ClientUser to show his personal info"""
+    email = serializers.EmailField(required=False)
+    first_name = serializers.CharField(required=False, validators=[first_name_validator])
+    last_name = serializers.CharField(required=False, validators=[last_name_validator])
+    avatar = ApartmentsImageSerializer(required=False)
+
+    class Meta:
+        model = ClientUser
+        fields = ('email', 'first_name', 'last_name', 'avatar')
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        return instance
