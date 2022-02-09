@@ -13,7 +13,7 @@ const ConfirmTrip: FC<IPropsConfirmTrip> = ({
   numberOfGuests,
 }) => {
   return (
-    <div className="max-w-[670px] w-full mr-2">
+    <div>
       <span className="font-body text-2xl font-medium text-gray-900 mt-10 mb-9 block">
         Your trip
       </span>

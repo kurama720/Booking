@@ -1,29 +1,42 @@
 import React from "react";
-import NodicLogo from "../../components/Header/utils/image/NodicLogo.png";
+import { Link } from "react-router-dom";
 import LinkBack from "../../components/LinkBack";
 import Footer from "../../components/Footer/Footer";
 import ConfirmTrip from "../../components/ConfirmTrip";
 import ConfirmCard from "../../components/ConfirmCard";
+import NodicLogo from "../../components/Header/utils/image/NodicLogo.png";
 
 const ConfirmPage = () => {
+  const handleRequestBook = () => {};
+
   return (
     <>
       <div className="px-[64px] bg-gray-50">
         <div className="max-w-[1238px] w-full mx-auto">
-          <div className="flex justify-start items-center py-[33px]">
-            <img src={NodicLogo} className="w-8" alt="logo" />
-            <p className="ml-[21px] text-blue-700 font-body font-medium text-2xl">
-              Nodic
-            </p>
-          </div>
+          <Link to="/">
+            <div className="flex justify-start items-center py-[33px]">
+              <img src={NodicLogo} className="w-8" alt="logo" />
+              <p className="ml-[21px] text-blue-700 font-body font-medium text-2xl">
+                Nodic
+              </p>
+            </div>
+          </Link>
           <div className="w-full h-[1px] bg-gray-200 " />
           <LinkBack text="Confirm and pay" />
           <div className="flex justify-between items-start">
-            <ConfirmTrip
-              checkInDate="2022-06-21"
-              checkOutDate="2022-07-26"
-              numberOfGuests={1}
-            />
+            <div className="max-w-[670px] w-full mr-2">
+              <ConfirmTrip
+                checkInDate="2022-06-21"
+                checkOutDate="2022-07-26"
+                numberOfGuests={3}
+              />
+              <button
+                className="font-body text-base text-white bg-blue-600 px-[17px] py-[9px] rounded-md mt-[34px]"
+                onClick={handleRequestBook}
+              >
+                Request a book
+              </button>
+            </div>
             <div className="shadow rounded-md bg-white max-w-[544px] w-full p-6">
               <div className="max-w-[512px] w-full mx-auto">
                 <ConfirmCard
