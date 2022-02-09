@@ -10,3 +10,10 @@ export interface IApartment {
   price: number;
   rating: null | number;
 }
+
+export interface IBookingReverseData {
+  id: number | null;
+  checkIn: string;
+  checkOut: string;
+  numberOfGuests: number;
+}

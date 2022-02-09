@@ -5,11 +5,21 @@ import HomePage from "../pages/HomePage/HomePage";
 import MapSearchPage from "../pages/MapSearchPage";
 import ObjectPage from "../pages/ObjectPage";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
-import { IApartment } from "../models/globalInterfaces/globalIntefaces";
+import {
+  IApartment,
+  IBookingReverseData,
+} from "../models/globalInterfaces/globalIntefaces";
 import ConfirmPage from "../pages/ConfirmPage";
 
 export const useRoutes = (isAuth: boolean) => {
   const [apartments, setApartments] = useState<Array<IApartment>>([]);
+  const [bookingReverseData, setBookingReverseData] =
+    useState<IBookingReverseData>({
+      id: null,
+      checkIn: "",
+      checkOut: "",
+      numberOfGuests: 1,
+    });
   const [userBookingDate, setUserBookingDate] = useState<BookingState>({
     lat: 0,
     lon: 0,
@@ -49,10 +59,20 @@ export const useRoutes = (isAuth: boolean) => {
               setApartments={setApartments}
               userBookingDate={userBookingDate}
               setUserBookingDate={setUserBookingDate}
+              bookingReverseData={bookingReverseData}
+              setBookingReverseData={setBookingReverseData}
             />
           }
         />
-        <Route path={`${Paths.CONFIRM}`} element={<ConfirmPage />} />
+        <Route
+          path={`${Paths.CONFIRM}`}
+          element={
+            <ConfirmPage
+              bookingReverseData={bookingReverseData}
+              setBookingReverseData={setBookingReverseData}
+            />
+          }
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     );
@@ -87,6 +107,8 @@ export const useRoutes = (isAuth: boolean) => {
             setApartments={setApartments}
             userBookingDate={userBookingDate}
             setUserBookingDate={setUserBookingDate}
+            bookingReverseData={bookingReverseData}
+            setBookingReverseData={setBookingReverseData}
           />
         }
       />

@@ -16,6 +16,8 @@ const ObjectPageCard = ({
   setSideEffect,
   sideEffect,
   handleSearchMenu,
+  setBookingReverseData,
+  bookingReverseData,
 }: IObjectPageCardProps) => {
   return (
     <ObjectPageModel
@@ -38,7 +40,11 @@ const ObjectPageCard = ({
         </div>
         <div className="w-full mt-6 flex">
           <ObjectsPageDescription sideEffect={sideEffect} />
-          <ApartmentForm sideEffect={sideEffect} />
+          <ApartmentForm
+            sideEffect={sideEffect}
+            bookingReverseData={bookingReverseData}
+            setBookingReverseData={setBookingReverseData}
+          />
         </div>
       </div>
       <Footer sideEffect={sideEffect} />

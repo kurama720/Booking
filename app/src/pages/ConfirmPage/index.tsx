@@ -1,12 +1,26 @@
-import React from "react";
+import React, { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LinkBack from "../../components/LinkBack";
 import Footer from "../../components/Footer/Footer";
 import ConfirmTrip from "../../components/ConfirmTrip";
 import ConfirmCard from "../../components/ConfirmCard";
 import NodicLogo from "../../components/Header/utils/image/NodicLogo.png";
+import { IBookingReverseData } from "../../models/globalInterfaces/globalIntefaces";
 
-const ConfirmPage = () => {
+interface IPropsConfirmPage {
+  bookingReverseData: IBookingReverseData;
+  setBookingReverseData: React.Dispatch<
+    React.SetStateAction<IBookingReverseData>
+  >;
+}
+
+const ConfirmPage: FC<IPropsConfirmPage> = ({
+  bookingReverseData,
+  setBookingReverseData,
+}) => {
+  const { id } = bookingReverseData;
+  useEffect(() => {}, []);
+  console.log(bookingReverseData);
   const handleRequestBook = () => {};
 
   return (
@@ -26,9 +40,9 @@ const ConfirmPage = () => {
           <div className="flex justify-between items-start">
             <div className="max-w-[670px] w-full mr-2">
               <ConfirmTrip
-                checkInDate="2022-06-21"
-                checkOutDate="2022-07-26"
-                numberOfGuests={3}
+                checkInDate={bookingReverseData.checkIn}
+                checkOutDate={bookingReverseData.checkOut}
+                numberOfGuests={bookingReverseData.numberOfGuests}
               />
               <button
                 className="font-body text-base text-white bg-blue-600 px-[17px] py-[9px] rounded-md mt-[34px]"

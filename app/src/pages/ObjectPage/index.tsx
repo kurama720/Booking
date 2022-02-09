@@ -7,7 +7,10 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
-import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
+import {
+  IApartment,
+  IBookingReverseData,
+} from "../../models/globalInterfaces/globalIntefaces";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 import ResetPasswordForm from "../../components/ResetPasswordForm";
 
@@ -15,12 +18,18 @@ interface IPropsObjectPage {
   setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
   userBookingDate: BookingState;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
+  bookingReverseData: IBookingReverseData;
+  setBookingReverseData: React.Dispatch<
+    React.SetStateAction<IBookingReverseData>
+  >;
 }
 
 const ObjectPage: FC<IPropsObjectPage> = ({
   setApartments,
   userBookingDate,
   setUserBookingDate,
+  bookingReverseData,
+  setBookingReverseData,
 }) => {
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
     useState<boolean>(false);
@@ -129,6 +138,8 @@ const ObjectPage: FC<IPropsObjectPage> = ({
         isActiveModel={isActiveModel}
         setSideEffect={setSideEffect}
         sideEffect={sideEffect}
+        bookingReverseData={bookingReverseData}
+        setBookingReverseData={setBookingReverseData}
         handleSearchMenu={handleSearchMenu}
       />
       {popUpStatus && (
