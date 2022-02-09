@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import React from "react";
 import { Paths } from "../paths/path";
 import HomePage from "../pages/HomePage/HomePage";
@@ -14,6 +14,7 @@ export const useRoutes = (isAuth: boolean) => {
         <Route path={Paths.MAP} element={<MapSearchPage />} />
         <Route path={`${Paths.OBJECT_PAGE}/:id`} element={<ObjectPage />} />
         <Route path={`${Paths.CONFIRM}`} element={<ConfirmPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     );
   }
@@ -22,6 +23,7 @@ export const useRoutes = (isAuth: boolean) => {
       <Route path={Paths.HOME} element={<HomePage />} />
       <Route path={Paths.MAP} element={<MapSearchPage />} />
       <Route path={`${Paths.OBJECT_PAGE}/:id`} element={<ObjectPage />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };

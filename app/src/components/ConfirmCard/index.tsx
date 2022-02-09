@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { FC } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { HeartIcon } from "@heroicons/react/outline";
-import { StarIcon, HeartIcon as SolidHeartIcon } from "@heroicons/react/solid";
-import "@splidejs/splide/dist/css/splide.min.css";
+import { StarIcon } from "@heroicons/react/solid";
+import { IApartmentCardProps } from "../ApartmentCard/IApartmentFormProps";
 import img from "../../assets/img/image1.svg";
-import "./react-splide.css";
-import { IApartmentCardProps } from "./IApartmentFormProps";
 
-const ApartmentCard = ({ title, price, rating }: IApartmentCardProps) => {
-  const [isLike, setIsLike] = useState<boolean>(false);
+const ConfirmCard: FC<IApartmentCardProps> = ({
+  title,
+  rating,
+  description,
+  price,
+}) => {
   const pictureList = [
     { img, id: 1 },
     { img, id: 2 },
@@ -18,12 +19,8 @@ const ApartmentCard = ({ title, price, rating }: IApartmentCardProps) => {
     { img, id: 6 },
   ];
 
-  const handleIsLike = () => {
-    setIsLike((prev) => !prev);
-  };
-
   return (
-    <div className="max-w-screen-sm p-4">
+    <div>
       <div className="flex">
         <Splide
           options={{
@@ -40,20 +37,11 @@ const ApartmentCard = ({ title, price, rating }: IApartmentCardProps) => {
         </Splide>
         <div className="w-full pl-3 flex justify-between flex-col">
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-start items-start flex-col">
               <h4 className="text-xl font-body text-gray-900">{title}</h4>
-              <button type="button" onClick={handleIsLike}>
-                {isLike ? (
-                  <SolidHeartIcon className="w-5 h-5 text-red-500" />
-                ) : (
-                  <HeartIcon className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-            <div className="flex justify-start">
-              <span className="text-xs font-body text-gray-500">2 guests</span>
-              <span className="inline-block mt-2 mx-2 w-0.5 h-0.5 bg-gray-700 rounded-full" />
-              <span className="text-xs font-body text-gray-500">2 beds</span>
+              <span className="text-sm font-body text-gray-600">
+                {description}
+              </span>
             </div>
           </div>
           <div className="flex justify-between items-end">
@@ -76,18 +64,13 @@ const ApartmentCard = ({ title, price, rating }: IApartmentCardProps) => {
                 </span>
                 <span className="text-xs font-body text-gray-500">night</span>
               </div>
-              <div>
-                <span className="text-xs font-body text-gray-500">
-                  Total $280
-                </span>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full h-px bg-gray-200 mt-2" />
+      <div className="w-full h-px bg-gray-200 mt-6" />
     </div>
   );
 };
 
-export default ApartmentCard;
+export default ConfirmCard;

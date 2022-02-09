@@ -13,3 +13,12 @@ export const parseDate = (date: Date) => {
 
   return `${dateYear}-${dateMonth}-${dateDay}`;
 };
+
+export const dateFormat = (date: string) => {
+  const today = new Date(date);
+  const dateYear = today.getFullYear();
+  const dataMonth = today.toLocaleString("en-US", { month: "short" });
+  const dateDay: string | number = today.getDate();
+
+  return `${dataMonth} ${dateDay}, ${dateYear}`;
+};
