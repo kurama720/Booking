@@ -14,7 +14,6 @@ from apartments.api.serializers import ApartmentSerializer
     responses={200: ApartmentSerializer}
 )
 class ApartmentSearchView(ListAPIView):
-    permission_classes = (IsAuthenticated, )
     serializer_class = ApartmentGeoWrapperSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ("check_availability", "feature")

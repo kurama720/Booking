@@ -17,7 +17,7 @@ class ApartmentGeoWrapperAdmin(admin.ModelAdmin):
         return new_urls + urls
 
     def wrap_apartments_objects(self, request):
-        if not request.user.is_superuser:
+        if not request.user.is_staff:
             raise PermissionDenied
         if request.method == "GET":
             apartments_queryset = Apartment.objects.all()
