@@ -26,6 +26,7 @@ const Location: FC<LocationProps> = ({
         placeholder="Where are you going?"
         type="text"
         name="location"
+        required
         autoComplete="off"
         value={search}
         id="location"

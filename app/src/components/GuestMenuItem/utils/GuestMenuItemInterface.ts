@@ -1,9 +1,5 @@
-interface BookingState {
-  city: string;
-  numOfPersons: number;
-  checkInDate: string;
-  checkOutDate: string;
-}
+import React from "react";
+import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
 
 export interface GuestMenuItemProps {
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;

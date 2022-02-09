@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, FC } from "react";
 import ObjectPageCard from "../../components/ObjectPageCard";
 import { BookingState } from "../HomePage/utils/HomePageInterface";
 import Header from "../../components/Header/Header";
@@ -7,9 +7,21 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
+import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
+import ResetPasswordForm from "../../components/ResetPasswordForm";
 
-const ObjectPage = () => {
+interface IPropsObjectPage {
+  setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
+  userBookingDate: BookingState;
+  setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
+}
+
+const ObjectPage: FC<IPropsObjectPage> = ({
+  setApartments,
+  userBookingDate,
+  setUserBookingDate,
+}) => {
   const [isActiveFavouriteApartmentList, setActiveFavouriteApartmentList] =
     useState<boolean>(false);
   const [guest, setGuest] = useState("Add guests");
@@ -23,15 +35,11 @@ const ObjectPage = () => {
   const [popUpStatus, setPopUpStatus] = useState<boolean>(false);
   const [signUpPopUpStatus, setSignUpPopUpStatus] = useState<boolean>(false);
   const [activeLocationBox, isActiveLocationBox] = useState<boolean>(false);
+  const [resetPasswordPopUpStatus, setResetPasswordPopUpStatus] =
+    useState<boolean>(false);
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
-  const [userBookingDate, setUserBookingDate] = useState<BookingState>({
-    city: "",
-    numOfPersons: 0,
-    checkInDate: "",
-    checkOutDate: "",
-  });
 
   const handleFavouriteApartmentsList = () =>
     setActiveFavouriteApartmentList((prev) => !prev);
@@ -39,6 +47,10 @@ const ObjectPage = () => {
   const handleLogInPopUp = () => setPopUpStatus((prev) => !prev);
 
   const handleSignUpPopUpStatus = () => setSignUpPopUpStatus((prev) => !prev);
+
+  const handleResetPasswordPopUpStatus = () => {
+    setResetPasswordPopUpStatus((prev) => !prev);
+  };
 
   const handleLogoutPopUpStatus = () => isActiveLogout((prev) => !prev);
 
@@ -79,6 +91,7 @@ const ObjectPage = () => {
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            setApartments={setApartments}
           />
         ) : (
           <Header
@@ -104,6 +117,7 @@ const ObjectPage = () => {
             isAddGuest={isAddGuest}
             setIsAddGuest={setIsAddGuest}
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+            setApartments={setApartments}
           />
         )}
       </div>
@@ -123,6 +137,7 @@ const ObjectPage = () => {
             popUpStatus={popUpStatus}
             handleLogInPopUp={handleLogInPopUp}
             handleSignUpPopUpStatus={handleSignUpPopUpStatus}
+            handleResetPasswordPopUpStatus={handleResetPasswordPopUpStatus}
           />
         </Modal>
       )}
@@ -155,6 +170,17 @@ const ObjectPage = () => {
         >
           <DisplayFavouriteApartments
             handleFavouriteApartmentsList={handleFavouriteApartmentsList}
+          />
+        </Modal>
+      )}
+      {resetPasswordPopUpStatus && (
+        <Modal
+          active={resetPasswordPopUpStatus}
+          setActive={handleResetPasswordPopUpStatus}
+        >
+          <ResetPasswordForm
+            setActive={handleResetPasswordPopUpStatus}
+            handleSignUpPopUp={handleSignUpPopUpStatus}
           />
         </Modal>
       )}
