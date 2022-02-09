@@ -9,4 +9,6 @@ urlpatterns = [
     path('special/price-analytic/', PriceAnalyticView.as_view({"post": "create"}), name="price_analytic"),
     path('favorite/list', FavoriteApartmentView.as_view({'get': 'list'}), name='favorite_apartment'),
     path('favorite/<int:pk>/save', FavoriteApartmentView.as_view({'post': 'create'}), name='favorite_apartment_add'),
+    path('favorite/<int:pk>/delete', FavoriteApartmentView.as_view({'delete': 'destroy'}),
+         name='favorite_apartment_delete')
 ]
