@@ -1,28 +1,27 @@
 import React, { FC, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { CheckIcon } from "@heroicons/react/outline";
 import LinkBack from "../../components/LinkBack";
 import Footer from "../../components/Footer/Footer";
 import ConfirmTrip from "../../components/ConfirmTrip";
 import ConfirmCard from "../../components/ConfirmCard";
+import ModalForConfirm from "../../components/ModalForConfirm";
 import NodicLogo from "../../components/Header/utils/image/NodicLogo.png";
 import {
   IApartment,
   IBookDataApartment,
-  IBookingReverseData,
 } from "../../models/globalInterfaces/globalIntefaces";
 import { ApartmentsService } from "../../api/ApartmentsService";
 import { dateFormatForPolicy, parseDateReserve } from "../../models/parseDate";
 import Loader from "../../components/Loader";
 import { Paths } from "../../paths/path";
-
-interface IPropsConfirmPage {
-  bookingReverseData: IBookingReverseData;
-}
+import { IPropsConfirmPage } from "./IPropsConfirmPage";
 
 const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentApartment, setCurrentApartment] = useState<IApartment>(Object);
+  const [openModal, setModalOpen] = useState<boolean>(false);
   const history = useNavigate();
   const { id } = bookingReverseData;
 
@@ -62,7 +61,7 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
         dataForBookApartment
       );
       if (response.status === 201) {
-        history(Paths.HOME);
+        setModalOpen(true);
       }
       setLoading(false);
     } catch (e) {
@@ -73,6 +72,10 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleReturnToMain = () => {
+    history(Paths.HOME);
   };
 
   return (
@@ -159,6 +162,29 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
           </div>
         </div>
       </div>
+      {openModal && (
+        <ModalForConfirm active={openModal}>
+          <div
+            className="shadow p-8 bg-white rounded-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-center items-center flex-col">
+              <div className="font-body text-3xl text-green-400">
+                Your booking is confirmed!
+              </div>
+              <div className="">
+                <CheckIcon className="w-16 h-16 text-green-400" />
+              </div>
+            </div>
+            <button
+              className="text-base font-body font-medium text-blue-600"
+              onClick={handleReturnToMain}
+            >
+              Return to main page
+            </button>
+          </div>
+        </ModalForConfirm>
+      )}
       <Footer />
     </>
   );
