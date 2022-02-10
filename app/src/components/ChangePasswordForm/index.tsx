@@ -12,9 +12,7 @@ const ChangePasswordForm: FC = () => {
     confirm_password: "",
   };
 
-  const handleFormSubmit = () => {
-    console.log("kekw");
-  };
+  const handleFormSubmit = () => {};
 
   return (
     <Formik
