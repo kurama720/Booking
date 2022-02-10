@@ -15,7 +15,7 @@ export const useRoutes = (isAuth: boolean) => {
   const [apartments, setApartments] = useState<Array<IApartment>>([]);
   const [bookingReverseData, setBookingReverseData] =
     useState<IBookingReverseData>({
-      id: null,
+      id: "",
       checkIn: "",
       checkOut: "",
       numberOfGuests: 1,
@@ -66,12 +66,7 @@ export const useRoutes = (isAuth: boolean) => {
         />
         <Route
           path={`${Paths.CONFIRM}`}
-          element={
-            <ConfirmPage
-              bookingReverseData={bookingReverseData}
-              setBookingReverseData={setBookingReverseData}
-            />
-          }
+          element={<ConfirmPage bookingReverseData={bookingReverseData} />}
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

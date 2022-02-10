@@ -13,6 +13,7 @@ export interface IGuest {
 export type dataForApartmentForm = IFormApartment | IGuest;
 
 export interface IFormApartmentProps {
+  id: string | undefined;
   sideEffect: boolean;
   bookingReverseData: IBookingReverseData;
   setBookingReverseData: React.Dispatch<

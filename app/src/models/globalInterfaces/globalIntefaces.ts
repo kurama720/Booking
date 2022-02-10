@@ -12,8 +12,15 @@ export interface IApartment {
 }
 
 export interface IBookingReverseData {
-  id: number | null;
+  id: string | undefined;
   checkIn: string;
   checkOut: string;
   numberOfGuests: number;
+}
+
+export interface IBookDataApartment {
+  num_of_persons: number;
+  check_in_date: string;
+  check_out_date: string;
+  idempotency_key: string;
 }

@@ -8,6 +8,7 @@ import { IObjectPageCardProps } from "./IObjectPageCardProps";
 import ObjectPageModel from "../ObjectPageModel";
 
 const ObjectPageCard = ({
+  id,
   isActiveSearchMenu,
   setActiveSearchMenu,
   setCalendarPopUpStatus,
@@ -41,6 +42,7 @@ const ObjectPageCard = ({
         <div className="w-full mt-6 flex">
           <ObjectsPageDescription sideEffect={sideEffect} />
           <ApartmentForm
+            id={id}
             sideEffect={sideEffect}
             bookingReverseData={bookingReverseData}
             setBookingReverseData={setBookingReverseData}

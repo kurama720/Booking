@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { StarIcon } from "@heroicons/react/solid";
 import { IApartmentCardProps } from "../ApartmentCard/IApartmentFormProps";
+import "@splidejs/splide/dist/css/splide.min.css";
+import "./confirmCard.css";
 import img from "../../assets/img/image1.svg";
 
 const ConfirmCard: FC<IApartmentCardProps> = ({
@@ -39,8 +41,8 @@ const ConfirmCard: FC<IApartmentCardProps> = ({
           <div>
             <div className="flex justify-start items-start flex-col">
               <h4 className="text-xl font-body text-gray-900">{title}</h4>
-              <span className="text-sm font-body text-gray-600">
-                {description}
+              <span className="text-sm font-body text-gray-600 text-ellipsis">
+                {description?.substring(0, 30)}...
               </span>
             </div>
           </div>

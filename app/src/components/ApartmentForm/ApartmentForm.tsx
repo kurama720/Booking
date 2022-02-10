@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
 import { DateRange } from "@mui/lab/DateRangePicker";
-import { dataForApartmentForm, IFormApartmentProps } from "./IFormApartment";
+import { IFormApartmentProps } from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
 import { parseDate } from "../../models/parseDate";
 import { Paths } from "../../paths/path";
 
 const ApartmentForm = ({
+  id,
   sideEffect,
   bookingReverseData,
   setBookingReverseData,
@@ -25,6 +26,7 @@ const ApartmentForm = ({
     if (valueDate[0] && valueDate[1]) {
       setBookingReverseData({
         ...bookingReverseData,
+        id,
         checkIn: parseDate(valueDate[0]),
         checkOut: parseDate(valueDate[1]),
         numberOfGuests,

@@ -1,4 +1,5 @@
 import React, { useState, FC } from "react";
+import { useParams } from "react-router-dom";
 import ObjectPageCard from "../../components/ObjectPageCard";
 import { BookingState } from "../HomePage/utils/HomePageInterface";
 import Header from "../../components/Header/Header";
@@ -49,6 +50,8 @@ const ObjectPage: FC<IPropsObjectPage> = ({
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
+
+  const { id } = useParams();
 
   const handleFavouriteApartmentsList = () =>
     setActiveFavouriteApartmentList((prev) => !prev);
@@ -131,6 +134,7 @@ const ObjectPage: FC<IPropsObjectPage> = ({
         )}
       </div>
       <ObjectPageCard
+        id={id}
         isActiveSearchMenu={isActiveSearchMenu}
         setActiveSearchMenu={setActiveSearchMenu}
         setCalendarPopUpStatus={setCalendarPopUpStatus}

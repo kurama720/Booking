@@ -2,6 +2,7 @@ import React from "react";
 import { IBookingReverseData } from "../../models/globalInterfaces/globalIntefaces";
 
 export interface IObjectPageCardProps {
+  id: string | undefined;
   isActiveSearchMenu: boolean;
   setActiveSearchMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setCalendarPopUpStatus: React.Dispatch<React.SetStateAction<boolean>>;
