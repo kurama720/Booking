@@ -8,9 +8,10 @@ interface IPropsLinkBack {
 
 const LinkBack: FC<IPropsLinkBack> = ({ text }) => {
   const history = useNavigate();
+  const comeback = -1;
 
   const handleLinkBack = () => {
-    history(-1);
+    history(comeback);
   };
   return (
     <div className="flex justify-start items-center mt-6">
