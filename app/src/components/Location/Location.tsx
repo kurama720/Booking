@@ -6,9 +6,9 @@ const Location: FC<LocationProps> = ({
   isActiveModel,
   activeLocationBox,
   search,
-  setSearch,
   setCalendarPopUpStatus,
   isActiveLocationBox,
+  handleChangeInput,
 }) => {
   const handleClickSearch = () => {
     setCalendarPopUpStatus(false);
@@ -31,7 +31,7 @@ const Location: FC<LocationProps> = ({
         value={search}
         id="location"
         onClick={handleClickSearch}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={handleChangeInput}
         className="font-body rounded-tl-lg rounded-bl-lg outline-none py-[0.50rem] px-[2.46rem] border border-[#D1D5DB] shadow-sm focus:border-[#3B82F6] focus: border  block w-full sm:text-sm "
       />
       <div className="absolute bottom-2 left-4">
