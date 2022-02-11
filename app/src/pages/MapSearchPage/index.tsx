@@ -16,7 +16,6 @@ import UserLogInPage from "../UserLogInPage/UserLoginPage";
 import SignUpPage from "../SignUpPage";
 import LogoutButton from "../../components/LogoutButton/LogoutButton";
 import BookingHistory from "../../components/BookingHistory";
-import Footer from "../../components/Footer/Footer";
 import "./styles.css";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 import ResetPasswordForm from "../../components/ResetPasswordForm";
@@ -262,7 +261,6 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
           />
         </Modal>
       )}
-      <Footer />
     </>
   );
 };

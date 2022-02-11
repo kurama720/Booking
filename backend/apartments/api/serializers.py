@@ -3,7 +3,6 @@ import datetime
 from rest_framework import serializers
 
 from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
-from accounts.models import ClientUser
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):
