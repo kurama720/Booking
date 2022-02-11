@@ -186,5 +186,7 @@ class ClientUserInfoSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
+        if validated_data.get('avatar'):
+            instance.set_avatar(validated_data['avatar']['local_url'])
         instance.save()
         return instance

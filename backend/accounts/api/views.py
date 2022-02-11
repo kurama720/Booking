@@ -190,10 +190,6 @@ class UserDetailViewSet(ViewSet):
 
     def update(self, request):
         client = ClientUser.objects.get(id=request.user.id)
-        if request.data.get('avatar'):
-            client.set_avatar(request.data['avatar'])  # Set new avatar for user
-            client.save()
-            request.data.pop('avatar')
         data_to_update = self.serializer_class(client, request.data)
         if data_to_update.is_valid(raise_exception=True):
             data_to_update.save()
