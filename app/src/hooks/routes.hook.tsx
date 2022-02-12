@@ -4,6 +4,7 @@ import { Paths } from "../paths/path";
 import HomePage from "../pages/HomePage/HomePage";
 import MapSearchPage from "../pages/MapSearchPage";
 import ObjectPage from "../pages/ObjectPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
 import { IApartment } from "../models/globalInterfaces/globalIntefaces";
 
@@ -86,6 +87,10 @@ export const useRoutes = (isAuth: boolean) => {
             setUserBookingDate={setUserBookingDate}
           />
         }
+      />
+      <Route
+        path={`${Paths.RESET_PASSWORD}/:uid/:token`}
+        element={<ResetPasswordPage />}
       />
     </Routes>
   );
