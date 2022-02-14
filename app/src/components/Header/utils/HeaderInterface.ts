@@ -1,5 +1,6 @@
 import React from "react";
 import { BookingState } from "../../../pages/HomePage/utils/HomePageInterface";
+import { IApartment } from "../../../models/globalInterfaces/globalIntefaces";
 
 export interface Cities {
   name: string;
@@ -20,7 +21,7 @@ export interface AuthMenuItemLogoutProps {
   userBookingDate: BookingState;
   handleSearchMenu?: () => void;
   isActiveSearchMenu?: boolean;
-  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+  setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
   handleBookingHistory: () => void;
   isActiveModel: React.Dispatch<React.SetStateAction<boolean>>;
   activeModel: boolean;

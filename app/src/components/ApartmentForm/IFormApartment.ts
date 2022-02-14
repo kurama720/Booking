@@ -1,5 +1,5 @@
-import { IBookingReverseData } from "../../models/globalInterfaces/globalIntefaces";
 import React from "react";
+import { IBookingReverseData } from "../../models/globalInterfaces/globalIntefaces";
 
 export interface IFormApartment {
   check_in: string;
