@@ -81,6 +81,29 @@ function Header({
     isActiveLocationBox(false);
   };
 
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    const currentCity = e.target.value;
+    const cityObj = cities.find(
+      (item) => item.name.toLowerCase() === currentCity.toLowerCase()
+    );
+    if (cityObj) {
+      setUserBookingDate({
+        ...userBookingDate,
+        city: cityObj.name,
+        lat: cityObj.lat,
+        lon: cityObj.lon,
+      });
+    } else {
+      setUserBookingDate({
+        ...userBookingDate,
+        city: currentCity,
+        lat: 0,
+        lon: 0,
+      });
+    }
+  };
+
   const storageName = "userData" as LocalKey<JWT>;
   const data = LocalStorage.getItem(storageName);
   const isAuth = !!data;
@@ -99,11 +122,11 @@ function Header({
             <li>
               <Location
                 search={search}
-                setSearch={setSearch}
                 isActiveModel={isActiveModel}
                 isActiveLocationBox={isActiveLocationBox}
                 setCalendarPopUpStatus={setCalendarPopUpStatus}
                 activeLocationBox={activeLocationBox}
+                handleChangeInput={handleChangeInput}
               />
             </li>
             <li>

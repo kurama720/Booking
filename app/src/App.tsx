@@ -35,7 +35,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={ctx}>
-      <div className="App flex flex-col min-h-screen h-full">
+      <div className="App flex flex-col min-h-screen h-full bg-gray-50">
         <Router>{routes}</Router>
       </div>
     </AuthContext.Provider>
