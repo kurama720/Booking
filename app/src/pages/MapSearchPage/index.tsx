@@ -169,7 +169,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
             </ul>
           )}
           <div
-            className="flex justify-center items-center h-8 w-8 border-[1px] border-gray-300 bg-white shadow-sm rounded-[4px] cursor-pointer absolute top-0 left-full mt-6 ml-6 z-[1000]"
+            className="flex justify-center items-center h-8 w-8 border-[1px] border-gray-300 bg-white shadow-sm rounded-[4px] cursor-pointer absolute top-0 left-full mt-6 ml-6 z-[1]"
             onClick={handleListVisible}
           >
             <ChevronLeftIcon

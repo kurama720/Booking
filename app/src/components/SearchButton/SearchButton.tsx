@@ -8,10 +8,7 @@ import { Paths } from "../../paths/path";
 
 function SearchButton({ userBookingDate, setApartments }: SearchButtonProps) {
   const navigate = useNavigate();
-  const isValid =
-    !!userBookingDate.checkInDate &&
-    !!userBookingDate.lat &&
-    !!userBookingDate.lon;
+  const isValid = !!userBookingDate.checkInDate && !!userBookingDate.city;
   const handleSearchButton = async () => {
     try {
       const response = await ApartmentsService.getApartment(userBookingDate);

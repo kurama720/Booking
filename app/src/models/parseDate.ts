@@ -17,5 +17,22 @@ export const parseDate = (date: Date) => {
 export const parseDateReserve = (checkIn: string, checkOut: string) => {
   const dateFirst = new Date(checkIn).getTime();
   const dateSecond = new Date(checkOut).getTime();
+
   return (dateSecond - dateFirst) / (1000 * 60 * 60 * 24);
+};
+
+export const dateFormat = (date: string) => {
+  const today = new Date(date);
+  const dateYear = today.getFullYear();
+  const dataMonth = today.toLocaleString("en-US", { month: "short" });
+  const dateDay: string | number = today.getDate();
+
+  return `${dataMonth} ${dateDay}, ${dateYear}`;
+};
+
+export const dateFormatForPolicy = (date: string) => {
+  const today = new Date(date);
+  const dataMonth = today.toLocaleString("en-US", { month: "short" });
+  const dateDay: string | number = today.getDate();
+  return `${dateDay} ${dataMonth}`;
 };

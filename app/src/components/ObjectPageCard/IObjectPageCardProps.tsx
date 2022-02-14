@@ -1,4 +1,8 @@
+import React from "react";
+import { IBookingReverseData } from "../../models/globalInterfaces/globalIntefaces";
+
 export interface IObjectPageCardProps {
+  id: string | undefined;
   isActiveSearchMenu: boolean;
   setActiveSearchMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setCalendarPopUpStatus: React.Dispatch<React.SetStateAction<boolean>>;
@@ -7,4 +11,8 @@ export interface IObjectPageCardProps {
   setSideEffect: React.Dispatch<React.SetStateAction<boolean>>;
   sideEffect: boolean;
   handleSearchMenu: () => void;
+  bookingReverseData: IBookingReverseData;
+  setBookingReverseData: React.Dispatch<
+    React.SetStateAction<IBookingReverseData>
+  >;
 }
