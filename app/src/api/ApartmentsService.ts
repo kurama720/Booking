@@ -1,13 +1,10 @@
 import axios from "axios";
-import { LocalKey, LocalStorage } from "ts-localstorage";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
-import { JWT } from "../hooks/auth.hook.interface";
+import { getIsAuth } from "../models/getIsAuth";
 
 export class ApartmentsService {
   static async getApartment(userBookingDate: BookingState) {
-    const storageName = "userData" as LocalKey<JWT>;
-    const userData = LocalStorage.getItem(storageName);
-    const payload = userData?.token.data.access;
+    const payload = getIsAuth();
     return axios.get(
       `${process.env.REACT_APP_API_URL}search/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}&feature=guests:${userBookingDate.numOfPersons}`,
       {
@@ -18,6 +15,30 @@ export class ApartmentsService {
         },
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${payload}`,
+        },
+      }
+    );
+  }
+
+  static async getApartmentsBook() {
+    const payload = getIsAuth();
+    return axios.get(
+      `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
+      {
+        headers: {
+          Authorization: `Bearer ${payload}`,
+        },
+      }
+    );
+  }
+
+  static async cancelApartmentBook(id: string) {
+    const payload = getIsAuth();
+    return axios.get(
+      `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
+      {
+        headers: {
           Authorization: `Bearer ${payload}`,
         },
       }

@@ -1,93 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { LocalKey, LocalStorage } from "ts-localstorage";
 import { XIcon } from "@heroicons/react/solid";
-import { JWT } from "../../hooks/auth.hook.interface";
 import Button from "../Button/Button";
 import { IBookingHistory } from "./IBookingHistory";
 import BookingHistoryItem from "./BookingHistoryItem";
-
-const storageName = "userData" as LocalKey<JWT>;
+import { ApartmentsService } from "../../api/ApartmentsService";
 
 interface TBookingHistory {
   apartment: string;
-  persons: number;
-  description: string;
-  checkIn: string;
-  checkOut: string;
+  num_of_persons: number;
+  comment?: null | string;
+  check_in_date: string;
+  check_out_date: string;
 }
 
 const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
   const historyItem = 4;
-  const data = [
-    {
-      apartment: "Hilton",
-      persons: 10,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-26",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "Gines",
-      persons: 11,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-27",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "Hilton",
-      persons: 12,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-28",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "China",
-      persons: 16,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-29",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "China",
-      persons: 16,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-30",
-      checkOut: "2023-01-31",
-    },
-  ];
-  const [bookingData, setBookingData] = useState<TBookingHistory[]>(data);
+  const [bookingData, setBookingData] = useState<TBookingHistory[]>([]);
+  const [error, setError] = useState<string>("");
   const getBookingHistory = async () => {
-    const userData = LocalStorage.getItem(storageName);
-
-    if (userData) {
-      const payload = userData.token.data.access;
-
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${payload}`,
-        },
-      };
-      const historyData = await axios.get(
-        `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
-        config
-      );
+    try {
+      const response = await ApartmentsService.getApartmentsBook();
+      setBookingData(response.data);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        setError(e.message);
+      }
     }
   };
 
@@ -120,18 +58,20 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
               bookingData.length > historyItem ? "overflow-y-scroll h-96" : ""
             }`}
           >
-            {bookingData.map((elem) => {
+            {bookingData.map((apartment) => {
               return (
                 <BookingHistoryItem
-                  key={elem.checkIn}
-                  apartment={elem.apartment}
-                  persons={elem.persons}
-                  description={elem.description}
-                  checkIn={elem.checkIn}
-                  checkOut={elem.checkOut}
+                  key={apartment.apartment}
+                  apartment={apartment.apartment}
+                  persons={apartment.num_of_persons}
+                  checkIn={apartment.check_in_date}
+                  checkOut={apartment.check_out_date}
                 />
               );
             })}
+            {error && (
+              <span className="font-body text-base text-red-500">{error}</span>
+            )}
           </div>
         </div>
       </div>
