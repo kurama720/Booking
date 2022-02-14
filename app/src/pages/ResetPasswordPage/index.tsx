@@ -28,9 +28,8 @@ const ResetPasswordPage: FC = () => {
   useEffect(() => {
     instance
       .get(`/accounts/password-reset/${uid}/${token}`)
-      .then(() => {
-        setTokenValid(true);
-      })
+      .then(() => setTokenValid(true))
+      .catch(() => setTimeout(() => navigate("/"), 5000))
       .finally(() => setLoading(false));
   }, []);
 
