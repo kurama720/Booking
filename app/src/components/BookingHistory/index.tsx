@@ -6,7 +6,8 @@ import { IBookingHistory } from "./IBookingHistory";
 import BookingHistoryItem from "./BookingHistoryItem";
 import { ApartmentsService } from "../../api/ApartmentsService";
 
-interface TBookingHistory {
+export interface TBookingHistory {
+  id: string;
   apartment: string;
   num_of_persons: number;
   comment?: null | string;
@@ -61,11 +62,14 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
             {bookingData.map((apartment) => {
               return (
                 <BookingHistoryItem
+                  id={"5"}
                   key={apartment.apartment}
                   apartment={apartment.apartment}
                   persons={apartment.num_of_persons}
                   checkIn={apartment.check_in_date}
                   checkOut={apartment.check_out_date}
+                  bookingData={bookingData}
+                  setBookingData={setBookingData}
                 />
               );
             })}

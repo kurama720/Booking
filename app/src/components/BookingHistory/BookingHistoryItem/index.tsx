@@ -1,13 +1,27 @@
 import React from "react";
 import { IBookingHistoryProps } from "./IBookingHistoryItemProps";
+import { ApartmentsService } from "../../../api/ApartmentsService";
 
 const BookingHistoryItem = ({
+  id,
   apartment,
   persons,
   checkIn,
   checkOut,
+  bookingData,
+  setBookingData,
 }: IBookingHistoryProps) => {
-  const cancelBookApartment = async () => {};
+  const cancelBookApartment = async () => {
+    try {
+      const response = await ApartmentsService.cancelApartmentBook("5");
+      if (response.status === 201) {
+        const newApartmentsBook = bookingData.filter((item) => item.id !== id);
+        setBookingData(newApartmentsBook);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
