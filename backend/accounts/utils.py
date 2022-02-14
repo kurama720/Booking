@@ -1,8 +1,10 @@
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.encoding import smart_bytes
+from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from django.conf import settings
 
 from accounts.models import ClientUser
 from accounts.api.tokens import account_activation_token
@@ -12,9 +14,9 @@ def create_mail_for_reset_password(email: str) -> dict:
     user = ClientUser.objects.get(email=email)
     uid64 = urlsafe_base64_encode(smart_bytes(user.id))
     token = PasswordResetTokenGenerator().make_token(user)
-    relative_link = reverse('password-reset-confirm', kwargs={'uid64': uid64, 'token': token})
-    abs_url = f"https://yoho.by{relative_link}"
-    email_body = f"Hello {user.email}. Use link below to reset your password \n {abs_url}"
+    abs_url = f"{settings.RESET_URL}/{uid64}/{token}/"
+    context = {'email': user.email, 'abs_url': abs_url}
+    email_body = strip_tags(render_to_string('email/reset_password.html', context))
     data = {'email_body': email_body, 'to_email': email, 'email_subject': 'Reset your password'}
     return data
 

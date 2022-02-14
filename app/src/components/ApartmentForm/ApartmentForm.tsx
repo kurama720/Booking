@@ -1,26 +1,37 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
 import { DateRange } from "@mui/lab/DateRangePicker";
-import { dataForApartmentForm, IFormApartmentProps } from "./IFormApartment";
+import { IFormApartmentProps } from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
 import { parseDate } from "../../models/parseDate";
+import { Paths } from "../../paths/path";
 
-const ApartmentForm = ({ sideEffect }: IFormApartmentProps) => {
+const ApartmentForm = ({
+  id,
+  sideEffect,
+  bookingReverseData,
+  setBookingReverseData,
+}: IFormApartmentProps) => {
   const [valueDate, setValueDate] = React.useState<DateRange<Date>>([
     null,
     null,
   ]);
   const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
   const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false);
+  const history = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (valueDate[0] && valueDate[1]) {
-      const dataForReserve: dataForApartmentForm = {
-        check_in: parseDate(valueDate[0]),
-        check_out: parseDate(valueDate[1]),
-        guests: numberOfGuests,
-      };
+      setBookingReverseData({
+        ...bookingReverseData,
+        id,
+        checkIn: parseDate(valueDate[0]),
+        checkOut: parseDate(valueDate[1]),
+        numberOfGuests,
+      });
+      history(Paths.CONFIRM);
     }
   };
 

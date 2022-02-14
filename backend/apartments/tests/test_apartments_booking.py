@@ -19,6 +19,7 @@ class BookingViewApiTestCase(APITestCase):
             lat=111,
             lon=111,
             description="description",
+            feature={'guests': 2, 'bedrooms': 1, 'beds': 3, 'bathrooms': 2}
         )
         self.user = ClientUser.objects.create_user(email="user1@test.com", password="password1")
         self.client = APIClient()

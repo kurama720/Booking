@@ -11,7 +11,8 @@ from django.utils.encoding import force_text, smart_str, DjangoUnicodeDecodeErro
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.generics import get_object_or_404
-
+from django.http import HttpResponseRedirect
+from backend.settings import REGISTRATION_CONFIRMATION_REDIRECT_URL
 
 from accounts.models import ClientUser, BusinessClientUser
 from accounts.api.tokens import CustomAccessToken, account_activation_token
@@ -29,6 +30,7 @@ from accounts.api.serializers import (RegisterSerializer,
                                       )
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
+
 
 
 class RegisterView(generics.GenericAPIView):
@@ -69,15 +71,13 @@ class VerifyEmailView(generics.GenericAPIView):
             if account_activation_token.check_token(user, token):
                 user.is_active = True
                 user.save()
-                return Response({'email': 'Successfully activated'},
-                                status=status.HTTP_200_OK)
-            if user.is_active:
-                return Response({'email': 'Already activate'},
-                                status=status.HTTP_200_OK)
-            return Response({'error': 'Invalid Token or Activation Expired. Try to verify your email again'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+        finally:
+            domain = get_current_site(request).domain
+            if any(_ in domain for _ in ('localhost', '127.0.0.1')): # check for localhost
+                return HttpResponseRedirect(redirect_to='/')
+            if REGISTRATION_CONFIRMATION_REDIRECT_URL:
+                return HttpResponseRedirect(redirect_to=REGISTRATION_CONFIRMATION_REDIRECT_URL)
+            return HttpResponseRedirect(redirect_to='https://' + domain)
 
     @extend_schema(
         responses={200: "string"}
@@ -191,6 +191,10 @@ class PasswordTokenCheckApi(generics.GenericAPIView):
 
         except DjangoUnicodeDecodeError:
             return Response({'error': 'Token is not valid, please request a new one'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+        except ClientUser.DoesNotExist:
+            return Response({'error': 'Uid is not valid, please request a new one'},
                             status=status.HTTP_401_UNAUTHORIZED)
 
 

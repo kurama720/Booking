@@ -19,6 +19,7 @@ class BookingViewApiTestCase(APITestCase):
             lat=111,
             lon=111,
             description="description",
+            feature={'guests': 2, 'bedrooms': 1, 'beds': 3, 'bathrooms': 2}
         )
         self.apartment = Apartment.objects.create(**apartment_data)
 
