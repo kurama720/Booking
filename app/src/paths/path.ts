@@ -4,4 +4,5 @@ export enum Paths {
   OBJECT_PAGE = "/apartments",
   SEARCH_RESULTS = "/search-results",
   MAP = "/map-search",
+  CONFIRM = "/confirm",
 }
