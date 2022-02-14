@@ -7,7 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.core.validators import MaxValueValidator
 
 from accounts.models import ClientUser, BusinessClientUser
-from apartments.utils import Round
+from accounts.tasks import send_mail
+from apartments.utils import Round, create_mail_for_confirm_booking
 from apartments.validators import SCHEMA, JSONSchemaValidator
 
 
@@ -189,6 +190,13 @@ class Booking(models.Model):
                                         related_name='booking',
                                         on_delete=models.CASCADE,
                                         null=True)
+
+    def cancel_book(self):
+        self.delete()
+        mail_data = create_mail_for_confirm_booking(self.check_in_date, self.check_out_date,
+                                                    self.apartment, self.client,
+                                                    self.num_of_persons, action='cancellation')
+        send_mail(mail_data)
 
 
 class ApartmentReview(models.Model):
