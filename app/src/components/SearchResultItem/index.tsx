@@ -13,7 +13,6 @@ interface IPropsSearchItem {
   title: string;
   img_content: Array<string>;
   price: number;
-  rating: null | number;
   feature: IFeature;
 }
 
