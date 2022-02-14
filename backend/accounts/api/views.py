@@ -193,6 +193,10 @@ class PasswordTokenCheckApi(generics.GenericAPIView):
             return Response({'error': 'Token is not valid, please request a new one'},
                             status=status.HTTP_401_UNAUTHORIZED)
 
+        except ClientUser.DoesNotExist:
+            return Response({'error': 'Uid is not valid, please request a new one'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
 
 class SetNewPasswordApiView(generics.GenericAPIView):
     serializer_class = SetNewPasswordSerializer
