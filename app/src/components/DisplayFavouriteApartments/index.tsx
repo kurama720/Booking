@@ -5,7 +5,7 @@ import { XIcon } from "@heroicons/react/solid";
 import { JWT } from "../../hooks/auth.hook.interface";
 import Button from "../Button/Button";
 import { IDisplayFavouriteApartmentsProps } from "./IDisplayFavouriteApartmentsProps";
-import ApartmentCard from "../ApartmentCard/ApartmentCard";
+import WishListItem from "../WishListItem";
 
 const storageName = "userData" as LocalKey<JWT>;
 
@@ -17,6 +17,7 @@ interface IDisplayFavouriteApartments {
   price: number;
   rating: number;
   title: string;
+  id: number;
 }
 
 const DisplayFavouriteApartments = ({
@@ -57,7 +58,7 @@ const DisplayFavouriteApartments = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-white max-w-xlg shadow rounded-md">
-        <div className="w-full px-4 py-4">
+        <div className="w-[36rem] px-4 py-4">
           <div className="flex w-full justify-between mb-4">
             <h1 className="flex justify-center font-body text-2xl font-bold text-gray-600">
               Wishlist
@@ -75,14 +76,14 @@ const DisplayFavouriteApartments = ({
             <div
               className={`w-full ${
                 favouriteApartments.length > historyItem
-                  ? "overflow-y-scroll h-96"
+                  ? "overflow-y-scroll h-[40rem]"
                   : ""
               }`}
             >
               {favouriteApartments.map((elem, id) => {
                 return (
-                  <ApartmentCard
-                    key={elem.title}
+                  <WishListItem
+                    key={elem.id}
                     title={elem.title}
                     price={elem.price}
                     rating={elem.rating}
