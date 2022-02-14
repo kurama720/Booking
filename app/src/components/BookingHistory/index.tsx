@@ -2,31 +2,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { XIcon } from "@heroicons/react/solid";
 import Button from "../Button/Button";
-import { IBookingHistory } from "./IBookingHistory";
-import BookingHistoryItem from "./BookingHistoryItem";
 import { ApartmentsService } from "../../api/ApartmentsService";
-
-export interface TBookingHistory {
-  id: string;
-  apartment: string;
-  num_of_persons: number;
-  comment?: null | string;
-  check_in_date: string;
-  check_out_date: string;
-}
+import { IBookingHistory, TBookingHistory } from "./IBookingHistory";
+import BookingHistoryItem from "./BookingHistoryItem";
+import Loader from "../Loader";
 
 const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
   const historyItem = 4;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [bookingData, setBookingData] = useState<TBookingHistory[]>([]);
   const [error, setError] = useState<string>("");
   const getBookingHistory = async () => {
     try {
+      setIsLoading(true);
       const response = await ApartmentsService.getApartmentsBook();
       setBookingData(response.data);
+      setIsLoading(false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         setError(e.message);
       }
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,29 +52,45 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
               }
             />
           </div>
-          <div
-            className={`w-full ${
-              bookingData.length > historyItem ? "overflow-y-scroll h-96" : ""
-            }`}
-          >
-            {bookingData.map((apartment) => {
-              return (
-                <BookingHistoryItem
-                  id={"5"}
-                  key={apartment.apartment}
-                  apartment={apartment.apartment}
-                  persons={apartment.num_of_persons}
-                  checkIn={apartment.check_in_date}
-                  checkOut={apartment.check_out_date}
-                  bookingData={bookingData}
-                  setBookingData={setBookingData}
-                />
-              );
-            })}
-            {error && (
-              <span className="font-body text-base text-red-500">{error}</span>
-            )}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loader width="16" height="16" color="blue-600" />
+            </div>
+          ) : (
+            <div
+              className={`w-full ${
+                bookingData.length > historyItem ? "overflow-y-scroll h-96" : ""
+              }`}
+            >
+              {bookingData.length > 0 ? (
+                bookingData.map((apartment) => {
+                  return (
+                    <BookingHistoryItem
+                      id={apartment.id}
+                      key={apartment.id}
+                      apartment={apartment.apartment}
+                      persons={apartment.num_of_persons}
+                      checkIn={apartment.check_in_date}
+                      checkOut={apartment.check_out_date}
+                      bookingData={bookingData}
+                      setBookingData={setBookingData}
+                    />
+                  );
+                })
+              ) : (
+                <div className="flex justify-center items-center">
+                  <div className="text-2xl font-body font-medium text-gray-900">
+                    You have no hotels booked!
+                  </div>
+                </div>
+              )}
+              {error && (
+                <span className="font-body text-base text-red-500">
+                  {error}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

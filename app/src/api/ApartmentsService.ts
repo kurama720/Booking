@@ -25,7 +25,7 @@ export class ApartmentsService {
     id: string | undefined,
     dataForBook: IBookDataApartment
   ) {
-      const payload = getIsAuth();
+    const payload = getIsAuth();
     return axios.post(
       `${process.env.REACT_APP_API_URL}apartments/${id}/book`,
       dataForBook,
@@ -49,10 +49,10 @@ export class ApartmentsService {
     );
   }
 
-  static async cancelApartmentBook(id: string) {
+  static async cancelApartmentBook(id: number) {
     const payload = getIsAuth();
-    return axios.get(
-      `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
+    return axios.delete(
+      `${process.env.REACT_APP_API_URL}apartments/${id}/cancel-book/`,
       {
         headers: {
           Authorization: `Bearer ${payload}`,

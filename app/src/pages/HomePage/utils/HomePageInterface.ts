@@ -1,7 +1,8 @@
 import React from "react";
+import { IApartment } from "../../../models/globalInterfaces/globalIntefaces";
 
 export interface IPropsHomePage {
-  setApartments: React.Dispatch<React.SetStateAction<any[]>>;
+  setApartments: React.Dispatch<React.SetStateAction<IApartment[]>>;
   userBookingDate: BookingState;
   setUserBookingDate: React.Dispatch<React.SetStateAction<BookingState>>;
 }
