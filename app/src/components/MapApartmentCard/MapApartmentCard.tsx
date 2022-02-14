@@ -1,33 +1,47 @@
 import React, { useState } from "react";
-import { HeartIcon as SolidHeartIcon, StarIcon } from "@heroicons/react/solid";
-import { HeartIcon } from "@heroicons/react/outline";
+import { LocalKey, LocalStorage } from "ts-localstorage";
+import { StarIcon } from "@heroicons/react/solid";
 import SliderCardMap from "./SliderCardMap/SliderCardMap";
 import img from "../../assets/img/image1.svg";
+import { JWT } from "../../hooks/auth.hook.interface";
+import FavouriteButton from "../FavouriteButton";
+import { useFavourite } from "../../hooks/favoirite.hook";
+
+const storageName = "userData" as LocalKey<JWT>;
+const userData = LocalStorage.getItem(storageName);
+// We don't have dynamic id therefore I use static id
+const id = 1;
 
 const MapApartmentCard = () => {
-  const [isLikeCard, setIsLikeCard] = useState<boolean>(false);
+  const [isLiked, setLike] = useState<boolean>(false);
   const mokListPicture = [img, img, img, img, img];
+  const { addFavourite, removeFavourite } = useFavourite(userData);
 
-  const handleIsLikeCard = () => {
-    setIsLikeCard((prev) => !prev);
+  const handleIsLikeCard = async () => {
+    setLike((prev) => !prev);
+    try {
+      if (!isLiked) {
+        await addFavourite(id, !isLiked);
+      } else {
+        await removeFavourite(id);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <div className="rounded flex flex-col w-full h-full max-w-[15rem] max-h-[17.5rem] shadow relative bg-white overflow-hidden">
       <div>
         <SliderCardMap listPictures={mokListPicture} />
-        <span
-          className="cursor-pointer absolute right-2 top-2"
-          onClick={handleIsLikeCard}
-        >
-          {isLikeCard ? (
-            <SolidHeartIcon className="w-[20px] h-[17px] text-red-400" />
-          ) : (
-            <HeartIcon className="w-[20px] h-[17px] text-gray-200" />
-          )}
-        </span>
+        <FavouriteButton
+          classNames="cursor-pointer absolute right-2 top-2"
+          handler={handleIsLikeCard}
+          likeStatus={isLiked}
+          bright
+        />
       </div>
-      <div className="flex flex-col justify-center items-start px-4 pt-2 pb-4 space-y-4">
+      <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4 space-y-4">
         <div className="flex items-center">
           <span className="">
             <StarIcon className="h-4 w-4 text-blue-700" />
