@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ObjectsPageTop from "./ObjectPageCardTop";
 import ObjectsPagePhotos from "./ObjectPageCardPhotos";
 import ObjectsPageDescription from "./ObjectPageCardDescription";
@@ -6,6 +6,8 @@ import ApartmentForm from "../ApartmentForm/ApartmentForm";
 import Footer from "../Footer/Footer";
 import { IObjectPageCardProps } from "./IObjectPageCardProps";
 import ObjectPageModel from "../ObjectPageModel";
+import { ApartmentsService } from "../../api/ApartmentsService";
+import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 
 const ObjectPageCard = ({
   id,
@@ -20,6 +22,12 @@ const ObjectPageCard = ({
   setBookingReverseData,
   bookingReverseData,
 }: IObjectPageCardProps) => {
+  const [apartmentState, setApartmentState] = useState<IApartment>();
+  useEffect(() => {
+    ApartmentsService.getOneApartment(id).then(({ data }) =>
+      setApartmentState({ ...data })
+    );
+  }, [id]);
   return (
     <ObjectPageModel
       sideEffect={sideEffect}
@@ -32,20 +40,32 @@ const ObjectPageCard = ({
     >
       <div className="w-full px-16">
         <div className="w-full">
-          <ObjectsPageTop sideEffect={sideEffect} />
+          <ObjectsPageTop
+            sideEffect={sideEffect}
+            title={apartmentState?.title}
+            rating={apartmentState?.rating}
+            reviews={apartmentState?.reviews}
+          />
           <ObjectsPagePhotos
-            setSideEffect={setSideEffect}
             handleSearchMenu={handleSearchMenu}
             sideEffect={sideEffect}
+            images={apartmentState?.img_content}
           />
         </div>
         <div className="w-full mt-6 flex">
-          <ObjectsPageDescription sideEffect={sideEffect} />
+          <ObjectsPageDescription
+            description={apartmentState?.description}
+            feature={apartmentState?.feature}
+            sideEffect={sideEffect}
+          />
           <ApartmentForm
             id={id}
             sideEffect={sideEffect}
             bookingReverseData={bookingReverseData}
             setBookingReverseData={setBookingReverseData}
+            rating={apartmentState?.rating}
+            reviews={apartmentState?.reviews}
+            price={apartmentState?.price}
           />
         </div>
       </div>

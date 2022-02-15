@@ -1,36 +1,41 @@
 import React, { FC, useState } from "react";
-import axios from "axios";
 import { XIcon, MinusIcon, PlusIcon } from "@heroicons/react/solid";
+import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
+
+export type TFilters = { beds: number; bedrooms: number; bathrooms: number };
 
 interface IFilterFormProps {
+  apartments: IApartment[];
+  filters: TFilters;
+  setFilters: React.Dispatch<React.SetStateAction<TFilters>>;
+  onFilter: React.Dispatch<React.SetStateAction<IApartment[]>>;
   onClose: () => void;
 }
 
-const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
-  const [bedsCount, setBedsCount] = useState(0);
-  const [bedroomsCount, setBedroomsCount] = useState(0);
-  const [bathroomsCount, setBathroomsCount] = useState(0);
-
+const FilterForm: FC<IFilterFormProps> = ({
+  apartments,
+  filters,
+  setFilters,
+  onFilter,
+  onClose,
+}) => {
   const handleClear = () => {
-    setBedsCount(0);
-    setBedroomsCount(0);
-    setBathroomsCount(0);
+    setFilters({ beds: 0, bedrooms: 0, bathrooms: 0 });
+    onFilter([...apartments]);
+    onClose();
   };
 
-  const handleApply = async () => {
-    const results = await axios.get(
-      `${process.env.REACT_APP_API_URL}apartments/`,
-      {
-        params: {
-          feature: {
-            beds: bedsCount,
-            bedrooms: bedroomsCount,
-            bathrooms: bathroomsCount,
-          },
-        },
-      }
+  const handleApply = () => {
+    onFilter(
+      apartments.filter((item) => {
+        const isBedsEqual = !filters.beds || item.feature.beds === filters.beds;
+        const isBedroomsEqual =
+          !filters.bedrooms || item.feature.bedrooms === filters.bedrooms;
+        const isBathroomsEqual =
+          !filters.bathrooms || item.feature.bathrooms === filters.bathrooms;
+        return isBedsEqual && isBedroomsEqual && isBathroomsEqual;
+      })
     );
-    console.log(results);
     onClose();
   };
 
@@ -54,23 +59,27 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
             <div className="flex space-x-[10px]">
               <button
                 type="button"
-                disabled={!bedsCount}
+                disabled={!filters.beds}
                 className={
-                  !bedsCount
+                  !filters.beds
                     ? "w-[1.875rem] h-[1.875rem] bg-gray-200 rounded-full text-gray-400 flex items-center justify-center"
                     : "w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 }
-                onClick={() => setBedsCount((prev: number) => prev - 1)}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, beds: prev.beds - 1 }))
+                }
               >
                 <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
-                {bedsCount}
+                {filters.beds}
               </div>
               <button
                 type="button"
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
-                onClick={() => setBedsCount((prev: number) => prev + 1)}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, beds: prev.beds + 1 }))
+                }
               >
                 <PlusIcon className="w-5" />
               </button>
@@ -81,23 +90,33 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
             <div className="flex space-x-[10px]">
               <button
                 type="button"
-                disabled={!bedroomsCount}
+                disabled={!filters.bedrooms}
                 className={
-                  !bedroomsCount
+                  !filters.bedrooms
                     ? "w-[1.875rem] h-[1.875rem] bg-gray-200 rounded-full text-gray-400 flex items-center justify-center"
                     : "w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 }
-                onClick={() => setBedroomsCount((prev: number) => prev - 1)}
+                onClick={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    bedrooms: prev.bedrooms - 1,
+                  }))
+                }
               >
                 <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
-                {bedroomsCount}
+                {filters.bedrooms}
               </div>
               <button
                 type="button"
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
-                onClick={() => setBedroomsCount((prev: number) => prev + 1)}
+                onClick={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    bedrooms: prev.bedrooms + 1,
+                  }))
+                }
               >
                 <PlusIcon className="w-5" />
               </button>
@@ -108,23 +127,33 @@ const FilterForm: FC<IFilterFormProps> = ({ onClose }) => {
             <div className="flex space-x-[10px]">
               <button
                 type="button"
-                disabled={!bathroomsCount}
+                disabled={!filters.bathrooms}
                 className={
-                  !bathroomsCount
+                  !filters.bathrooms
                     ? "w-[1.875rem] h-[1.875rem] bg-gray-200 rounded-full text-gray-400 flex items-center justify-center"
                     : "w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
                 }
-                onClick={() => setBathroomsCount((prev: number) => prev - 1)}
+                onClick={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    bathrooms: prev.bathrooms - 1,
+                  }))
+                }
               >
                 <MinusIcon className="w-5" />
               </button>
               <div className="w-[1.875rem] h-[1.875rem] flex items-center justify-center">
-                {bathroomsCount}
+                {filters.bathrooms}
               </div>
               <button
                 type="button"
                 className="w-[1.875rem] h-[1.875rem] bg-blue-600 rounded-full text-white flex items-center justify-center"
-                onClick={() => setBathroomsCount((prev: number) => prev + 1)}
+                onClick={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    bathrooms: prev.bathrooms + 1,
+                  }))
+                }
               >
                 <PlusIcon className="w-5" />
               </button>

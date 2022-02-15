@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/solid";
 import { DateRange } from "@mui/lab/DateRangePicker";
 import { IFormApartmentProps } from "./IFormApartment";
 import PartFormApartment from "./PartFormApartment/PartFormApartment";
-import { parseDate } from "../../models/parseDate";
+import { parseDate, getDiffInDays } from "../../models/parseDate";
 import { Paths } from "../../paths/path";
 
 const ApartmentForm = ({
@@ -12,16 +12,16 @@ const ApartmentForm = ({
   sideEffect,
   bookingReverseData,
   setBookingReverseData,
+  rating,
+  reviews,
+  price,
 }: IFormApartmentProps) => {
-  const [valueDate, setValueDate] = React.useState<DateRange<Date>>([
-    null,
-    null,
-  ]);
+  const [valueDate, setValueDate] = useState<DateRange<Date>>([null, null]);
   const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
   const [isShowGuestsWindow, setIsShowGuestsWindow] = useState<boolean>(false);
   const history = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (valueDate[0] && valueDate[1]) {
       setBookingReverseData({
@@ -57,18 +57,22 @@ const ApartmentForm = ({
         <div className="flex justify-between items-center">
           <div>
             <span className="text-xl font-body font-bold text-gray-900">
-              $34
+              ${price}
             </span>
-            <span className="text-xl font-body text-gray-500">/ night</span>
+            <span className="text-xl font-body text-gray-500"> / night</span>
           </div>
           <div className="flex items-center">
-            <span>
-              <StarIcon className="text-blue-500 w-4 h-4" />
-            </span>
-            <span className="text-sm font-body">4,3</span>
-            <span className="inline-block mx-2 w-0.5 h-0.5 bg-gray-700 rounded-full" />
+            {rating && (
+              <>
+                <span>
+                  <StarIcon className="text-blue-500 w-4 h-4" />
+                </span>
+                <span className="text-sm font-body">{rating}</span>
+                <span className="inline-block mx-2 w-0.5 h-0.5 bg-gray-700 rounded-full" />
+              </>
+            )}
             <span className="text-blue-600 text-sm font-body font-medium">
-              15 reviews
+              {reviews} reviews
             </span>
           </div>
         </div>
@@ -84,6 +88,8 @@ const ApartmentForm = ({
           incrementGuests={incrementGuests}
           handleChangeShowGuestsWindow={handleChangeShowGuestsWindow}
           handleOutsideClick={handleOutsideClick}
+          price={price}
+          nights={getDiffInDays(valueDate[0], valueDate[1])}
         />
       </div>
     </div>

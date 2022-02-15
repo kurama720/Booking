@@ -1,13 +1,12 @@
 /* eslint-disable import/order */
 import React, { FC, useState } from "react";
 import L from "leaflet";
-import ReactDOMServer from "react-dom/server";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { AdjustmentsIcon, ChevronLeftIcon } from "@heroicons/react/solid";
 import SearchResultItem from "../../components/SearchResultItem";
 import MapApartmentCard from "../../components/MapApartmentCard/MapApartmentCard";
 import Modal from "../../components/Modal/Modal";
-import FilterForm from "../../components/FilterForm";
+import FilterForm, { TFilters } from "../../components/FilterForm";
 import "leaflet/dist/leaflet.css";
 import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
 import { BookingState } from "../HomePage/utils/HomePageInterface";
@@ -19,8 +18,7 @@ import BookingHistory from "../../components/BookingHistory";
 import "./styles.css";
 import DisplayFavouriteApartments from "../../components/DisplayFavouriteApartments";
 import ResetPasswordForm from "../../components/ResetPasswordForm";
-
-const position: L.LatLngExpression = [52.43272, 30.999012];
+import createMarkerIcon from "./utils/createMarkerIcon";
 
 interface IPropsMapSearch {
   apartments: Array<IApartment>;
@@ -35,18 +33,17 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
   setApartments,
   setUserBookingDate,
 }) => {
+  const { lat, lon } = userBookingDate;
+  const position: L.LatLngTuple = [lat, lon];
   const [isFilterVisible, setFilterVisible] = useState(false);
+  const [filters, setFilters] = useState<TFilters>({
+    beds: 0,
+    bedrooms: 0,
+    bathrooms: 0,
+  });
+  const [filteredApartments, setFilteredApartments] = useState([...apartments]);
   const [isListVisible, setListVisible] = useState(true);
   const [mapState, setMapState] = useState<L.Map>();
-  const myIcon = L.divIcon({
-    iconSize: L.point(40, 28, true),
-    className: "marker",
-    html: ReactDOMServer.renderToString(
-      <div className="py-[6px] px-2 rounded-[20px] bg-white font-body text-xs font-bold text-gray-700">
-        $32
-      </div>
-    ),
-  });
   const [guest, setGuest] = useState("Add guests");
   const [isAddGuest, setIsAddGuest] = useState<boolean>(false);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
@@ -142,12 +139,12 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
           }`}
         >
           <span className="block py-4 font-body text-xs text-gray-700">
-            {apartments.length}{" "}
+            {filteredApartments.length}{" "}
             {userBookingDate.city
               ? `stays in ${userBookingDate.city}`
               : `stays`}
           </span>
-          {apartments.length === 0 ? (
+          {filteredApartments.length === 0 ? (
             <div className="flex flex-col justify-start items-start">
               <span className="text-2xl font-body font-medium text-gray-900">
                 No results
@@ -159,7 +156,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
             </div>
           ) : (
             <ul className="overflow-y-auto flex-grow scrollbar-hide">
-              {apartments.map((result) => (
+              {filteredApartments.map((result) => (
                 <SearchResultItem
                   {...result}
                   key={result.id}
@@ -180,7 +177,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
         <MapContainer
           className="flex h-full flex-grow"
           center={position}
-          zoom={15}
+          zoom={12}
           zoomControl={false}
           doubleClickZoom={false}
           whenCreated={(e) => setMapState(e)}
@@ -189,18 +186,26 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={position} icon={myIcon}>
-            <Popup
-              closeButton={false}
-              className="popup"
-              maxHeight={280}
-              maxWidth={240}
-              minWidth={239}
-              closeOnClick={false}
+          {filteredApartments.map((item) => (
+            <Marker
+              key={item.id}
+              position={[item.lat, item.lon]}
+              icon={createMarkerIcon(item.price)}
             >
-              <MapApartmentCard />
-            </Popup>
-          </Marker>
+              <Popup
+                closeButton={false}
+                className="popup"
+                maxWidth={240}
+                minWidth={239}
+                closeOnClick={false}
+              >
+                <MapApartmentCard
+                  apartment={item}
+                  city={userBookingDate.city}
+                />
+              </Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
       {popUpStatus && (
@@ -247,7 +252,13 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
       )}
       {isFilterVisible && (
         <Modal active={isFilterVisible} setActive={setFilterVisible}>
-          <FilterForm onClose={handleFilterVisible} />
+          <FilterForm
+            apartments={apartments}
+            filters={filters}
+            setFilters={setFilters}
+            onFilter={setFilteredApartments}
+            onClose={handleFilterVisible}
+          />
         </Modal>
       )}
       {resetPasswordPopUpStatus && (

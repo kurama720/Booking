@@ -1,7 +1,10 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { LocalKey, LocalStorage } from "ts-localstorage";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
-import { IBookDataApartment } from "../models/globalInterfaces/globalIntefaces";
+import {
+  IApartment,
+  IBookDataApartment,
+} from "../models/globalInterfaces/globalIntefaces";
 import { JWT } from "../hooks/auth.hook.interface";
 
 export class ApartmentsService {
@@ -19,7 +22,9 @@ export class ApartmentsService {
   }
 
   static async getOneApartment(id: string | undefined) {
-    return axios.get(`${process.env.REACT_APP_API_URL}apartments/${id}/`);
+    return axios.get<IApartment>(
+      `${process.env.REACT_APP_API_URL}apartments/${id}/`
+    );
   }
 
   static async bookApartment(
