@@ -55,6 +55,9 @@ Open [Swagger documentation](https://localhost:3000/swagger/)
 | `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` |           `Secret key on Google app`           |          `FLJGLKAJG4tw43trjio`           |
 |     `SOCIAL_AUTH_FACEBOOK_KEY`     |          `Client ID on Facebook app`           |            `2345432456343245`            |
 |   `SOCIAL_AUTH_FACEBOOK_SECRET`    |          `Secret key on Facebook app`          |       `fgdjrlkw4jlrkfnl423423qj3r`       |
+|       `REDIRECT_URL`        |   `Registration confirmation redirect url`     |                   `https://yoho.by/`                  |
+|            `RESET_URL`             | `Url for the correct redirect from the letter in the mail` |    `https ://yoho.by/password-reset`    |
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installing Docker and Docker Compose

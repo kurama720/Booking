@@ -38,7 +38,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-white max-w-lg shadow rounded-md">
-        <div className="w-full px-4 py-4">
+        <div className="w-[32rem] px-4 py-4">
           <div className="flex w-full justify-between mb-4">
             <h1 className="flex justify-center font-body text-2xl font-bold text-gray-600">
               History of booking
