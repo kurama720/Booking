@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ApartmentsService } from "../../../api/ApartmentsService";
 import { TBookingHistory } from "../IBookingHistory";
 import Loader from "../../Loader";
@@ -28,9 +28,10 @@ const BookingHistoryItem = ({
     try {
       setIsLoading(true);
       const response = await ApartmentsService.cancelApartmentBook(id);
-      console.log(response.status);
-      const newApartmentsBook = bookingData.filter((item) => item.id !== id);
-      setBookingData(newApartmentsBook);
+      if (response.status === 200) {
+        const newApartmentsBook = bookingData.filter((item) => item.id !== id);
+        setBookingData(newApartmentsBook);
+      }
       setIsLoading(false);
     } catch (e) {
       console.error(e);
@@ -39,6 +40,12 @@ const BookingHistoryItem = ({
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setIsLoading(false);
+    };
+  }, []);
 
   return (
     <>

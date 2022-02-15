@@ -30,6 +30,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
 
   useEffect(() => {
     getBookingHistory();
+    return () => setIsLoading(false);
   }, []);
 
   return (
