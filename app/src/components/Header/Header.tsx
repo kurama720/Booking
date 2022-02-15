@@ -14,7 +14,6 @@ import AuthMenuItemLogin from "../AuthMenuItem/AuthMenuItemLogin";
 import LocationMenu from "../LocationMenu/LocationMenu";
 import CalendarMenu from "../Calendar/CalendarMenu/CalendarMenu";
 import { AuthMenuItemLogoutProps, Cities } from "./utils/HeaderInterface";
-import useDebounce from "../../hooks/useDebounce";
 import SearchService from "../../api/SearchService";
 import SearchMenu from "../SearchMenu";
 
@@ -48,20 +47,18 @@ function Header({
   const [date, setDate] = React.useState<DateRange<Date>>([null, null]);
   const [search, setSearch] = useState<string>("");
 
-  const debouncedSearch = useDebounce(search, 500);
-
   const searchOfCity = async () => {
-    const response = await SearchService.searchOfCities(debouncedSearch);
+    const response = await SearchService.searchOfCities(search);
     setCity(response.data);
   };
 
   useEffect(() => {
-    if (debouncedSearch) {
+    if (search) {
       searchOfCity();
     } else {
       setCity([]);
     }
-  }, [debouncedSearch]);
+  }, [search]);
 
   const handleMenuGuest = () => {
     isActiveModel((prev) => !prev);
