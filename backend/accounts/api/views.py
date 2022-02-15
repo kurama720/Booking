@@ -11,7 +11,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.generics import get_object_or_404, GenericAPIView
 from django.core.exceptions import ValidationError
-
+from django.contrib.sites.shortcuts import get_current_site
 
 from accounts.models import ClientUser, BusinessClientUser
 from accounts.api.tokens import CustomAccessToken, account_activation_token
@@ -30,7 +30,7 @@ from accounts.api.serializers import (RegisterSerializer,
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
 from apartments.api.permissions import IsClientOnly
-from backend.settings import MEDIA_ROOT
+
 
 
 class RegisterView(generics.GenericAPIView):
@@ -186,6 +186,7 @@ class UserDetailViewSet(ViewSet):
     def list(self, request):
         client = ClientUser.objects.get(id=request.user.id)
         client_data = self.serializer_class(client).data
+        client_data['avatar'] = get_current_site(request).domain + client_data['avatar']
         return Response(data=client_data)
 
     def update(self, request):
