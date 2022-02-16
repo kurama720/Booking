@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import axios from "axios";
+import { v4 } from "uuid";
 import { Link, useNavigate } from "react-router-dom";
 import { CheckIcon } from "@heroicons/react/outline";
 import LinkBack from "../../components/LinkBack";
@@ -38,7 +39,7 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
       setCurrentApartment(response.data);
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        alert(e);
+        console.log(e.response?.data);
       }
     }
   };
@@ -47,30 +48,41 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
     fetchApartment();
   }, []);
 
+  const idempotencyKey = v4();
+  let shouldRetry = true;
+
   const handleRequestBook = async () => {
     const dataForBookApartment: IBookDataApartment = {
       num_of_persons: bookingReverseData.numberOfGuests,
       check_in_date: bookingReverseData.checkIn,
       check_out_date: bookingReverseData.checkOut,
-      idempotency_key: currentApartment.uuid,
+      idempotency_key: idempotencyKey,
     };
-    setLoading(true);
-    try {
-      const response = await ApartmentsService.bookApartment(
-        id,
-        dataForBookApartment
-      );
-      if (response.status === 201) {
-        setModalOpen(true);
+    while (shouldRetry) {
+      try {
+        setLoading(true);
+        const response = await ApartmentsService.bookApartment(
+          id,
+          dataForBookApartment
+        );
+        if (response.status === 201) {
+          shouldRetry = false;
+          setModalOpen(true);
+        }
+        setLoading(false);
+      } catch (e: unknown) {
+        setLoading(false);
+        if (axios.isAxiosError(e)) {
+          if (e.response) {
+            shouldRetry = false;
+            alert(e.response.data);
+          } else if (e.request) {
+            console.error(e.request);
+          }
+        }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        alert(JSON.stringify(e.response?.data));
-      }
-      setLoading(false);
-    } finally {
-      setLoading(false);
     }
   };
 
