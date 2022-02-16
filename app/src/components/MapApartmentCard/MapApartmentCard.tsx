@@ -1,20 +1,36 @@
 import React, { FC, useState } from "react";
-import { HeartIcon as SolidHeartIcon, StarIcon } from "@heroicons/react/solid";
-import { HeartIcon } from "@heroicons/react/outline";
+import { StarIcon } from "@heroicons/react/solid";
 import { NavLink } from "react-router-dom";
+import { LocalKey, LocalStorage } from "ts-localstorage";
 import SliderCardMap from "./SliderCardMap/SliderCardMap";
 import { IApartment } from "../../models/globalInterfaces/globalIntefaces";
+import { JWT } from "../../hooks/auth.hook.interface";
+import FavouriteButton from "../FavouriteButton";
+import { useFavourite } from "../../hooks/favoirite.hook";
 
 interface IMapApartmentCardProps {
   apartment: IApartment;
   city: string;
 }
 
-const MapApartmentCard: FC<IMapApartmentCardProps> = ({ apartment, city }) => {
-  const [isLikeCard, setIsLikeCard] = useState<boolean>(false);
+const storageName = "userData" as LocalKey<JWT>;
+const userData = LocalStorage.getItem(storageName);
 
-  const handleIsLikeCard = () => {
-    setIsLikeCard((prev) => !prev);
+const MapApartmentCard: FC<IMapApartmentCardProps> = ({ apartment, city }) => {
+  const [isLiked, setLike] = useState<boolean>(false);
+  const { addFavourite, removeFavourite } = useFavourite(userData);
+
+  const handleIsLikeCard = async () => {
+    setLike((prev) => !prev);
+    try {
+      if (!isLiked) {
+        await addFavourite(apartment.id, !isLiked);
+      } else {
+        await removeFavourite(apartment.id);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -27,18 +43,14 @@ const MapApartmentCard: FC<IMapApartmentCardProps> = ({ apartment, city }) => {
             No images
           </span>
         )}
-        <span
-          className="cursor-pointer absolute right-2 top-2"
-          onClick={handleIsLikeCard}
-        >
-          {isLikeCard ? (
-            <SolidHeartIcon className="w-[20px] h-[17px] text-red-400" />
-          ) : (
-            <HeartIcon className="w-[20px] h-[17px] text-gray-200" />
-          )}
-        </span>
+        <FavouriteButton
+          classNames="cursor-pointer absolute right-2 top-2"
+          handler={handleIsLikeCard}
+          likeStatus={isLiked}
+          bright
+        />
       </div>
-      <div className="flex flex-col justify-center items-start px-4 pt-2 pb-4 space-y-4">
+      <div className="flex flex-col justify-center items-start px-4 pt-4 pb-4 space-y-4">
         <div className="flex items-center">
           {apartment.rating && (
             <>

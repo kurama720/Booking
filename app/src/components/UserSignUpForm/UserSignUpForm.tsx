@@ -88,7 +88,7 @@ const UserSignUpForm: FC<IPropsUserSignUpForm> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-extrabold text-gray-500 font-body font-extrabold">
+            <h2 className="text-3xl font-extrabold text-gray-500 font-body">
               Sign up
             </h2>
             <button type="button" onClick={closeModal}>
