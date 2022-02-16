@@ -1,4 +1,4 @@
-import os
+import uuid
 
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -28,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class ClientUser(User):
     first_name = models.CharField(max_length=32, name='first_name', validators=[first_name_validator])
     last_name = models.CharField(max_length=32, name='last_name', validators=[last_name_validator])
-    avatar = models.ForeignKey('Avatar', on_delete=models.SET_NULL, null=True, related_name='client_user')
+    avatar = models.ForeignKey('Avatar', on_delete=models.SET_NULL, null=True, related_name='client_user', blank=True)
 
     class Meta:
         verbose_name = 'Client'
@@ -53,7 +53,9 @@ class BusinessClientUser(ClientUser):
 
 def upload_to(instance, filename):
     """Create path to directory which stores avatars"""
-    return f'users/avatars/{filename}'
+    filename = filename.split('.')
+    # return f'/var/lib/docker/volumes/booking_images/_data"/{str(uuid.uuid4())}.{filename[1]}'
+    return f'users/avatar/{str(uuid.uuid4())}.{filename[1]}'
 
 
 class Avatar(models.Model):

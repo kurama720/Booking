@@ -186,7 +186,8 @@ class UserDetailViewSet(ViewSet):
     def list(self, request):
         client = ClientUser.objects.get(id=request.user.id)
         client_data = self.serializer_class(client).data
-        client_data['avatar'] = get_current_site(request).domain + client_data['avatar']
+        if client_data['avatar']:
+            client_data['avatar'] = get_current_site(request).domain + client_data['avatar']
         return Response(data=client_data)
 
     def update(self, request):
