@@ -1,17 +1,17 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework_simplejwt.views import TokenViewBase
-from django.utils.encoding import force_text
+from django.utils.encoding import force_text, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from rest_framework.generics import get_object_or_404, GenericAPIView
-from django.core.exceptions import ValidationError
-from django.contrib.sites.shortcuts import get_current_site
+from rest_framework.generics import get_object_or_404, UpdateAPIView
+from django.http import HttpResponseRedirect
+from backend.settings import REGISTRATION_CONFIRMATION_REDIRECT_URL
 
 from accounts.models import ClientUser, BusinessClientUser
 from accounts.api.tokens import CustomAccessToken, account_activation_token
@@ -25,12 +25,13 @@ from accounts.api.serializers import (RegisterSerializer,
                                       BusinessClientUserSerializer,
                                       EmailVerificationSerializer,
                                       ResetPasswordEmailRequestSerializer,
+                                      SetNewPasswordSerializer,
+                                      ChangePasswordSerializer,
                                       ClientUserInfoSerializer,
                                       )
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
 from apartments.api.permissions import IsClientOnly
-
 
 
 class RegisterView(generics.GenericAPIView):
@@ -71,15 +72,13 @@ class VerifyEmailView(generics.GenericAPIView):
             if account_activation_token.check_token(user, token):
                 user.is_active = True
                 user.save()
-                return Response({'email': 'Successfully activated'},
-                                status=status.HTTP_200_OK)
-            if user.is_active:
-                return Response({'email': 'Already activate'},
-                                status=status.HTTP_200_OK)
-            return Response({'error': 'Invalid Token or Activation Expired. Try to verify your email again'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+        finally:
+            domain = get_current_site(request).domain
+            if any(_ in domain for _ in ('localhost', '127.0.0.1')): # check for localhost
+                return HttpResponseRedirect(redirect_to='/')
+            if REGISTRATION_CONFIRMATION_REDIRECT_URL:
+                return HttpResponseRedirect(redirect_to=REGISTRATION_CONFIRMATION_REDIRECT_URL)
+            return HttpResponseRedirect(redirect_to='https://' + domain)
 
     @extend_schema(
         responses={200: "string"}
@@ -150,8 +149,7 @@ class RequestPasswordResetView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data.get('email')
         if ClientUser.objects.filter(email=email).exists():
-            current_site = get_current_site(request=request).domain
-            mail_data = create_mail_for_reset_password(email, current_site)
+            mail_data = create_mail_for_reset_password(email)
             send_mail(mail_data)
         return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
 
@@ -176,6 +174,59 @@ class UserInfoView(APIView):
         serializer = BusinessClientUserSerializer(
             instance=request.user.clientuser.businessclientuser)
         return Response(data=serializer.data)
+
+
+class PasswordTokenCheckApi(generics.GenericAPIView):
+
+    def get(self, request, uid64, token):
+        try:
+            user_id = smart_str(urlsafe_base64_decode(uid64))
+            user = ClientUser.objects.get(id=user_id)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                return Response({'error': 'Token is not valid, please request a new one'},
+                                status=status.HTTP_401_UNAUTHORIZED)
+
+            return Response({'success': True, 'message': 'Credentials Valid', 'uid64': uid64, 'token': token},
+                            status=status.HTTP_200_OK)
+
+        except DjangoUnicodeDecodeError:
+            return Response({'error': 'Token is not valid, please request a new one'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+        except ClientUser.DoesNotExist:
+            return Response({'error': 'Uid is not valid, please request a new one'},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+
+class SetNewPasswordApiView(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+
+    def patch(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success': True, 'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(UpdateAPIView):
+        """
+        View for changing password on /accounts/change-password/
+        """
+        serializer_class = ChangePasswordSerializer
+        model = ClientUser
+        permission_classes = (IsAuthenticated,)
+
+        def update(self, request, *args, **kwargs):
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                if not request.user.check_password(serializer.data.get("current_password")):
+                    return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+                request.user.set_password(serializer.data.get("new_password"))
+                request.user.save()
+                return Response(status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetailViewSet(ViewSet):

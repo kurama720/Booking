@@ -15,7 +15,8 @@ const SliderCardMap: FC<IPropsSliderCardMap> = ({ listPictures }) => {
         }}
       >
         {listPictures.map((item, index) => (
-          <SplideSlide key={item}>
+          // eslint-disable-next-line react/no-array-index-key
+          <SplideSlide key={index}>
             <img
               src={item}
               alt={`object ${index}`}

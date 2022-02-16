@@ -142,7 +142,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/usr/share/nginx/html/staticfiles/'
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -173,7 +174,7 @@ SPECTACULAR_SETTINGS = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/usr/share/nginx/html/mediafiles'
+MEDIA_ROOT = '/usr/share/nginx/html/mediafiles/'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
@@ -205,6 +206,7 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+REGISTRATION_CONFIRMATION_REDIRECT_URL = os.getenv('REDIRECT_URL')
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -214,3 +216,5 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER")
+
+RESET_URL = os.getenv('RESET_URL', None)

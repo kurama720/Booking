@@ -3,7 +3,6 @@ import datetime
 from rest_framework import serializers
 
 from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
-from accounts.models import ClientUser
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):
@@ -44,7 +43,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ("apartment", "num_of_persons", "comment", "check_in_date", "check_out_date",
+        fields = ("id", "apartment", "num_of_persons", "comment", "check_in_date", "check_out_date",
                   "idempotency_key")
         extra_kwargs = {
             "idempotency_key": {'write_only': True},

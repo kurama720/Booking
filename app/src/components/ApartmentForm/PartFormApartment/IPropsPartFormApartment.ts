@@ -13,4 +13,6 @@ export interface IPropsFormApartment {
   handleChangeShowGuestsWindow: () => void;
   handleOutsideClick: () => void;
   sideEffect: boolean;
+  price: number | undefined;
+  nights: number;
 }

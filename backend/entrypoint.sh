@@ -15,6 +15,13 @@ while ! python manage.py collectstatic --noinput 2>&1; do
    sleep 3
 done
 
+echo "Populate the db with data"
+
+while ! python manage.py loaddata cities.json; do
+   echo "Populating the database is in progress status"
+   sleep 3
+done
+
 echo "Django docker is fully configured successfully."
 
 gunicorn backend.wsgi:application --workers 2 --log-level info --bind 0.0.0.0:3000

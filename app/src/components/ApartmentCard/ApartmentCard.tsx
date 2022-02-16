@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { HeartIcon } from "@heroicons/react/outline";
 import { StarIcon, HeartIcon as SolidHeartIcon } from "@heroicons/react/solid";

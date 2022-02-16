@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "75266f87-1294-48e9-830a-270e5f5663e2",
+		"name": "Wishlist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "sign_up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"bondarenko.jenek@mail.ru\",\r\n  \"password\": \"Yoho123Yoho123\",\r\n  \"confirm_password\": \"Yoho123Yoho123\",\r\n  \"first_name\": \"Bondarenko\",\r\n  \"last_name\": \"Zhenya\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.yoho.by/accounts/signup/",
+					"protocol": "https",
+					"host": [
+						"api",
+						"yoho",
+						"by"
+					],
+					"path": [
+						"accounts",
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign_in",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"bondarenko.jenek@mail.ru\",\r\n  \"password\": \"Yoho123Yoho123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.yoho.by/accounts/signin/",
+					"protocol": "https",
+					"host": [
+						"api",
+						"yoho",
+						"by"
+					],
+					"path": [
+						"accounts",
+						"signin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add _favorite_first_apartment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ3MDQxMTQ3LCJpYXQiOjE2NDQzNjI3NDcsImp0aSI6ImRjZDczM2M5Y2M4ODRmMDVhOGQ4YzlmOTY0ZmU5ODZmIiwidXNlcl9pZCI6MTF9.wlM2ND9MoN8kOi4aqSMBfVYh9IjGBhwu6ouNm0769k4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.yoho.by/apartments/favorite/750/save",
+					"protocol": "https",
+					"host": [
+						"api",
+						"yoho",
+						"by"
+					],
+					"path": [
+						"apartments",
+						"favorite",
+						"750",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add _favorite_second_apartment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ3MDQxMTQ3LCJpYXQiOjE2NDQzNjI3NDcsImp0aSI6ImRjZDczM2M5Y2M4ODRmMDVhOGQ4YzlmOTY0ZmU5ODZmIiwidXNlcl9pZCI6MTF9.wlM2ND9MoN8kOi4aqSMBfVYh9IjGBhwu6ouNm0769k4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://api.yoho.by/apartments/favorite/753/save",
+					"protocol": "https",
+					"host": [
+						"api",
+						"yoho",
+						"by"
+					],
+					"path": [
+						"apartments",
+						"favorite",
+						"753",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_all_favorite_apartments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQ3MDQxMTQ3LCJpYXQiOjE2NDQzNjI3NDcsImp0aSI6ImRjZDczM2M5Y2M4ODRmMDVhOGQ4YzlmOTY0ZmU5ODZmIiwidXNlcl9pZCI6MTF9.wlM2ND9MoN8kOi4aqSMBfVYh9IjGBhwu6ouNm0769k4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.yoho.by/apartments/favorite/list",
+					"protocol": "https",
+					"host": [
+						"api",
+						"yoho",
+						"by"
+					],
+					"path": [
+						"apartments",
+						"favorite",
+						"list"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get_all_favorite_apartments",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.yoho.by/apartments/favorite/list",
+							"protocol": "https",
+							"host": [
+								"api",
+								"yoho",
+								"by"
+							],
+							"path": [
+								"apartments",
+								"favorite",
+								"list"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 09 Feb 2022 14:56:21 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Expect-CT",
+							"value": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\""
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=jO34xieOV8D7xCJMEdvavJ5Z4KSGPMwQUPHhKOGFJngmHooa492E0zW5U1Pl4fmQy9McPx0ZOyXNQmXuRkaOTtVs%2BDkKNCfqVAI3VumuwSp7UFOO6smampEzxQvZ4g%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "NEL",
+							"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "6dadf1a75e5a8ffe-FRA"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 750,\n        \"title\": \"Jacuzzi 55\\\"SmartTV Панорамный вид, Минск-центр города\",\n        \"price\": 37,\n        \"lat\": 53.90841528,\n        \"lon\": 27.52550983,\n        \"description\": \"Located 1.6 km from Palova Arena, Jacuzzi 55\\\"SmartTV Панорамный вид, Минск-центр города provides accommodation with a bar, a garden and a 24-hour front desk for your convenience. The accommodation features a spa bath. Accommodation is fitted with air conditioning, a fully equipped kitchenette with a dining area, a flat-screen TV and a private bathroom with hot tub, slippers and a hairdryer. Some units include a seating area and/or a balcony. A continental breakfast is available daily at the apartment. Jacuzzi 55\\\"SmartTV Панорамный вид, offers a children's playground. A car rental service is available at the accommodation, while cycling can be enjoyed nearby. Minsk Sports Palace is 1.6 km from Jacuzzi 55\\\"SmartTV Панорамный вид, Минск-центр города, while Olympic Tennis Centre is 1.9 km away. The nearest airport is Minsk National, 33 km from the apartment, and the property offers a paid airport shuttle service. \",\n        \"rating\": null,\n        \"feature\": {\n            \"beds\": 4,\n            \"guests\": 6,\n            \"bedrooms\": 1,\n            \"bathrooms\": 1\n        }\n    },\n    {\n        \"id\": 753,\n        \"title\": \"JACUZZI New LOFT ApartComplex Kaskad, Минск - центр города\",\n        \"price\": 40,\n        \"lat\": 53.90689843,\n        \"lon\": 27.52506994,\n        \"description\": \"With city views, JACUZZI New LOFT ApartComplex Kaskad, Минск - центр города is situated in Minsk and has a restaurant, a 24-hour front desk, bar, garden, children's playground and terrace. The accommodation has a spa bath and a hot tub. Accommodation is fitted with air conditioning and features a flat-screen TV with cable channels, a fully equipped kitchen with a dining area, and a private bathroom with a hairdryer. Some units have a seating area and/or a balcony. A continental breakfast is available each morning at the aparthotel. A casino is available on site and hiking can be enjoyed within close proximity of JACUZZI New LOFT ApartComplex. Palova Arena is 1.7 km from the accommodation, while Minsk Sports Palace is 1.7 km from the property. The nearest airport is Minsk National, 33 km from JACUZZI New LOFT ApartComplex Kaskad, Минск - центр города, and the property offers a paid airport shuttle service. \",\n        \"rating\": null,\n        \"feature\": {\n            \"beds\": 3,\n            \"guests\": 6,\n            \"bedrooms\": 1,\n            \"bathrooms\": 2\n        }\n    }\n]"
+				}
+			]
+		}
+	]
+}

@@ -1,98 +1,36 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { LocalKey, LocalStorage } from "ts-localstorage";
 import { XIcon } from "@heroicons/react/solid";
-import { JWT } from "../../hooks/auth.hook.interface";
 import Button from "../Button/Button";
-import { IBookingHistory } from "./IBookingHistory";
+import { ApartmentsService } from "../../api/ApartmentsService";
+import { IBookingHistory, TBookingHistory } from "./IBookingHistory";
 import BookingHistoryItem from "./BookingHistoryItem";
-
-const storageName = "userData" as LocalKey<JWT>;
-
-interface TBookingHistory {
-  apartment: string;
-  persons: number;
-  description: string;
-  checkIn: string;
-  checkOut: string;
-}
+import Loader from "../Loader";
 
 const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
   const historyItem = 4;
-  const data = [
-    {
-      apartment: "Hilton",
-      persons: 10,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-26",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "Gines",
-      persons: 11,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-27",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "Hilton",
-      persons: 12,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-28",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "China",
-      persons: 16,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-29",
-      checkOut: "2023-01-31",
-    },
-    {
-      apartment: "China",
-      persons: 16,
-      description:
-        "One-room studio apartment, opposite East Cinema. 5 minutes to Bus\n" +
-        "Station and Central Market. After the bus station, behind the tracks,\n" +
-        "the old town begins.",
-      checkIn: "2022-01-30",
-      checkOut: "2023-01-31",
-    },
-  ];
-  const [bookingData, setBookingData] = useState<TBookingHistory[]>(data);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [bookingData, setBookingData] = useState<TBookingHistory[]>([]);
+  const [error, setError] = useState<string>("");
   const getBookingHistory = async () => {
-    const userData = LocalStorage.getItem(storageName);
-
-    if (userData) {
-      const payload = userData.token.data.access;
-
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${payload}`,
-        },
-      };
-      const historyData = await axios.get(
-        `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
-        config
-      );
+    try {
+      setIsLoading(true);
+      const response = await ApartmentsService.getApartmentsBook();
+      setBookingData(response.data);
+      setIsLoading(false);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        setError(e.message);
+      }
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getBookingHistory();
+    return () => setIsLoading(false);
   }, []);
 
   return (
@@ -101,7 +39,7 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-white max-w-lg shadow rounded-md">
-        <div className="w-full px-4 py-4">
+        <div className="w-[32rem] px-4 py-4">
           <div className="flex w-full justify-between mb-4">
             <h1 className="flex justify-center font-body text-2xl font-bold text-gray-600">
               History of booking
@@ -115,24 +53,45 @@ const BookingHistory = ({ handleBookingHistory }: IBookingHistory) => {
               }
             />
           </div>
-          <div
-            className={`w-full ${
-              bookingData.length > historyItem ? "overflow-y-scroll h-96" : ""
-            }`}
-          >
-            {bookingData.map((elem) => {
-              return (
-                <BookingHistoryItem
-                  key={elem.checkIn}
-                  apartment={elem.apartment}
-                  persons={elem.persons}
-                  description={elem.description}
-                  checkIn={elem.checkIn}
-                  checkOut={elem.checkOut}
-                />
-              );
-            })}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loader width="16" height="16" color="blue-600" />
+            </div>
+          ) : (
+            <div
+              className={`w-full ${
+                bookingData.length > historyItem ? "overflow-y-scroll h-96" : ""
+              }`}
+            >
+              {bookingData.length > 0 ? (
+                bookingData.map((apartment) => {
+                  return (
+                    <BookingHistoryItem
+                      id={apartment.id}
+                      key={apartment.id}
+                      apartment={apartment.apartment}
+                      persons={apartment.num_of_persons}
+                      checkIn={apartment.check_in_date}
+                      checkOut={apartment.check_out_date}
+                      bookingData={bookingData}
+                      setBookingData={setBookingData}
+                    />
+                  );
+                })
+              ) : (
+                <div className="flex justify-center items-center">
+                  <div className="text-2xl font-body font-medium text-gray-900">
+                    You have no hotels booked!
+                  </div>
+                </div>
+              )}
+              {error && (
+                <span className="font-body text-base text-red-500">
+                  {error}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

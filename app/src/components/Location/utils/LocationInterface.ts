@@ -5,6 +5,6 @@ export interface LocationProps {
   isActiveModel: React.Dispatch<React.SetStateAction<boolean>>;
   activeLocationBox: boolean;
   search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
   isActiveLocationBox: React.Dispatch<React.SetStateAction<boolean>>;
+  handleChangeInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

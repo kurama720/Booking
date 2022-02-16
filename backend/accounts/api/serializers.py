@@ -1,13 +1,16 @@
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from drf_spectacular.utils import extend_schema_serializer, OpenApiExample
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from accounts.models import ClientUser, BusinessClientUser, Avatar
+from accounts.models import ClientUser, BusinessClientUser
+from accounts.validators import PasswordNumberValidator, PasswordLetterValidator
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer
-from accounts.validators import first_name_validator, last_name_validator
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -151,6 +154,43 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientUser
         fields = ('email',)
+
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    token = serializers.CharField(min_length=1, write_only=True)
+    uid64 = serializers.CharField(min_length=1, write_only=True)
+
+    class Meta:
+        fields = ['password', 'token', 'uid64']
+
+    def validate(self, attrs):
+        try:
+            password = attrs.get('password')
+            token = attrs.get('token')
+            uid64 = attrs.get('uid64')
+            user_id = force_str(urlsafe_base64_decode(uid64))
+            user = ClientUser.objects.get(id=user_id)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise AuthenticationFailed('The reset link is invalid', 401)
+
+            user.set_password(password)
+            user.save()
+        except Exception as e:
+            raise AuthenticationFailed('The reset link is invalid', 401)
+        return super().validate(attrs)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+
+    class Meta:
+        model = ClientUser
+        fields = ('password',)
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):

@@ -19,8 +19,8 @@ services:
       - "./app:/usr/src/app"
       - "./app/node_modules:/usr/src/app/node_modules"
       - "./nginx:/etc/nginx"
-      - "static_volume:/usr/share/nginx/html/staticfiles"
-      - "media_volume:/usr/share/nginx/html/mediafiles"
+      - static_volume:/usr/share/nginx/html/staticfiles
+      - media_volume:/usr/share/nginx/html/mediafiles
     networks:
       - booking_production_services
 
@@ -34,8 +34,8 @@ services:
       - "3000:3000"
     volumes:
       - "./backend:/app"
-      - "static_volume:/usr/share/nginx/html/staticfiles"
-      - "media_volume:/usr/share/nginx/html/mediafiles"
+      - static_volume:/usr/share/nginx/html/staticfiles
+      - media_volume:/usr/share/nginx/html/mediafiles
     environment:
       - PYTHONUNBUFFERED=1
     env_file: .env

@@ -1,10 +1,17 @@
 import React, { FC, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { StarIcon, HeartIcon as HeartActiveIcon } from "@heroicons/react/solid";
-import { HeartIcon } from "@heroicons/react/outline";
+import { StarIcon } from "@heroicons/react/solid";
+import { LocalKey, LocalStorage } from "ts-localstorage";
+import { JWT } from "../../hooks/auth.hook.interface";
 import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
 import { BookingState } from "../../pages/HomePage/utils/HomePageInterface";
 import { parseDateReserve } from "../../models/parseDate";
+import { IFeature } from "../../models/globalInterfaces/globalIntefaces";
+import FavouriteButton from "../FavouriteButton";
+import { useFavourite } from "../../hooks/favoirite.hook";
+
+const storageName = "userData" as LocalKey<JWT>;
+const userData = LocalStorage.getItem(storageName);
 
 interface IPropsSearchItem {
   id: number;
@@ -12,7 +19,7 @@ interface IPropsSearchItem {
   title: string;
   img_content: Array<string>;
   price: number;
-  rating: null | number;
+  feature: IFeature;
 }
 
 const SearchResultItem: FC<IPropsSearchItem> = ({
@@ -20,12 +27,24 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
   img_content,
   title,
   price,
-  rating,
   userBookingDate,
+  feature,
 }) => {
   const [isFavourite, setFavourite] = useState(false);
+  const { addFavourite, removeFavourite } = useFavourite(userData);
 
-  const handleClick = () => setFavourite((prev) => !prev);
+  const handleClick = async () => {
+    setFavourite((prev) => !prev);
+    try {
+      if (!isFavourite) {
+        await addFavourite(id, !isFavourite);
+      } else {
+        await removeFavourite(id);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const numberOfNights = parseDateReserve(
     userBookingDate.checkInDate,
@@ -46,15 +65,11 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
             >
               {title}
             </NavLink>
-            <button onClick={handleClick}>
-              {isFavourite ? (
-                <HeartActiveIcon className="text-blue-500 w-6 h-6" />
-              ) : (
-                <HeartIcon className="w-6 h-6" />
-              )}
-            </button>
+            <FavouriteButton handler={handleClick} likeStatus={isFavourite} />
           </div>
-          <span className="text-xs text-gray-500">1 guests · 1 beds</span>
+          <span className="text-xs text-gray-500">
+            {feature.guests} guests · {feature.beds} beds
+          </span>
         </div>
         <div className="mt-auto">
           <div className="text-sm text-right">
@@ -64,7 +79,7 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
           <div className="mt-2 flex justify-between text-xs text-gray-500">
             <div className="flex items-center">
               <StarIcon className="text-blue-500 w-4 h-4" />
-              <span className="mx-[2px] text-gray-900">{rating}</span>
+              <span className="mx-[2px] text-gray-900">7</span>
               <span>(15 reviews)</span>
             </div>
             <span>Total ${price * numberOfNights}</span>

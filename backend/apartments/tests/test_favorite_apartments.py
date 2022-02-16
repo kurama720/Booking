@@ -19,12 +19,16 @@ class FavoriteApartmentsTestCase(APITestCase):
         Apartment.objects.create(title='Test Hotel 2', price=80, lat=30, lon=40,
                                  description='The second test hotel', rating=4, feature=None)
 
-    def test_favorites_created_and_returned(self):
-        """Post first apartment providing its id for the user. Then get it on another endpoint of the same user"""
+    def test_favorites_created_returned_and_deleted(self):
+        """
+        Post first apartment providing its id for the user.
+        Get it on another endpoint of the same user.
+        Delete apartment and check favorite list is empty.
+        """
         token = str(AccessToken().for_user(self.user))  # Token for imitating authentication
         ap_id = Apartment.objects.get(title='Test Hotel 1').id
-        response = self.client.post(f'http://localhost:8000/apartments/favorite/{ap_id}/save',
-                                    HTTP_AUTHORIZATION=f"Bearer {token}")
+        url = reverse("favorite_apartment_add", args=[ap_id])
+        response = self.client.post(url, HTTP_AUTHORIZATION=f"Bearer {token}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         url = reverse('favorite_apartment')
@@ -32,3 +36,8 @@ class FavoriteApartmentsTestCase(APITestCase):
         content: dict = json.loads(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(content), 1)
+
+        url = reverse('favorite_apartment_delete', args=[ap_id])
+        response = self.client.delete(url, format='json', HTTP_AUTHORIZATION=f"Bearer {token}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.content), 0)

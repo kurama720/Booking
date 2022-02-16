@@ -16,6 +16,8 @@ from apartments.api.serializers import (ApartmentSerializer, BookingSerializer,
                                         ReviewsSerializer, PriceAnalyticSerializer, FavoriteApartmentSerializer)
 from apartments.business_logic import check_files_in_request
 from accounts.models import ClientUser
+from apartments.utils import create_mail_for_confirm_booking
+from accounts.tasks import send_mail
 
 
 class ApartmentViewSet(viewsets.ModelViewSet):
@@ -100,6 +102,9 @@ class BookingView(GenericAPIView):
         idempotency_key = serializer.validated_data.get("idempotency_key")
         if apartment.book_apartment(check_in_date, check_out_date,
                                     num_of_persons, comment, idempotency_key, client):
+            mail_data = create_mail_for_confirm_booking(check_in_date, check_out_date,
+                                                        apartment, client, num_of_persons, action='confirmation')
+            send_mail(mail_data)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data="Apartment is not available for booking",
@@ -202,3 +207,22 @@ class FavoriteApartmentView(viewsets.ViewSet):
             return Response(status=status.HTTP_201_CREATED)
         except Apartment.DoesNotExist:
             return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)
+
+    def destroy(self, request, pk=None):
+        try:
+            apartment = Apartment.objects.get(id=pk)
+            apartment.user.remove(request.user.id)
+            apartment.save()
+            return Response(status=status.HTTP_200_OK)
+        except Apartment.DoesNotExist:
+            return Response(data="No apartment with such id", status=status.HTTP_404_NOT_FOUND)
+
+
+class CancelBookView(GenericAPIView):
+    permission_classes = (IsClientOnly,)
+    queryset = Booking.objects.all()
+
+    def delete(self, request, pk: int):
+        book_apartment = get_object_or_404(self.queryset, pk=pk)
+        book_apartment.cancel_book()
+        return Response(status=status.HTTP_200_OK)
