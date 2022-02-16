@@ -9,7 +9,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from accounts.models import ClientUser, BusinessClientUser
-
+from accounts.validators import PasswordNumberValidator, PasswordLetterValidator
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer
 
 
@@ -179,3 +179,15 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except Exception as e:
             raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, validators=[validate_password])
+
+    class Meta:
+        model = ClientUser
+        fields = ('password',)
