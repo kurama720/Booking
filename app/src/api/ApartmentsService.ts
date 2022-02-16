@@ -1,11 +1,10 @@
-import axios, { AxiosResponse } from "axios";
-import { LocalKey, LocalStorage } from "ts-localstorage";
+import axios from "axios";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
 import {
   IApartment,
   IBookDataApartment,
 } from "../models/globalInterfaces/globalIntefaces";
-import { JWT } from "../hooks/auth.hook.interface";
+import { getIsAuth } from "../models/getIsAuth";
 
 export class ApartmentsService {
   static async getApartment(userBookingDate: BookingState) {
@@ -31,12 +30,34 @@ export class ApartmentsService {
     id: string | undefined,
     dataForBook: IBookDataApartment
   ) {
-    const storageName = "userData" as LocalKey<JWT>;
-    const userData = LocalStorage.getItem(storageName);
-    const payload = userData?.token.data.access;
+    const payload = getIsAuth();
     return axios.post(
       `${process.env.REACT_APP_API_URL}apartments/${id}/book`,
       dataForBook,
+      {
+        headers: {
+          Authorization: `Bearer ${payload}`,
+        },
+      }
+    );
+  }
+
+  static async getApartmentsBook() {
+    const payload = getIsAuth();
+    return axios.get(
+      `${process.env.REACT_APP_API_URL}accounts/booking-history/`,
+      {
+        headers: {
+          Authorization: `Bearer ${payload}`,
+        },
+      }
+    );
+  }
+
+  static async cancelApartmentBook(id: number) {
+    const payload = getIsAuth();
+    return axios.delete(
+      `${process.env.REACT_APP_API_URL}apartments/${id}/cancel-book/`,
       {
         headers: {
           Authorization: `Bearer ${payload}`,
