@@ -142,7 +142,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/usr/share/nginx/html/staticfiles/'
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -173,7 +174,7 @@ SPECTACULAR_SETTINGS = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/usr/share/nginx/html/mediafiles/'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
