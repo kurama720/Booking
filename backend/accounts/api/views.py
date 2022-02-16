@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import TokenViewBase
 from django.utils.encoding import force_text, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, UpdateAPIView
 from django.http import HttpResponseRedirect
 from backend.settings import REGISTRATION_CONFIRMATION_REDIRECT_URL
 
@@ -27,6 +27,7 @@ from accounts.api.serializers import (RegisterSerializer,
                                       EmailVerificationSerializer,
                                       ResetPasswordEmailRequestSerializer,
                                       SetNewPasswordSerializer,
+                                      ChangePasswordSerializer,
                                       )
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
@@ -205,3 +206,24 @@ class SetNewPasswordApiView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({'success': True, 'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(UpdateAPIView):
+        """
+        View for changing password on /accounts/change-password/
+        """
+        serializer_class = ChangePasswordSerializer
+        model = ClientUser
+        permission_classes = (IsAuthenticated,)
+
+        def update(self, request, *args, **kwargs):
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                if not request.user.check_password(serializer.data.get("current_password")):
+                    return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+                request.user.set_password(serializer.data.get("new_password"))
+                request.user.save()
+                return Response(status=status.HTTP_200_OK)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
