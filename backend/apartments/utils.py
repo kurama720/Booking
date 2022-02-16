@@ -22,5 +22,5 @@ def create_mail_for_confirm_booking(check_in_date: datetime.date, check_out_date
                'bathrooms': apartment.feature['bathrooms'], 'beds': apartment.feature['beds']}
     email_body = render_to_string('email/confirm_and_cancel_book.html', context)
     data = {'email_body': email_body, 'to_email': client.email,
-            'email_subject': 'Confirm details booking'}
+            'email_subject': f'{action} of your booking'}
     return data
