@@ -19,4 +19,7 @@ export interface IFormApartmentProps {
   setBookingReverseData: React.Dispatch<
     React.SetStateAction<IBookingReverseData>
   >;
+  rating: null | number | undefined;
+  reviews: number | undefined;
+  price: number | undefined;
 }

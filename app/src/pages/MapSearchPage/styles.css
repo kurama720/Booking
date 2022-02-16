@@ -13,3 +13,6 @@
 .leaflet-pane {
   z-index: 0;
 }
+.leaflet-container a {
+  color: #111827;
+}

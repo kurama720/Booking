@@ -1,7 +1,10 @@
 import axios from "axios";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
+import {
+  IApartment,
+  IBookDataApartment,
+} from "../models/globalInterfaces/globalIntefaces";
 import { getIsAuth } from "../models/getIsAuth";
-import { IBookDataApartment } from "../models/globalInterfaces/globalIntefaces";
 
 export class ApartmentsService {
   static async getApartment(userBookingDate: BookingState) {
@@ -18,7 +21,9 @@ export class ApartmentsService {
   }
 
   static async getOneApartment(id: string | undefined) {
-    return axios.get(`${process.env.REACT_APP_API_URL}apartments/${id}/`);
+    return axios.get<IApartment>(
+      `${process.env.REACT_APP_API_URL}apartments/${id}/`
+    );
   }
 
   static async bookApartment(

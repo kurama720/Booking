@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useMemo, useRef } from "react";
 import { MailIcon } from "@heroicons/react/solid";
 import {
   ChevronDownIcon,
@@ -9,21 +9,34 @@ import {
 import { IPropsFormApartment } from "./IPropsPartFormApartment";
 import Calendar from "../Calendar/Calendar";
 
-const PartFormApartment: FC<IPropsFormApartment> = (props) => {
-  const {
-    valueDate,
-    setValueDate,
-    handleSubmit,
-    numberOfGuests,
-    isShowGuestsWindow,
-    setNumberOfGuests,
-    decrementGuests,
-    incrementGuests,
-    handleChangeShowGuestsWindow,
-    handleOutsideClick,
-    sideEffect,
-  } = props;
+const weeklyDiscountValue = 5;
+
+const PartFormApartment: FC<IPropsFormApartment> = ({
+  valueDate,
+  setValueDate,
+  handleSubmit,
+  numberOfGuests,
+  isShowGuestsWindow,
+  setNumberOfGuests,
+  decrementGuests,
+  incrementGuests,
+  handleChangeShowGuestsWindow,
+  handleOutsideClick,
+  sideEffect,
+  price,
+  nights,
+}) => {
   const wrapperRef = useRef(null);
+
+  const priceBeforeDiscounts = useMemo(() => price! * nights, [price, nights]);
+  const discountsValue = useMemo(
+    () => (weeklyDiscountValue * priceBeforeDiscounts) / 100,
+    [priceBeforeDiscounts, weeklyDiscountValue]
+  );
+  const totalPrice = useMemo(
+    () => priceBeforeDiscounts - discountsValue,
+    [priceBeforeDiscounts, discountsValue]
+  );
 
   const useOutsideAlerter = (
     ref: React.MutableRefObject<HTMLBodyElement | null>
@@ -72,7 +85,7 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
             id="guests"
             className={`${
               sideEffect ? "bg-[#bfbfbf]" : ""
-            } appearance-none font-body text-gray-900 text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+            } appearance-none font-body text-sm w-full block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
           />
           <button
             disabled={sideEffect}
@@ -130,20 +143,22 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
         <div className="mt-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-base font-body text-gary-700">
-              $34 x 30 nights
+              ${price} x {nights} nights
             </span>
             <span className="text-base font-body text-gray-700 font-medium">
-              $1020
+              ${priceBeforeDiscounts}
             </span>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="text-base font-body text-gray-700">
-              Weekly discount: 5% off
-            </span>
-            <span className="text-base font-body text-green-600 font-medium">
-              -$29
-            </span>
-          </div>
+          {weeklyDiscountValue && (
+            <div className="flex justify-between items-center">
+              <span className="text-base font-body text-gray-700">
+                Weekly discount: {weeklyDiscountValue}% off
+              </span>
+              <span className="text-base font-body text-green-600 font-medium">
+                -${discountsValue}
+              </span>
+            </div>
+          )}
         </div>
         <div className="w-full h-px bg-gray-200 my-6" />
         <div className="flex justify-between items center">
@@ -151,11 +166,11 @@ const PartFormApartment: FC<IPropsFormApartment> = (props) => {
             Total
           </span>
           <span className="text-base font-body font-bold text-gray-700">
-            $991
+            ${totalPrice}
           </span>
         </div>
         <button
-          className="group mt-6 w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="group mt-6 w-full font-body flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md bg-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           type="submit"
           disabled={sideEffect}
         >

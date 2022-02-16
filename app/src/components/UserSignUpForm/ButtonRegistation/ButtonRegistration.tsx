@@ -15,7 +15,7 @@ const ButtonRegistration: FC<IPropsButtonRegistration> = ({
     <button
       type="submit"
       disabled={!(isValid && dirty)}
-      className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm font-medium rounded-md  ${
+      className={`group relative w-full font-body font-medium flex justify-center py-2 px-16 border border-transparent text-sm rounded-md  ${
         !(isValid && dirty)
           ? "bg-gray-200 text-gray-700"
           : "bg-blue-600 text-white"
