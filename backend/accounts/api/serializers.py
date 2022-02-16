@@ -8,8 +8,8 @@ from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from accounts.models import ClientUser, BusinessClientUser
-from accounts.validators import PasswordNumberValidator, PasswordLetterValidator
+from accounts.models import ClientUser, BusinessClientUser, Avatar
+from accounts.validators import first_name_validator, last_name_validator
 from apartments.api.serializers import ApartmentSerializer, BookingSerializer
 
 

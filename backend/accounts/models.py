@@ -54,7 +54,6 @@ class BusinessClientUser(ClientUser):
 def upload_to(instance, filename):
     """Create path to directory which stores avatars"""
     filename = filename.split('.')
-    # return f'/var/lib/docker/volumes/booking_images/_data"/{str(uuid.uuid4())}.{filename[1]}'
     return f'users/avatar/{str(uuid.uuid4())}.{filename[1]}'
 
 

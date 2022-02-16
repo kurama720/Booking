@@ -1,3 +1,4 @@
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.mixins import RetrieveModelMixin
