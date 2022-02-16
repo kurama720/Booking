@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Avatar from "../utils/img/Avatar.png";
+import Avatar from "../../../assets/img/Avatar.png";
 import { getFullText } from "../utils/helpers";
 import ObjectsPageCardIntroduce from "../ObjectPageCardIntroduce";
 import { ObjectsPageCardDescriptionProps } from "./IObjectsPageCardDescriptionProps";
@@ -9,6 +9,8 @@ const text =
 
 const ObjectsPageCardDescription = ({
   sideEffect,
+  description,
+  feature,
 }: ObjectsPageCardDescriptionProps) => {
   const [isFullText, setFullText] = useState<boolean>(false);
 
@@ -21,16 +23,24 @@ const ObjectsPageCardDescription = ({
       <div className="w-full flex justify-between">
         <div>
           <h2 className="font-body font-medium text-2xl">
-            Private room in Minsk hosted by Alexander
+            Private room in Minsk
           </h2>
           <ul className="flex">
-            <li className="font-body text-gray-700 text-base">4 guests</li>
+            <li className="font-body text-gray-700 text-base">
+              {feature?.guests} guest(s)
+            </li>
             <li className="flex items-center mx-1.5">·</li>
-            <li className="font-body text-gray-700 text-base">1 bedroom</li>
+            <li className="font-body text-gray-700 text-base">
+              {feature?.bedrooms} bedroom(s)
+            </li>
             <li className="flex items-center mx-1.5">·</li>
-            <li className="font-body text-gray-700 text-base">2 beds</li>
+            <li className="font-body text-gray-700 text-base">
+              {feature?.beds} bed(s)
+            </li>
             <li className="flex items-center mx-1.5">·</li>
-            <li className="font-body text-gray-700 text-base">1 bathroom</li>
+            <li className="font-body text-gray-700 text-base">
+              {feature?.bathrooms} bathroom(s)
+            </li>
           </ul>
         </div>
         <div className="object-contain w-12">
@@ -39,7 +49,9 @@ const ObjectsPageCardDescription = ({
       </div>
       <hr className="my-7" />
       <div className="w-full">
-        <p className="text-base font-body">{getFullText(text, isFullText)}</p>
+        <p className="text-base font-body">
+          {description && getFullText(description, isFullText)}
+        </p>
         <button
           disabled={sideEffect}
           onClick={handleFullText}

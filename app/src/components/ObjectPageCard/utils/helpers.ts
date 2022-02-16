@@ -6,3 +6,5 @@ export const getFullText = (text: string, active: boolean) => {
   }
   return text.slice(0, abridgmentTextSymbols);
 };
+
+export const isEven = (num: number) => num % 2 === 0;

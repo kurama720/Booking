@@ -36,3 +36,10 @@ export const dateFormatForPolicy = (date: string) => {
   const dateDay: string | number = today.getDate();
   return `${dateDay} ${dataMonth}`;
 };
+
+export const getDiffInDays = (start: Date | null, end: Date | null) => {
+  if (!start || !end) return 1;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const diffInTime = end.getTime() - start.getTime();
+  return Math.round(diffInTime / oneDay);
+};
