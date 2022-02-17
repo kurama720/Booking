@@ -33,6 +33,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
   setApartments,
   setUserBookingDate,
 }) => {
+  console.log(apartments);
   const { lat, lon } = userBookingDate;
   const position: L.LatLngTuple = [lat, lon];
   const [isFilterVisible, setFilterVisible] = useState(false);

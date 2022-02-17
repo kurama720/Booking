@@ -17,6 +17,7 @@ export interface IApartment {
   price: number;
   rating: null | number;
   reviews: number;
+  is_favorite: boolean;
 }
 
 export interface IBookingReverseData {

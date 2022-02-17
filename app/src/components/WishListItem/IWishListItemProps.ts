@@ -1,10 +1,11 @@
+import { IFeature } from "../../models/globalInterfaces/globalIntefaces";
+
 export interface IWishListItemProps {
-  description?: string;
-  feature?: null;
-  lat?: number;
-  lon?: number;
-  price?: number;
-  rating?: number;
-  title?: string;
-  key?: number;
+  id: number;
+  feature: IFeature;
+  price: number;
+  rating: number | null;
+  title: string;
+  img_content: Array<string>;
+  onDelete: () => Promise<void>;
 }

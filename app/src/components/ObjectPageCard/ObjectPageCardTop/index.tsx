@@ -6,6 +6,7 @@ import { IObjectPageCardProps } from "./IObjectPageCardTopProps";
 import { JWT } from "../../../hooks/auth.hook.interface";
 import FavouriteButton from "../../FavouriteButton";
 import { useFavourite } from "../../../hooks/favoirite.hook";
+import { getIsAuth } from "../../../models/getIsAuth";
 
 const storageName = "userData" as LocalKey<JWT>;
 const userData = LocalStorage.getItem(storageName);
@@ -16,6 +17,7 @@ const ObjectsPageCardTop = ({
   rating,
   reviews,
 }: IObjectPageCardProps) => {
+  const isAuth = getIsAuth();
   const [isLiked, setLiked] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const { addFavourite, removeFavourite } = useFavourite(userData);
@@ -66,30 +68,32 @@ const ObjectsPageCardTop = ({
             Minsk, Minsk Province, Belarus
           </li>
         </ul>
-        <div className="flex items-center">
-          <FavouriteButton
-            disabledStatus={sideEffect}
-            likeStatus={isLiked}
-            cursorDefault
-          />
-          {!isLiked ? (
-            <button
-              disabled={sideEffect}
-              className="ml-[7.7px] text-sm font-body"
-              onClick={handleSaveFavorite}
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              disabled={sideEffect}
-              className="ml-[7.7px] text-sm font-body"
-              onClick={handleRemoveFavorite}
-            >
-              Remove
-            </button>
-          )}
-        </div>
+        {isAuth && (
+          <div className="flex items-center">
+            <FavouriteButton
+              disabledStatus={sideEffect}
+              likeStatus={isLiked}
+              cursorDefault
+            />
+            {!isLiked ? (
+              <button
+                disabled={sideEffect}
+                className="ml-[7.7px] text-sm font-body"
+                onClick={handleSaveFavorite}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                disabled={sideEffect}
+                className="ml-[7.7px] text-sm font-body"
+                onClick={handleRemoveFavorite}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
