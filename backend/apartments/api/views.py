@@ -54,10 +54,9 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         for apartment in queryset:
             if client in apartment.user.all():
                 apartment.is_favorite = True
-                apartment.save(update_fields=['is_favorite'])
             else:
                 apartment.is_favorite = False
-                apartment.save(update_fields=['is_favorite'])
+            apartment.save(update_fields=['is_favorite'])
         return queryset
 
     def create(self, request, *args, **kwargs):
