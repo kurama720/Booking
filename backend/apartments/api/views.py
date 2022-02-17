@@ -50,6 +50,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         return apartment_data
 
     def check_is_favorite(self, request, queryset):
+        """Method for checking whether apartment is favorite for requesting user or not"""
         client = ClientUser.objects.get(id=request.user.id)
         for apartment in queryset:
             if client in apartment.user.all():
