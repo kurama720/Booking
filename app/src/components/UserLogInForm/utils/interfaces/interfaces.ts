@@ -18,9 +18,13 @@ interface config {
   xsrfHeaderName: string;
 }
 
+interface data {
+  access: string;
+}
+
 interface token {
   config: config;
-  data: object;
+  data: data;
   headers: object;
   request: object;
   status: number;
@@ -35,7 +39,7 @@ export interface JWT {
 
 export interface Token {
   config: config;
-  data: object;
+  data: data;
   headers: object;
   request: object;
   status: number;

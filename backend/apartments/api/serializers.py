@@ -86,6 +86,8 @@ class PriceAnalyticSerializer(serializers.Serializer):
 
 class FavoriteApartmentSerializer(serializers.ModelSerializer):
     """Serializer to return serialized favorite apartments"""
+    img_content = ApartmentsImageSerializer(many=True, required=False)
+
     class Meta:
         model = Apartment
-        fields = ('id', 'title', 'price', 'lat', 'lon', 'description', 'rating', 'feature')
+        fields = ('id', 'title', 'price', 'lat', 'lon', 'description', 'rating', 'feature', 'img_content')

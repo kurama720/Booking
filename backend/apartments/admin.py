@@ -78,10 +78,7 @@ class ApartmentAdmin(admin.ModelAdmin):
                                                             content=file.read(),
                                                             content_type=guess_type(file.name))))
                     except FileNotFoundError:
-                        self.message_user(request,
-                                          """Some necessary images data for csv upload not exists at server.
-                                          Try to upload this files later.""",
-                                          level=messages.WARNING)
+                        pass
 
                 ApartmentsImage.objects.bulk_create(images)
                 self.message_user(request, "Your csv file has been imported")

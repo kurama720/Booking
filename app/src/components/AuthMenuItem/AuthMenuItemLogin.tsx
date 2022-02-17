@@ -1,11 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthMenuItemLoginProps } from "./utils/AuthMenuItemLoginInterface";
+import { Paths } from "../../paths/path";
 
 function AuthMenuItemLogin({
   handleLogoutPopUpStatus,
   handleBookingHistory,
   handleFavouriteApartmentsList,
 }: AuthMenuItemLoginProps) {
+  const history = useNavigate();
+  const handleProfileLink = () => history(Paths.USER_PROFILE);
   return (
     <div className="w-56 shadow-md  z-10 rounded-md absolute bg-white rounded-md top-[60px] flex flex-col 1.5xl:left-[84.3%] lg:left-[11.2%] 3xl:left-[85%] 4xl:left-[87.6%] 5xl:left-[91%] xlg:left-[80.6%] mlg:left-[76.2%] 3.5xl:left-[85.6%] 1xl:left-[83%] 3.75xl:left-[87.4%] 6xl:left-[92%]">
       <button
@@ -24,6 +28,7 @@ function AuthMenuItemLogin({
       </button>
       <hr />
       <button
+        onClick={handleProfileLink}
         type="button"
         className="font-body text-sm leading-5 w-full mt-[0.75rem] ml-[0.8125rem] flex"
       >
