@@ -51,14 +51,16 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     def check_is_favorite(self, request, queryset):
         """Method for checking whether apartment is favorite for requesting user or not"""
-        client = ClientUser.objects.get(id=request.user.id)
-        for apartment in queryset:
-            if client in apartment.user.all():
-                apartment.is_favorite = True
-            else:
-                apartment.is_favorite = False
-            apartment.save(update_fields=['is_favorite'])
-        return queryset
+        try:
+            client = ClientUser.objects.get(id=request.user.id)
+            for apartment in queryset:
+                if client in apartment.user.all():
+                    apartment.is_favorite = True
+                else:
+                    apartment.is_favorite = False
+                apartment.save(update_fields=['is_favorite'])
+        except ClientUser.DoesNotExist:
+            return queryset
 
     def create(self, request, *args, **kwargs):
         if business_acc_id := request.data.get("business_account"):
