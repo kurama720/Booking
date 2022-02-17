@@ -38,8 +38,9 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         apartments = self.filter_queryset(self.get_queryset())
+        self.check_is_favorite(request, apartments)
         apartments_data = [self.add_apartment_reviews_information(apartment) for
-                          apartment in apartments]
+                           apartment in apartments]
         return Response(data=apartments_data)
 
     def add_apartment_reviews_information(self, apartment):
@@ -47,6 +48,17 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
         return apartment_data
+
+    def check_is_favorite(self, request, queryset):
+        client = ClientUser.objects.get(id=request.user.id)
+        for apartment in queryset:
+            if client in apartment.user.all():
+                apartment.is_favorite = True
+                apartment.save(update_fields=['is_favorite'])
+            else:
+                apartment.is_favorite = False
+                apartment.save(update_fields=['is_favorite'])
+        return queryset
 
     def create(self, request, *args, **kwargs):
         if business_acc_id := request.data.get("business_account"):
@@ -87,7 +99,7 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
 class BookingView(GenericAPIView):
     """View to manage booking apartments requests"""
-    permission_classes = (IsClientOnly, )
+    permission_classes = (IsClientOnly,)
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
@@ -125,9 +137,9 @@ class BookingHistoryView(ListAPIView):
     """View to provide book history"""
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = (IsBusinessClient, )
+    permission_classes = (IsBusinessClient,)
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('check_in_date', )
+    filter_fields = ('check_in_date',)
     filter_class = BookingHistoryFilter
 
     def filter_queryset(self, queryset):
@@ -171,7 +183,7 @@ class ReviewsView(GenericAPIView):
 
 
 class PriceAnalyticView(CreateModelMixin, GenericViewSet):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = PriceAnalyticSerializer
 
     def perform_create(self, serializer):
@@ -182,7 +194,7 @@ class PriceAnalyticView(CreateModelMixin, GenericViewSet):
 
 class ClientBookingHistoryView(GenericAPIView):
     """View to provide client booking history"""
-    permission_classes = (IsClientOnly, )
+    permission_classes = (IsClientOnly,)
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
