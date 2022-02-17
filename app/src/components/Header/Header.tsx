@@ -46,6 +46,7 @@ function Header({
   const [cities, setCity] = useState<Cities[]>([]);
   const [date, setDate] = React.useState<DateRange<Date>>([null, null]);
   const [search, setSearch] = useState<string>("");
+  console.log(search);
 
   const searchOfCity = async () => {
     const response = await SearchService.searchOfCities(search);

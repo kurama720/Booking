@@ -8,6 +8,7 @@ import { getIsAuth } from "../models/getIsAuth";
 
 export class ApartmentsService {
   static async getApartment(userBookingDate: BookingState) {
+    const isAuth = getIsAuth();
     return axios.get(
       `${process.env.REACT_APP_API_URL}search/?check_availability=${userBookingDate.checkInDate},${userBookingDate.checkOutDate}&feature=guests:${userBookingDate.numOfPersons}`,
       {
@@ -16,6 +17,7 @@ export class ApartmentsService {
           lon: userBookingDate.lon,
           radius: 16000,
         },
+        headers: isAuth ? { Authorization: `Bearer ${isAuth}` } : {},
       }
     );
   }

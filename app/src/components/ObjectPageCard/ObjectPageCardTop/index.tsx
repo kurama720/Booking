@@ -8,15 +8,14 @@ import FavouriteButton from "../../FavouriteButton";
 import { useFavourite } from "../../../hooks/favoirite.hook";
 import { getIsAuth } from "../../../models/getIsAuth";
 
-const storageName = "userData" as LocalKey<JWT>;
-const userData = LocalStorage.getItem(storageName);
-
 const ObjectsPageCardTop = ({
   sideEffect,
   title,
   rating,
   reviews,
 }: IObjectPageCardProps) => {
+  const storageName = "userData" as LocalKey<JWT>;
+  const userData = LocalStorage.getItem(storageName);
   const isAuth = getIsAuth();
   const [isLiked, setLiked] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();

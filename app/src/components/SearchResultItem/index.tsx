@@ -11,9 +11,6 @@ import FavouriteButton from "../FavouriteButton";
 import { useFavourite } from "../../hooks/favoirite.hook";
 import { getIsAuth } from "../../models/getIsAuth";
 
-const storageName = "userData" as LocalKey<JWT>;
-const userData = LocalStorage.getItem(storageName);
-
 interface IPropsSearchItem {
   id: number;
   userBookingDate: BookingState;
@@ -33,6 +30,8 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
   feature,
   is_favorite,
 }) => {
+  const storageName = "userData" as LocalKey<JWT>;
+  const userData = LocalStorage.getItem(storageName);
   const [isFavourite, setFavourite] = useState(is_favorite);
   const { addFavourite, removeFavourite } = useFavourite(userData);
   const isAuth = getIsAuth();

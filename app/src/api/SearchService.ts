@@ -1,9 +1,12 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { getIsAuth } from "../models/getIsAuth";
 
 export default class SearchService {
-  static searchOfCities(word: string): Promise<AxiosResponse> {
+  static async searchOfCities(word: string) {
+    const isAuth = getIsAuth();
     return axios.get(`${process.env.REACT_APP_API_URL}cities/coordinates`, {
       params: { word },
+      headers: isAuth ? { Authorization: `Bearer ${isAuth}` } : {},
     });
   }
 }
