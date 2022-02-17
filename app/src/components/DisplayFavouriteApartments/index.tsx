@@ -19,6 +19,7 @@ interface IDisplayFavouriteApartments {
   price: number;
   rating: number;
   title: string;
+  img_content: Array<string>;
   id: number;
 }
 

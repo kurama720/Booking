@@ -2,22 +2,17 @@ import React from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { StarIcon } from "@heroicons/react/solid";
 import "@splidejs/splide/dist/css/splide.min.css";
-import img from "../../assets/img/image1.svg";
 import "./react-splide.css";
 import { IWishListItemProps } from "./IWishListItemProps";
 
-const WishListItem = ({ title, price, feature }: IWishListItemProps) => {
-  const pictureList = [
-    { img, id: 1 },
-    { img, id: 2 },
-    { img, id: 3 },
-    { img, id: 4 },
-    { img, id: 5 },
-    { img, id: 6 },
-  ];
-
+const WishListItem = ({
+  title,
+  price,
+  img_content,
+  feature,
+}: IWishListItemProps) => {
   return (
-    <div className="max-w-screen-sm">
+    <div>
       <div className="flex">
         <Splide
           options={{
@@ -26,13 +21,19 @@ const WishListItem = ({ title, price, feature }: IWishListItemProps) => {
             width: 240,
           }}
         >
-          {pictureList.map((item, index) => (
-            <SplideSlide key={item.id}>
-              <img src={item.img} alt={`object${index}`} className="rounded" />
-            </SplideSlide>
-          ))}
+          <div className="rounded-md">
+            {img_content.map((item, index) => (
+              <SplideSlide key={item}>
+                <img
+                  src={item}
+                  alt={`object${index}`}
+                  className="rounded rounded-md w-full h-full w-[240px] h-[144px] object-cover"
+                />
+              </SplideSlide>
+            ))}
+          </div>
         </Splide>
-        <div className="w-full pl-3 flex justify-between flex-col">
+        <div className="w-full pl-3 flex justify-between flex-col max-w-[300px]">
           <div>
             <div className="flex justify-between items-center">
               <h4 className="text-xl font-body text-gray-900">{title}</h4>
