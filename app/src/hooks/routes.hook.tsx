@@ -5,6 +5,7 @@ import HomePage from "../pages/HomePage/HomePage";
 import MapSearchPage from "../pages/MapSearchPage";
 import ObjectPage from "../pages/ObjectPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
+import UserProfilePage from "../pages/UserProfilePage";
 import { BookingState } from "../pages/HomePage/utils/HomePageInterface";
 import {
   IApartment,
@@ -70,6 +71,7 @@ export const useRoutes = (isAuth: boolean) => {
           element={<ConfirmPage bookingReverseData={bookingReverseData} />}
         />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path={Paths.USER_PROFILE} element={<UserProfilePage />} />
       </Routes>
     );
   }
@@ -113,6 +115,7 @@ export const useRoutes = (isAuth: boolean) => {
         element={<ResetPasswordPage />}
       />
       <Route path="*" element={<Navigate to="/" />} />
+      <Route path={Paths.USER_PROFILE} element={<UserProfilePage />} />
     </Routes>
   );
 };

@@ -5,4 +5,5 @@ export enum Paths {
   SEARCH_RESULTS = "/search-results",
   MAP = "/map-search",
   CONFIRM = "/confirm",
+  USER_PROFILE = "/user-profile",
 }
