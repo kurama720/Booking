@@ -38,7 +38,6 @@ class ApartmentViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         apartments = self.filter_queryset(self.get_queryset())
-        self.check_is_favorite(request, apartments)
         apartments_data = [self.add_apartment_reviews_information(apartment) for
                            apartment in apartments]
         return Response(data=apartments_data)
@@ -48,21 +47,6 @@ class ApartmentViewSet(viewsets.ModelViewSet):
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
         return apartment_data
-
-    def check_is_favorite(self, request, queryset):
-        """Method for checking whether apartment is favorite for requesting user or not"""
-        if client := ClientUser.objects.get(id=request.user.id):
-            for apartment in queryset:
-                if client in apartment.user.all():
-                    apartment.is_favorite = True
-                else:
-                    apartment.is_favorite = False
-                apartment.save(update_fields=['is_favorite'])
-        else:
-            for apartment in queryset:
-                apartment.is_favorite = False
-                apartment.save(update_fields=['is_favorite'])
-            return queryset
 
     def create(self, request, *args, **kwargs):
         if business_acc_id := request.data.get("business_account"):
