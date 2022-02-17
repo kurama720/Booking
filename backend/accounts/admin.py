@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from accounts.models import ClientUser, BusinessClientUser
+from accounts.models import ClientUser, BusinessClientUser, Avatar
 from accounts.forms import ClientUserCreationForm, ClientUserChangeForm
 
 
@@ -18,7 +18,7 @@ class ClientUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff', 'is_active',)
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'first_name', 'last_name')}),
+        (None, {'fields': ('email', 'password', 'first_name', 'last_name', 'avatar')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
     )
     add_fieldsets = (
@@ -32,5 +32,10 @@ class ClientUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class AvatarAdmin(admin.ModelAdmin):
+    list_display = ('local_url', )
+
+
 admin.site.register(ClientUser, ClientUserAdmin)
 admin.site.register(BusinessClientUser, BusinessClientModelAdmin)
+admin.site.register(Avatar, AvatarAdmin)

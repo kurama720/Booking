@@ -11,6 +11,7 @@ from accounts.api.views import (RegisterView,
                                 SetNewPasswordApiView,
                                 PasswordTokenCheckApi,
                                 ChangePasswordView,
+                                UserDetailViewSet,
                                 )
 from apartments.api.views import ClientBookingHistoryView
 
@@ -30,4 +31,5 @@ urlpatterns = [
     path('booking-history/', ClientBookingHistoryView.as_view(), name='client_booking_history'),
     path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('me/', UserDetailViewSet.as_view({'get': 'list', 'post': 'update'}), name='client_info'),
 ]

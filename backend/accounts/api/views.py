@@ -5,7 +5,7 @@ from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSet
 from rest_framework_simplejwt.views import TokenViewBase
 from django.utils.encoding import force_text, smart_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode
@@ -28,10 +28,11 @@ from accounts.api.serializers import (RegisterSerializer,
                                       ResetPasswordEmailRequestSerializer,
                                       SetNewPasswordSerializer,
                                       ChangePasswordSerializer,
+                                      ClientUserInfoSerializer,
                                       )
 from accounts.utils import create_verify_mail_data, create_mail_for_reset_password
 from accounts.tasks import send_mail
-
+from apartments.api.permissions import IsClientOnly
 
 
 class RegisterView(generics.GenericAPIView):
@@ -227,3 +228,25 @@ class ChangePasswordView(UpdateAPIView):
                 return Response(status=status.HTTP_200_OK)
 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDetailViewSet(ViewSet):
+    """View to show client's personal info and path to his avatar"""
+    serializer_class = ClientUserInfoSerializer
+    permission_classes = (IsClientOnly, )
+
+    def list(self, request):
+        client = ClientUser.objects.get(id=request.user.id)
+        client_data = self.serializer_class(client).data
+        if client_data['avatar']:
+            client_data['avatar'] = get_current_site(request).domain + client_data['avatar']
+        return Response(data=client_data)
+
+    def update(self, request):
+        client = ClientUser.objects.get(id=request.user.id)
+        data_to_update = self.serializer_class(client, request.data)
+        if data_to_update.is_valid(raise_exception=True):
+            data_to_update.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
