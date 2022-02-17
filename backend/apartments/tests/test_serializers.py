@@ -57,5 +57,6 @@ class ApartmentSerializerTestCase(TestCase):
             rating=None,
             business_account=test_business_client.id,
             user=[],
+            is_favorite=False,
         )
         self.assertEqual(test_data, expected_data)
