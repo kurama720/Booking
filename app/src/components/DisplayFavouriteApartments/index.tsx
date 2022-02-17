@@ -6,12 +6,14 @@ import { JWT } from "../../hooks/auth.hook.interface";
 import Button from "../Button/Button";
 import { IDisplayFavouriteApartmentsProps } from "./IDisplayFavouriteApartmentsProps";
 import WishListItem from "../WishListItem";
+import Loader from "../Loader";
+import { IFeature } from "../../models/globalInterfaces/globalIntefaces";
 
 const storageName = "userData" as LocalKey<JWT>;
 
 interface IDisplayFavouriteApartments {
   description: string;
-  feature: null;
+  feature: IFeature;
   lat: number;
   lon: number;
   price: number;
@@ -24,27 +26,38 @@ const DisplayFavouriteApartments = ({
   handleFavouriteApartmentsList,
 }: IDisplayFavouriteApartmentsProps) => {
   const historyItem = 4;
-
-  const [favouriteApartments, setFavouriteApartments] =
-    useState<IDisplayFavouriteApartments[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [favouriteApartments, setFavouriteApartments] = useState<
+    IDisplayFavouriteApartments[]
+  >([]);
 
   const getWishList = async () => {
-    const userData = LocalStorage.getItem(storageName);
+    try {
+      setIsLoading(true);
+      const userData = LocalStorage.getItem(storageName);
 
-    if (userData) {
-      const payload = userData.token.data.access;
+      if (userData) {
+        const payload = userData.token.data.access;
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${payload}`,
-        },
-      };
-      const wishListData = await axios.get(
-        `${process.env.REACT_APP_API_URL}apartments/favorite/list`,
-        config
-      );
-      const wishList = wishListData.data;
-      setFavouriteApartments([...wishList]);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${payload}`,
+          },
+        };
+        const wishListData = await axios.get(
+          `${process.env.REACT_APP_API_URL}apartments/favorite/list`,
+          config
+        );
+        const wishList = wishListData.data;
+        console.log(wishListData.data);
+        setFavouriteApartments(wishList);
+      }
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -72,29 +85,32 @@ const DisplayFavouriteApartments = ({
               }
             />
           </div>
-          {favouriteApartments && (
-            <div
-              className={`w-full ${
-                favouriteApartments.length > historyItem
-                  ? "overflow-y-scroll h-[40rem]"
-                  : ""
-              }`}
-            >
-              {favouriteApartments.map((elem, id) => {
-                return (
-                  <WishListItem
-                    key={elem.id}
-                    title={elem.title}
-                    price={elem.price}
-                    rating={elem.rating}
-                    description={elem.description}
-                    lat={elem.lat}
-                    lon={elem.lon}
-                    feature={elem.feature}
-                  />
-                );
-              })}
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loader width="16" height="16" color="blue-600" />
             </div>
+          ) : (
+            <>
+              {favouriteApartments.length > 0 ? (
+                <div
+                  className={`w-full ${
+                    favouriteApartments.length > historyItem
+                      ? "overflow-y-scroll h-[40rem]"
+                      : ""
+                  }`}
+                >
+                  {favouriteApartments.map((elem) => {
+                    return <WishListItem key={elem.id} {...elem} />;
+                  })}
+                </div>
+              ) : (
+                <div className="flex justify-center items-center">
+                  <div className="text-2xl font-body font-medium text-gray-900">
+                    You have no favourite hotels!
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

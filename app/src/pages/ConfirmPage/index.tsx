@@ -141,6 +141,7 @@ const ConfirmPage: FC<IPropsConfirmPage> = ({ bookingReverseData }) => {
             <div className="shadow rounded-md bg-white max-w-[544px] w-full p-6">
               <div className="max-w-[512px] w-full mx-auto">
                 <ConfirmCard
+                  img={currentApartment.img_content}
                   title={currentApartment?.title}
                   description={currentApartment?.description}
                   price={currentApartment?.price}
