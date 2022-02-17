@@ -202,7 +202,8 @@ class FavoriteApartmentView(viewsets.ViewSet):
         Return apartments with related name.
         """
         queryset = ClientUser.objects.get(id=request.user.id).favorite_apartments
-        serializer = FavoriteApartmentSerializer(queryset, many=True)
+        serializer = FavoriteApartmentSerializer(queryset, many=True,
+                                                 context={'request': request})
         return Response(serializer.data)
 
     def create(self, request, pk):
