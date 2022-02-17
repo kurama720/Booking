@@ -1,5 +1,5 @@
 /* eslint-disable import/order */
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { AdjustmentsIcon, ChevronLeftIcon } from "@heroicons/react/solid";
@@ -33,6 +33,7 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
   setApartments,
   setUserBookingDate,
 }) => {
+  console.log(apartments);
   const { lat, lon } = userBookingDate;
   const position: L.LatLngTuple = [lat, lon];
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -60,6 +61,10 @@ const MapSearchPage: FC<IPropsMapSearch> = ({
   const [activeLogout, isActiveLogout] = useState<boolean>(false);
   const [calendarPopUpStatus, setCalendarPopUpStatus] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    setFilteredApartments([...apartments]);
+  }, [apartments]);
 
   const handleFilterVisible = () => setFilterVisible(false);
 

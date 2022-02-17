@@ -9,8 +9,6 @@ import {
 import { IPropsFormApartment } from "./IPropsPartFormApartment";
 import Calendar from "../Calendar/Calendar";
 
-const weeklyDiscountValue = 5;
-
 const PartFormApartment: FC<IPropsFormApartment> = ({
   valueDate,
   setValueDate,
@@ -28,15 +26,7 @@ const PartFormApartment: FC<IPropsFormApartment> = ({
 }) => {
   const wrapperRef = useRef(null);
 
-  const priceBeforeDiscounts = useMemo(() => price! * nights, [price, nights]);
-  const discountsValue = useMemo(
-    () => (weeklyDiscountValue * priceBeforeDiscounts) / 100,
-    [priceBeforeDiscounts, weeklyDiscountValue]
-  );
-  const totalPrice = useMemo(
-    () => priceBeforeDiscounts - discountsValue,
-    [priceBeforeDiscounts, discountsValue]
-  );
+  const totalPrice = useMemo(() => price! * nights, [price, nights]);
 
   const useOutsideAlerter = (
     ref: React.MutableRefObject<HTMLBodyElement | null>
@@ -146,19 +136,9 @@ const PartFormApartment: FC<IPropsFormApartment> = ({
               ${price} x {nights} nights
             </span>
             <span className="text-base font-body text-gray-700 font-medium">
-              ${priceBeforeDiscounts}
+              ${totalPrice}
             </span>
           </div>
-          {weeklyDiscountValue && (
-            <div className="flex justify-between items-center">
-              <span className="text-base font-body text-gray-700">
-                Weekly discount: {weeklyDiscountValue}% off
-              </span>
-              <span className="text-base font-body text-green-600 font-medium">
-                -${discountsValue}
-              </span>
-            </div>
-          )}
         </div>
         <div className="w-full h-px bg-gray-200 my-6" />
         <div className="flex justify-between items center">

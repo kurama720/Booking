@@ -8,3 +8,6 @@ export const getFullText = (text: string, active: boolean) => {
 };
 
 export const isEven = (num: number) => num % 2 === 0;
+
+export const isLastIndex = (length: number, index: number) =>
+  length - 1 === index;

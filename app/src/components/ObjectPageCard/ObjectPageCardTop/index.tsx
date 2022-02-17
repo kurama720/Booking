@@ -17,7 +17,7 @@ const ObjectsPageCardTop = ({
   reviews,
 }: IObjectPageCardProps) => {
   const [isLiked, setLiked] = useState<boolean>(false);
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const { addFavourite, removeFavourite } = useFavourite(userData);
 
   const handleRemoveFavorite = async () => {
