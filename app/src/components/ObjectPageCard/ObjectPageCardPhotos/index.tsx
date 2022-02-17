@@ -1,7 +1,7 @@
 import React from "react";
 import SlideShow from "../../SlideShow/SlideShow";
 import { IObjectsPageCardPhotosProps } from "./IObjectsPageCardPhotosProps";
-import { isEven } from "../utils/helpers";
+import { isEven, isLastIndex } from "../utils/helpers";
 
 const ObjectsPageCardPhotos = ({
   handleSearchMenu,
@@ -10,12 +10,20 @@ const ObjectsPageCardPhotos = ({
 }: IObjectsPageCardPhotosProps) => {
   if (!images?.length) return null;
   return (
-    <div className="w-full grid grid-rows-2 grid-flow-col gap-2 relative overflow-hidden rounded-md">
+    <div
+      className={`w-full grid grid-rows-${
+        images.length ? "2" : "1"
+      } grid-flow-col gap-2 relative overflow-hidden rounded-md`}
+    >
       {images.map((item, index) => (
         <div
-          className={`${!index && "col-span-2"} ${
-            isEven(images.length) && images.length - 1 === index && "col-span-2"
-          }`}
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
+          className={`${
+            isLastIndex(images.length, index) && !isEven(index)
+              ? "row-span-2"
+              : ""
+          }${!index ? "row-span-2" : ""}`}
         >
           <img
             className="object-cover h-full w-full"
