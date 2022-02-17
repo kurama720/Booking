@@ -33,10 +33,20 @@ class ApartmentViewSet(viewsets.ModelViewSet):
     def retrieve(self, request,  *args, **kwargs):
         """Process GET requests /apartments/{id}"""
         apartment = self.get_object()
+        apartment_data = self.add_apartment_reviews_information(apartment)
+        return Response(data=apartment_data)
+
+    def list(self, request, *args, **kwargs):
+        apartments = self.filter_queryset(self.get_queryset())
+        apartments_data = [self.add_apartment_reviews_information(apartment) for
+                          apartment in apartments]
+        return Response(data=apartments_data)
+
+    def add_apartment_reviews_information(self, apartment):
         apartment_data = self.get_serializer(apartment).data
         reviews_information = apartment.get_apartment_reviews_information()
         apartment_data.update(reviews_information)
-        return Response(data=apartment_data)
+        return apartment_data
 
     def create(self, request, *args, **kwargs):
         if business_acc_id := request.data.get("business_account"):
