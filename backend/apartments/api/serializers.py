@@ -3,6 +3,7 @@ import datetime
 from rest_framework import serializers
 
 from apartments.models import Apartment, Booking, ApartmentReview, ApartmentsImage
+from accounts.models import ClientUser
 
 
 class ApartmentsImageSerializer(serializers.ModelSerializer):
@@ -35,6 +36,20 @@ class ApartmentSerializer(serializers.ModelSerializer):
         model = Apartment
         fields = "__all__"
         read_only_fields = ["rating", "business_account", "user"]
+
+    def to_representation(self, instance):
+        data_to_return = super().to_representation(instance)
+        try:
+            request = self.context.get('request', None)
+            if request is not None:
+                client = ClientUser.objects.get(id=request.user.id)
+                if client in instance.user.all():
+                    data_to_return['is_favorite'] = True
+                else:
+                    data_to_return['is_favorite'] = False
+        except ClientUser.DoesNotExist:
+            data_to_return['is_favorite'] = False
+        return data_to_return
 
 
 class BookingSerializer(serializers.ModelSerializer):
