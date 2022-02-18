@@ -24,7 +24,6 @@ const UserProfile = ({ handleChangePasswordMenu }: IUserProfile) => {
     // The userData may be null therefore I use if condition
     if (userData) {
       const payload = userData.token.data.access;
-      const userEmail = JSON.parse(userData.token.config.data);
       axios.defaults.headers.common.Authorization = `Bearer ${payload}`;
       try {
         const userInfo = await axios.get(
@@ -33,7 +32,7 @@ const UserProfile = ({ handleChangePasswordMenu }: IUserProfile) => {
         // The userInfo may be null therefore I use if condition
         if (userInfo) {
           const data = JSON.parse(JSON.stringify(userInfo.data));
-          setEmail(userEmail.email);
+          setEmail(userInfo.data.email);
           setLoaded(true);
           setInitialState({
             firstName: data.first_name,
@@ -50,15 +49,16 @@ const UserProfile = ({ handleChangePasswordMenu }: IUserProfile) => {
     async (values: IUserInfo, actions: FormikHelpers<IUserInfo>) => {
       const storageName = "userData" as LocalKey<JWT>;
       const userData = LocalStorage.getItem(storageName);
-      const dataForSubmitting = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-      };
       // The userData may be null therefore I use if condition
       if (userData) {
         const payload = userData.token.data.access;
         axios.defaults.headers.common.Authorization = `Bearer ${payload}`;
         try {
+          const dataForSubmitting = {
+            first_name: values.firstName,
+            last_name: values.lastName,
+          };
+
           const userInfo = await axios.post(
             `${process.env.REACT_APP_API_URL}accounts/me/`,
             dataForSubmitting
