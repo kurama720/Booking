@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { LocalKey, LocalStorage } from "ts-localstorage";
 import { useParams } from "react-router-dom";
@@ -21,6 +21,8 @@ const ObjectsPageCardTop = ({
   const [isLiked, setLiked] = useState<boolean>(isFavourite!);
   const { id } = useParams<{ id: string }>();
   const { addFavourite, removeFavourite } = useFavourite(userData);
+
+  useEffect(() => setLiked(isFavourite!), [isFavourite]);
 
   const handleRemoveFavorite = async () => {
     setLiked((prev) => !prev);
