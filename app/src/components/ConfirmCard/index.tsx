@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { StarIcon } from "@heroicons/react/solid";
 import { IApartmentCardProps } from "../ApartmentCard/IApartmentFormProps";
 import "@splidejs/splide/dist/css/splide.min.css";
 import "./confirmCard.css";
+import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
 
 const ConfirmCard: FC<IApartmentCardProps> = ({
   title,
@@ -15,26 +15,9 @@ const ConfirmCard: FC<IApartmentCardProps> = ({
   return (
     <div>
       <div className="flex">
-        <Splide
-          options={{
-            arrows: false,
-            height: 144,
-            width: 240,
-          }}
-        >
-          <div className="rounded-md">
-            {img &&
-              img.map((item, index) => (
-                <SplideSlide key={item}>
-                  <img
-                    src={item}
-                    alt={`object${index}`}
-                    className="rounded-md w-full h-full w-[240px] h-[144px] object-cover"
-                  />
-                </SplideSlide>
-              ))}
-          </div>
-        </Splide>
+        <div className="rounded-md overflow-hidden">
+          <SliderCardMap listPictures={img} />
+        </div>
         <div className="w-full pl-3 flex justify-between flex-col w-[300px]">
           <div>
             <div className="flex justify-start items-start flex-col">
