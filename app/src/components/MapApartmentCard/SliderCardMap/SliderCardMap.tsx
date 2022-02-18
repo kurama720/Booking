@@ -14,16 +14,17 @@ const SliderCardMap: FC<IPropsSliderCardMap> = ({ listPictures }) => {
           width: 240,
         }}
       >
-        {listPictures.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <SplideSlide key={index}>
-            <img
-              src={item}
-              alt={`object ${index}`}
-              className="w-full h-full w-[240px] h-[144px] object-cover rounded-md"
-            />
-          </SplideSlide>
-        ))}
+        {listPictures &&
+          listPictures.map((item, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <SplideSlide key={index}>
+              <img
+                src={item}
+                alt={`object ${index}`}
+                className="w-full h-full w-[240px] h-[144px] object-cover rounded-md"
+              />
+            </SplideSlide>
+          ))}
       </Splide>
     </>
   );
