@@ -51,6 +51,7 @@
         "react/button-has-type": "off",
         "react-hooks/exhaustive-deps": "off",
         "no-await-in-loop": "off",
+        "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/naming-convention": [
             "error",
             {

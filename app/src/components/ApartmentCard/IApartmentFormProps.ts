@@ -1,4 +1,5 @@
 export interface IApartmentCardProps {
+  img: Array<string>;
   description?: string;
   feature?: null;
   lat?: number;

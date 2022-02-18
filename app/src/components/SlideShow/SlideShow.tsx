@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { PhotographIcon } from "@heroicons/react/solid";
 import Modal from "../Modal/Modal";
 import SliderApartmentPhotos from "./SliderApartmentPhotos/SliderApartmentPhotos";
