@@ -50,7 +50,6 @@ const DisplayFavouriteApartments = ({
           config
         );
         const wishList = wishListData.data;
-        console.log(wishListData.data);
         setFavouriteApartments(wishList);
       }
       setIsLoading(false);
