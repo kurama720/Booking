@@ -45,6 +45,7 @@ const ObjectPageCard = ({
             title={apartmentState?.title}
             rating={apartmentState?.rating}
             reviews={apartmentState?.reviews}
+            isFavourite={apartmentState?.is_favorite}
           />
           <ObjectsPagePhotos
             handleSearchMenu={handleSearchMenu}

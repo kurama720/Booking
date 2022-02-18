@@ -13,11 +13,12 @@ const ObjectsPageCardTop = ({
   title,
   rating,
   reviews,
+  isFavourite,
 }: IObjectPageCardProps) => {
   const storageName = "userData" as LocalKey<JWT>;
   const userData = LocalStorage.getItem(storageName);
   const isAuth = getIsAuth();
-  const [isLiked, setLiked] = useState<boolean>(false);
+  const [isLiked, setLiked] = useState<boolean>(isFavourite!);
   const { id } = useParams<{ id: string }>();
   const { addFavourite, removeFavourite } = useFavourite(userData);
 
