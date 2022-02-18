@@ -1,9 +1,9 @@
 import React from "react";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { StarIcon } from "@heroicons/react/solid";
 import "@splidejs/splide/dist/css/splide.min.css";
 import "./react-splide.css";
 import { IWishListItemProps } from "./IWishListItemProps";
+import SliderCardMap from "../MapApartmentCard/SliderCardMap/SliderCardMap";
 
 const WishListItem = ({
   title,
@@ -14,25 +14,9 @@ const WishListItem = ({
   return (
     <div>
       <div className="flex">
-        <Splide
-          options={{
-            arrows: false,
-            height: 144,
-            width: 240,
-          }}
-        >
-          <div className="rounded-md">
-            {img_content.map((item, index) => (
-              <SplideSlide key={item}>
-                <img
-                  src={item}
-                  alt={`object${index}`}
-                  className="rounded rounded-md w-full h-full w-[240px] h-[144px] object-cover"
-                />
-              </SplideSlide>
-            ))}
-          </div>
-        </Splide>
+        <div className="rounded-md overflow-hidden">
+          <SliderCardMap listPictures={img_content} />
+        </div>
         <div className="w-full pl-3 flex justify-between flex-col max-w-[300px]">
           <div>
             <div className="flex justify-between items-center">
