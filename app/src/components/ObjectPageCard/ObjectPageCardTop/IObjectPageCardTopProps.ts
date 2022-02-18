@@ -3,4 +3,5 @@ export interface IObjectPageCardProps {
   title: string | undefined;
   rating: null | number | undefined;
   reviews: number | undefined;
+  isFavourite: boolean | undefined;
 }

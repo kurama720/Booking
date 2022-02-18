@@ -9,9 +9,7 @@ import { parseDateReserve } from "../../models/parseDate";
 import { IFeature } from "../../models/globalInterfaces/globalIntefaces";
 import FavouriteButton from "../FavouriteButton";
 import { useFavourite } from "../../hooks/favoirite.hook";
-
-const storageName = "userData" as LocalKey<JWT>;
-const userData = LocalStorage.getItem(storageName);
+import { getIsAuth } from "../../models/getIsAuth";
 
 interface IPropsSearchItem {
   id: number;
@@ -20,6 +18,7 @@ interface IPropsSearchItem {
   img_content: Array<string>;
   price: number;
   feature: IFeature;
+  is_favorite: boolean;
 }
 
 const SearchResultItem: FC<IPropsSearchItem> = ({
@@ -29,9 +28,13 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
   price,
   userBookingDate,
   feature,
+  is_favorite,
 }) => {
-  const [isFavourite, setFavourite] = useState(false);
+  const storageName = "userData" as LocalKey<JWT>;
+  const userData = LocalStorage.getItem(storageName);
+  const [isFavourite, setFavourite] = useState(is_favorite);
   const { addFavourite, removeFavourite } = useFavourite(userData);
+  const isAuth = getIsAuth();
 
   const handleClick = async () => {
     setFavourite((prev) => !prev);
@@ -65,7 +68,9 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
             >
               {title}
             </NavLink>
-            <FavouriteButton handler={handleClick} likeStatus={isFavourite} />
+            {isAuth && (
+              <FavouriteButton handler={handleClick} likeStatus={isFavourite} />
+            )}
           </div>
           <span className="text-xs text-gray-500">
             {feature.guests} guests · {feature.beds} beds

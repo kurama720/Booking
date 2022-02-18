@@ -12,15 +12,12 @@ import { IFeature } from "../../models/globalInterfaces/globalIntefaces";
 const storageName = "userData" as LocalKey<JWT>;
 
 interface IDisplayFavouriteApartments {
-  description: string;
   feature: IFeature;
-  lat: number;
-  lon: number;
   price: number;
-  rating: number;
+  rating: number | null;
   title: string;
-  img_content: Array<string>;
   id: number;
+  img_content: Array<string>;
 }
 
 const DisplayFavouriteApartments = ({
@@ -71,7 +68,7 @@ const DisplayFavouriteApartments = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-white max-w-xlg shadow rounded-md">
-        <div className="w-[36rem] px-4 py-4">
+        <div className="w-[46rem] px-4 py-4">
           <div className="flex w-full justify-between mb-4">
             <h1 className="flex justify-center font-body text-2xl font-bold text-gray-600">
               Wishlist
@@ -93,14 +90,25 @@ const DisplayFavouriteApartments = ({
             <>
               {favouriteApartments.length > 0 ? (
                 <div
-                  className={`w-full ${
+                  className={`w-full space-y-4 ${
                     favouriteApartments.length > historyItem
                       ? "overflow-y-scroll h-[40rem]"
                       : ""
                   }`}
                 >
                   {favouriteApartments.map((elem) => {
-                    return <WishListItem key={elem.id} {...elem} />;
+                    return (
+                      <WishListItem
+                        key={elem.id}
+                        id={elem.id}
+                        title={elem.title}
+                        price={elem.price}
+                        rating={elem.rating}
+                        feature={elem.feature}
+                        img_content={elem.img_content}
+                        onDelete={getWishList}
+                      />
+                    );
                   })}
                 </div>
               ) : (

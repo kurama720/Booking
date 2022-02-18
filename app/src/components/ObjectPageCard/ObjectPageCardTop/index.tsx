@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import { LocalKey, LocalStorage } from "ts-localstorage";
 import { useParams } from "react-router-dom";
@@ -6,19 +6,23 @@ import { IObjectPageCardProps } from "./IObjectPageCardTopProps";
 import { JWT } from "../../../hooks/auth.hook.interface";
 import FavouriteButton from "../../FavouriteButton";
 import { useFavourite } from "../../../hooks/favoirite.hook";
-
-const storageName = "userData" as LocalKey<JWT>;
-const userData = LocalStorage.getItem(storageName);
+import { getIsAuth } from "../../../models/getIsAuth";
 
 const ObjectsPageCardTop = ({
   sideEffect,
   title,
   rating,
   reviews,
+  isFavourite,
 }: IObjectPageCardProps) => {
-  const [isLiked, setLiked] = useState<boolean>(false);
+  const storageName = "userData" as LocalKey<JWT>;
+  const userData = LocalStorage.getItem(storageName);
+  const isAuth = getIsAuth();
+  const [isLiked, setLiked] = useState<boolean>(isFavourite!);
   const { id } = useParams<{ id: string }>();
   const { addFavourite, removeFavourite } = useFavourite(userData);
+
+  useEffect(() => setLiked(isFavourite!), [isFavourite]);
 
   const handleRemoveFavorite = async () => {
     setLiked((prev) => !prev);
@@ -66,30 +70,32 @@ const ObjectsPageCardTop = ({
             Minsk, Minsk Province, Belarus
           </li>
         </ul>
-        <div className="flex items-center">
-          <FavouriteButton
-            disabledStatus={sideEffect}
-            likeStatus={isLiked}
-            cursorDefault
-          />
-          {!isLiked ? (
-            <button
-              disabled={sideEffect}
-              className="ml-[7.7px] text-sm font-body"
-              onClick={handleSaveFavorite}
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              disabled={sideEffect}
-              className="ml-[7.7px] text-sm font-body"
-              onClick={handleRemoveFavorite}
-            >
-              Remove
-            </button>
-          )}
-        </div>
+        {isAuth && (
+          <div className="flex items-center">
+            <FavouriteButton
+              disabledStatus={sideEffect}
+              likeStatus={isLiked}
+              cursorDefault
+            />
+            {!isLiked ? (
+              <button
+                disabled={sideEffect}
+                className="ml-[7.7px] text-sm font-body"
+                onClick={handleSaveFavorite}
+              >
+                Save
+              </button>
+            ) : (
+              <button
+                disabled={sideEffect}
+                className="ml-[7.7px] text-sm font-body"
+                onClick={handleRemoveFavorite}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
