@@ -49,6 +49,8 @@ class ApartmentSerializer(serializers.ModelSerializer):
                     data_to_return['is_favorite'] = False
         except ClientUser.DoesNotExist:
             data_to_return['is_favorite'] = False
+        reviews_data = instance.get_apartment_reviews_information()
+        data_to_return.update(reviews_data)
         return data_to_return
 
 
