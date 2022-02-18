@@ -4,23 +4,14 @@ import { StarIcon } from "@heroicons/react/solid";
 import { IApartmentCardProps } from "../ApartmentCard/IApartmentFormProps";
 import "@splidejs/splide/dist/css/splide.min.css";
 import "./confirmCard.css";
-import img from "../../assets/img/image1.svg";
 
 const ConfirmCard: FC<IApartmentCardProps> = ({
   title,
   rating,
   description,
   price,
+  img,
 }) => {
-  const pictureList = [
-    { img, id: 1 },
-    { img, id: 2 },
-    { img, id: 3 },
-    { img, id: 4 },
-    { img, id: 5 },
-    { img, id: 6 },
-  ];
-
   return (
     <div>
       <div className="flex">
@@ -31,13 +22,20 @@ const ConfirmCard: FC<IApartmentCardProps> = ({
             width: 240,
           }}
         >
-          {pictureList.map((item, index) => (
-            <SplideSlide key={item.id}>
-              <img src={item.img} alt={`object${index}`} className="rounded" />
-            </SplideSlide>
-          ))}
+          <div className="rounded-md">
+            {img &&
+              img.map((item, index) => (
+                <SplideSlide key={item}>
+                  <img
+                    src={item}
+                    alt={`object${index}`}
+                    className="rounded-md w-full h-full w-[240px] h-[144px] object-cover"
+                  />
+                </SplideSlide>
+              ))}
+          </div>
         </Splide>
-        <div className="w-full pl-3 flex justify-between flex-col">
+        <div className="w-full pl-3 flex justify-between flex-col w-[300px]">
           <div>
             <div className="flex justify-start items-start flex-col">
               <h4 className="text-xl font-body text-gray-900">{title}</h4>

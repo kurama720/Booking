@@ -59,11 +59,11 @@ const SearchResultItem: FC<IPropsSearchItem> = ({
       <div className="rounded-md overflow-hidden">
         <SliderCardMap listPictures={img_content} />
       </div>
-      <div className="flex flex-col justify-between flex-grow pl-4 font-body">
+      <div className="flex flex-col justify-between flex-grow pl-4 font-body max-w-[360px]">
         <div className="flex flex-col space-y-1">
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <NavLink
-              className="text-xl font-medium text-gray-900"
+              className="text-xl font-medium text-gray-900 w-[300px]"
               to={`/apartments/${id}`}
             >
               {title}
